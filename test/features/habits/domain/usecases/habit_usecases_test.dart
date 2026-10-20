@@ -21,10 +21,15 @@ class InMemoryHabitRepository implements HabitRepository {
   Future<void> addHabit(Habit habit) async => habits[habit.id] = habit;
 
   @override
-  Future<void> updateHabit(Habit habit) async => habits[habit.id] = habit;
+  Future<void> updateHabit(Habit habit) async {
+    if (!habits.containsKey(habit.id)) throw HabitNotFoundException(habit.id);
+    habits[habit.id] = habit;
+  }
 
   @override
-  Future<void> deleteHabit(String id) async => habits.remove(id);
+  Future<void> deleteHabit(String id) async {
+    if (habits.remove(id) == null) throw HabitNotFoundException(id);
+  }
 }
 
 void main() {

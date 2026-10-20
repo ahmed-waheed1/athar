@@ -7,8 +7,10 @@ abstract interface class HabitRepository {
 
   Future<void> addHabit(Habit habit);
 
+  /// Throws [HabitNotFoundException] if no habit has [Habit.id].
   Future<void> updateHabit(Habit habit);
 
+  /// Throws [HabitNotFoundException] if no habit has [id].
   Future<void> deleteHabit(String id);
 }
 
