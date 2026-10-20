@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stops R8 from stripping notification icons (and other drawables only referenced from Dart) in release builds.
+     See flutter_local_notifications README, "Release build configuration". -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/*" />

@@ -1,1 +1,29 @@
-{}
+{
+  "app": {
+    "name": "Athar"
+  },
+  "settings": {
+    "language": "Language",
+    "languageEnglish": "English",
+    "languageArabic": "العربية",
+    "appearance": "Appearance",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  },
+  "designTest": {
+    "title": "Design test",
+    "controls": "Language and theme",
+    "brandMark": "Brand mark",
+    "numbers": "Numbers",
+    "numberDecimal": "Decimal",
+    "numberStreak": "Streak",
+    "numberPercent": "Percentage",
+    "icons": "Icons",
+    "iconsMirrorHint": "The first four arrows flip in Arabic; the rest never do.",
+    "colors": "Colors",
+    "textStyles": "Text styles",
+    "sampleEnglish": "Leave a trace every day",
+    "sampleArabic": "اترك أثرًا كل يوم"
+  }
+}

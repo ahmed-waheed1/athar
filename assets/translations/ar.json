@@ -1,1 +1,29 @@
-{}
+{
+  "app": {
+    "name": "أثر"
+  },
+  "settings": {
+    "language": "اللغة",
+    "languageEnglish": "English",
+    "languageArabic": "العربية",
+    "appearance": "المظهر",
+    "themeLight": "فاتح",
+    "themeDark": "داكن",
+    "themeSystem": "النظام"
+  },
+  "designTest": {
+    "title": "اختبار التصميم",
+    "controls": "اللغة والمظهر",
+    "brandMark": "شعار أثر",
+    "numbers": "الأرقام",
+    "numberDecimal": "عدد",
+    "numberStreak": "سلسلة",
+    "numberPercent": "نسبة مئوية",
+    "icons": "الأيقونات",
+    "iconsMirrorHint": "الأسهم الأربعة الأولى تنعكس في العربية، والبقية لا تنعكس أبدًا.",
+    "colors": "الألوان",
+    "textStyles": "أنماط النص",
+    "sampleEnglish": "Leave a trace every day",
+    "sampleArabic": "اترك أثرًا كل يوم"
+  }
+}

@@ -7,9 +7,9 @@ Bilingual (English/Arabic) habit tracker built in Flutter. Users add daily habit
 - DI: get_it (lib/core/di)
 - Routing: go_router (lib/core/router)
 - Storage: hive_ce + hive_ce_flutter (habits), shared_preferences (settings: language, theme, onboarding done)
-- Localization: easy_localization, locales en-US and ar, JSON files in assets/translations/
-- Responsive: flutter_screenutil for sizing + LayoutBuilder breakpoints from athar_spacing.dart (phone < 600, tablet 600–1024, wide > 1024)
-- Notifications: flutter_local_notifications + timezone + flutter_timezone + permission_handler
+- Localization: easy_localization, locales en-US and ar, JSON files in assets/translations/. Until the user picks a language, it follows the device: Arabic if the device language is Arabic, otherwise English.
+- Responsive: athar_spacing.dart tokens + LayoutBuilder breakpoints (AtharBreakpoints: phone < 600, tablet 600–1024, wide > 1024). No flutter_screenutil or other scaling packages.
+- Notifications: flutter_local_notifications + timezone + flutter_timezone. Request notification permission with flutter_local_notifications' own APIs (no permission_handler).
 - UI: flutter_svg, flutter_slidable, percent_indicator, flutter_heatmap_calendar, confetti, animations
 
 ## Architecture
@@ -37,4 +37,5 @@ Shared code goes in lib/core/.
 - Run flutter analyze after each change and keep it at zero issues.
 - Build one screen or feature at a time and stop for review.
 - Ignore store/ (store listing assets) and design/icon-options/ (unused icon drafts).
-- Native setup for flutter_local_notifications (including core library desugaring) and permission_handler must follow each package's current README.
+- Native setup for flutter_local_notifications (including core library desugaring) must follow the package's current README.
+- Reminders are inexact daily notifications. Never add SCHEDULE_EXACT_ALARM or USE_EXACT_ALARM.
