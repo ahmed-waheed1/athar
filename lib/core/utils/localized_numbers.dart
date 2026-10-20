@@ -7,8 +7,11 @@ abstract final class LocalizedNumbers {
   static String intlLocale(Locale locale) =>
       locale.languageCode == 'ar' ? 'ar_EG' : 'en_US';
 
+  static NumberFormat formatter(Locale locale) =>
+      NumberFormat.decimalPattern(intlLocale(locale));
+
   static String decimal(num value, Locale locale) =>
-      NumberFormat.decimalPattern(intlLocale(locale)).format(value);
+      formatter(locale).format(value);
 
   /// [fraction] is 0..1, e.g. 0.82 -> "82%" / "٪٨٢".
   static String percent(double fraction, Locale locale) =>

@@ -10,11 +10,14 @@ import '../../features/habits/data/models/habit_model.dart';
 import '../../features/habits/data/models/hive_registrar.g.dart';
 import '../../features/habits/data/repositories/habit_repository_impl.dart';
 import '../../features/habits/domain/repositories/habit_repository.dart';
+import '../../features/habits/domain/services/habits_overview_calculator.dart';
+import '../../features/habits/domain/services/streak_calculator.dart';
 import '../../features/habits/domain/usecases/add_habit.dart';
 import '../../features/habits/domain/usecases/delete_habit.dart';
 import '../../features/habits/domain/usecases/get_habits.dart';
 import '../../features/habits/domain/usecases/toggle_habit_today.dart';
 import '../../features/habits/domain/usecases/update_habit.dart';
+import '../../features/habits/presentation/cubit/habits_cubit.dart';
 import '../../features/settings/data/datasources/settings_local_data_source.dart';
 import '../../features/settings/data/repositories/settings_repository_impl.dart';
 import '../../features/settings/domain/repositories/settings_repository.dart';
@@ -60,6 +63,17 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton(() => UpdateHabit(sl()))
     ..registerLazySingleton(() => DeleteHabit(sl()))
     ..registerLazySingleton(() => ToggleHabitToday(sl()))
+    ..registerLazySingleton(StreakCalculator.new)
+    ..registerLazySingleton(() => HabitsOverviewCalculator(sl()))
+    ..registerFactory(
+      () => HabitsCubit(
+        getHabits: sl(),
+        toggleHabitToday: sl(),
+        deleteHabit: sl(),
+        streakCalculator: sl(),
+        overviewCalculator: sl(),
+      ),
+    )
     // Navigation
     ..registerLazySingleton<GoRouter>(createAppRouter);
 }

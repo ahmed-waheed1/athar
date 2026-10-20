@@ -8,29 +8,7 @@ import 'package:athar/features/habits/domain/usecases/toggle_habit_today.dart';
 import 'package:athar/features/habits/domain/usecases/update_habit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class InMemoryHabitRepository implements HabitRepository {
-  final Map<String, Habit> habits = {};
-
-  @override
-  Future<List<Habit>> getHabits() async => habits.values.toList();
-
-  @override
-  Future<Habit?> getHabit(String id) async => habits[id];
-
-  @override
-  Future<void> addHabit(Habit habit) async => habits[habit.id] = habit;
-
-  @override
-  Future<void> updateHabit(Habit habit) async {
-    if (!habits.containsKey(habit.id)) throw HabitNotFoundException(habit.id);
-    habits[habit.id] = habit;
-  }
-
-  @override
-  Future<void> deleteHabit(String id) async {
-    if (habits.remove(id) == null) throw HabitNotFoundException(id);
-  }
-}
+import '../../../../helpers/in_memory_habit_repository.dart';
 
 void main() {
   late InMemoryHabitRepository repository;

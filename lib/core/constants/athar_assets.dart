@@ -1,8 +1,14 @@
+import 'package:flutter/widgets.dart';
+
 /// Asset paths. Directional UI icons (see design/screens.md) must be drawn with mirrorInRtl.
 abstract final class AtharAssets {
   static const brandMarkLight = 'assets/brand/athar-mark-light.svg';
   static const brandMarkDark = 'assets/brand/athar-mark-dark.svg';
   static const brandMarkWhite = 'assets/brand/athar-mark-white.svg';
+
+  /// Empty Home illustration. Directional: mirror it in RTL.
+  static String emptyStateTrail(Brightness brightness) =>
+      'assets/illustrations/empty-state-trail-${brightness.name}.svg';
 
   static String uiIcon(String name) => 'assets/icons/ui/ui_$name.svg';
 

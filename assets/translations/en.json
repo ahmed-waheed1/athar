@@ -25,5 +25,118 @@
     "textStyles": "Text styles",
     "sampleEnglish": "Leave a trace every day",
     "sampleArabic": "اترك أثرًا كل يوم"
+  },
+  "plural": {
+    "days": {
+      "one": "{} day",
+      "other": "{} days"
+    }
+  },
+  "nav": {
+    "today": "Today",
+    "history": "History",
+    "settings": "Settings"
+  },
+  "home": {
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "addHabit": "Add habit",
+    "todaysHabits": "Today's habits",
+    "swipeHint": "Swipe for options",
+    "progress": {
+      "title": "{done} of {total} done today",
+      "allDone": {
+        "one": "Done for today",
+        "other": "All {} done today"
+      },
+      "allDoneBody": "Every trace left today. See you tomorrow!",
+      "remaining": {
+        "one": "1 more trace to leave today",
+        "other": "{} more traces to leave today"
+      },
+      "waiting": {
+        "one": "1 trace waiting for you today",
+        "other": "{} traces waiting for you today"
+      }
+    },
+    "markDone": "Mark done: {name}",
+    "undoDone": "Undo: {name}",
+    "edit": "Edit",
+    "delete": "Delete",
+    "empty": {
+      "title": "No traces yet",
+      "body": "Every path starts with one step. Add a habit and leave your first trace today.",
+      "create": "Create your first habit",
+      "suggestionsTitle": "Or start with one of these",
+      "suggestionWater": "Drink water",
+      "suggestionRead": "Read",
+      "suggestionWalk": "Walk"
+    },
+    "error": {
+      "title": "Couldn't load your habits",
+      "retry": "Try again"
+    },
+    "heatmap": {
+      "title": "Your path · last {weeks} weeks",
+      "less": "Less",
+      "more": "More"
+    },
+    "overview": {
+      "title": "Overview",
+      "subtitle": "Select a habit to see its streak and calendar",
+      "doneToday": "Done today",
+      "longestStreak": "Longest active streak",
+      "longestStreakOf": "Longest active streak · {name}",
+      "consistency": "Consistency this month",
+      "nextMilestone": "Next milestone: {days} of {name}",
+      "remainingToday": {
+        "one": "One more trace today",
+        "other": "{} more traces to go"
+      },
+      "remainingTomorrow": {
+        "one": "One more trace tomorrow",
+        "other": "{} more traces to go"
+      },
+      "noValue": "—"
+    }
+  },
+  "toast": {
+    "checkIn": {
+      "one": "Trace added · 1-day streak",
+      "other": "Trace added · {}-day streak"
+    },
+    "undo": "Undo"
+  },
+  "deleteDialog": {
+    "title": "Delete “{name}”?",
+    "body": {
+      "one": "Its 1-day streak and all of its history will be removed. This can’t be undone.",
+      "other": "Its {}-day streak and all of its history will be removed. This can’t be undone."
+    },
+    "bodyNoStreak": "All of its history will be removed. This can’t be undone.",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "placeholder": {
+    "addHabit": "Add habit",
+    "editHabit": "Edit habit",
+    "habitDetails": "Habit details",
+    "history": "History",
+    "settings": "Settings",
+    "body": "This screen is coming in a later step."
+  },
+  "debug": {
+    "menuTitle": "Debug tools",
+    "insertSamples": "Insert sample habits",
+    "clearHabits": "Delete all habits",
+    "openDesignTest": "Open design test screen",
+    "samplePray": "Pray on time",
+    "sampleWater": "Drink water",
+    "sampleRead": "Read 10 pages",
+    "sampleWalk": "Morning walk",
+    "sampleEnglish": "Learn English"
   }
 }
