@@ -1,0 +1,800 @@
+{
+  "$description": "Athar design tokens. Colors are #RRGGBB, or #AARRGGBB where alpha is needed. Sizes in logical pixels (dp).",
+  "font": {
+    "family": "Cairo",
+    "weights": [
+      400,
+      500,
+      600,
+      700
+    ],
+    "note": "One family for Arabic and Latin. Arabic styles use taller line heights (see typography.*.height.ar)."
+  },
+  "color": {
+    "light": {
+      "primary": "#1E6B5A",
+      "onPrimary": "#FFFFFF",
+      "primaryContainer": "#DCEEE8",
+      "onPrimaryContainer": "#134E40",
+      "background": "#F4F6F5",
+      "surface": "#FFFFFF",
+      "surfaceVariant": "#EAEFED",
+      "textPrimary": "#13201C",
+      "textSecondary": "#46554F",
+      "textTertiary": "#5C6B65",
+      "divider": "#DCE3E0",
+      "fieldBorder": "#8A9893",
+      "success": "#3F8F4B",
+      "onSuccess": "#FFFFFF",
+      "error": "#B3261E",
+      "onError": "#FFFFFF",
+      "errorContainer": "#FBE4E2",
+      "flame": "#C4521F",
+      "flameSoft": "#FBE6DB",
+      "ringTrack": "#E3E9E7",
+      "inverseSurface": "#13201C",
+      "onInverseSurface": "#E8EFEC",
+      "scrim": "#800A1411"
+    },
+    "dark": {
+      "primary": "#6CCBAF",
+      "onPrimary": "#08241D",
+      "primaryContainer": "#1B3A31",
+      "onPrimaryContainer": "#A8E5D2",
+      "background": "#0E1412",
+      "surface": "#161F1C",
+      "surfaceVariant": "#1F2A26",
+      "textPrimary": "#E8EFEC",
+      "textSecondary": "#B6C4BF",
+      "textTertiary": "#93A39D",
+      "divider": "#2A3632",
+      "fieldBorder": "#5E6D67",
+      "success": "#6CC17A",
+      "onSuccess": "#0E1412",
+      "error": "#F2B8B5",
+      "onError": "#601410",
+      "errorContainer": "#3B1F1D",
+      "flame": "#F2925A",
+      "flameSoft": "#2EF2925A",
+      "ringTrack": "#25302C",
+      "inverseSurface": "#E8EFEC",
+      "onInverseSurface": "#13201C",
+      "scrim": "#A8000000"
+    }
+  },
+  "colorNotes": {
+    "primary": "Brand green: primary buttons, progress ring, active nav, links",
+    "onPrimary": "Text/icons on primary",
+    "primaryContainer": "Tonal buttons, nav pill, soft brand chips",
+    "onPrimaryContainer": "Text/icons on primaryContainer",
+    "background": "Scaffold background",
+    "surface": "Cards, sheets, dialogs, nav bar, rail",
+    "surfaceVariant": "Segmented-control track, secondary buttons, swipe-action backdrop, no-data cells",
+    "textPrimary": "Headings and body text",
+    "textSecondary": "Supporting text, field labels",
+    "textTertiary": "Dates, captions, inactive nav, future calendar days",
+    "divider": "Dividers, card/frame borders, empty progress dots",
+    "fieldBorder": "Resting text-field border, switch off track border",
+    "success": "Positive state (same value as the Leaf habit accent)",
+    "onSuccess": "Icons on success",
+    "error": "Delete, reset, validation errors",
+    "onError": "Text on error buttons",
+    "errorContainer": "Soft error chips (delete/reset icon tiles)",
+    "flame": "Streak flame icon + streak label",
+    "flameSoft": "Soft background behind the flame (toast, badges). Dark = flame at 18% alpha (AARRGGBB)",
+    "ringTrack": "Progress-ring track",
+    "inverseSurface": "Toast / snackbar background",
+    "onInverseSurface": "Toast / snackbar text",
+    "scrim": "Modal scrim (AARRGGBB): light 50% #0A1411, dark 66% black"
+  },
+  "heatmap": {
+    "light": {
+      "noData": "#EAEFED",
+      "missed": "#E3E9E7",
+      "levels": [
+        "#B9DDD0",
+        "#79C2A8",
+        "#2F8C72",
+        "#1E6B5A"
+      ]
+    },
+    "dark": {
+      "noData": "#1F2A26",
+      "missed": "#25302C",
+      "levels": [
+        "#1F4D40",
+        "#2D7A63",
+        "#4FAE90",
+        "#7FDCBD"
+      ]
+    }
+  },
+  "heatmapNote": "All-habits heatmap: levels 1-4 = share of habits done that day (1-25%, 26-50%, 51-75%, 76-100%). A single habit's heatmap uses that habit's accent for done days.",
+  "habitAccents": [
+    {
+      "id": "indigo",
+      "name": {
+        "en": "Indigo",
+        "ar": "نيلي"
+      },
+      "light": {
+        "color": "#5257C4",
+        "soft": "#1F5257C4",
+        "on": "#FFFFFF"
+      },
+      "dark": {
+        "color": "#8A8EF0",
+        "soft": "#2E8A8EF0",
+        "on": "#0E1412"
+      }
+    },
+    {
+      "id": "sky",
+      "name": {
+        "en": "Sky",
+        "ar": "سماوي"
+      },
+      "light": {
+        "color": "#2F7CC0",
+        "soft": "#1F2F7CC0",
+        "on": "#FFFFFF"
+      },
+      "dark": {
+        "color": "#5FA8E8",
+        "soft": "#2E5FA8E8",
+        "on": "#0E1412"
+      }
+    },
+    {
+      "id": "teal",
+      "name": {
+        "en": "Teal",
+        "ar": "فيروزي"
+      },
+      "light": {
+        "color": "#1B857A",
+        "soft": "#1F1B857A",
+        "on": "#FFFFFF"
+      },
+      "dark": {
+        "color": "#4CC3B5",
+        "soft": "#2E4CC3B5",
+        "on": "#0E1412"
+      }
+    },
+    {
+      "id": "leaf",
+      "name": {
+        "en": "Leaf",
+        "ar": "أخضر"
+      },
+      "light": {
+        "color": "#3F8F4B",
+        "soft": "#1F3F8F4B",
+        "on": "#FFFFFF"
+      },
+      "dark": {
+        "color": "#6CC17A",
+        "soft": "#2E6CC17A",
+        "on": "#0E1412"
+      }
+    },
+    {
+      "id": "amber",
+      "name": {
+        "en": "Amber",
+        "ar": "كهرماني"
+      },
+      "light": {
+        "color": "#B8740A",
+        "soft": "#1FB8740A",
+        "on": "#FFFFFF"
+      },
+      "dark": {
+        "color": "#E9A93E",
+        "soft": "#2EE9A93E",
+        "on": "#0E1412"
+      }
+    },
+    {
+      "id": "coral",
+      "name": {
+        "en": "Coral",
+        "ar": "مرجاني"
+      },
+      "light": {
+        "color": "#D0502F",
+        "soft": "#1FD0502F",
+        "on": "#FFFFFF"
+      },
+      "dark": {
+        "color": "#F08A6C",
+        "soft": "#2EF08A6C",
+        "on": "#0E1412"
+      }
+    },
+    {
+      "id": "rose",
+      "name": {
+        "en": "Rose",
+        "ar": "وردي"
+      },
+      "light": {
+        "color": "#C2405F",
+        "soft": "#1FC2405F",
+        "on": "#FFFFFF"
+      },
+      "dark": {
+        "color": "#EE7C99",
+        "soft": "#2EEE7C99",
+        "on": "#0E1412"
+      }
+    },
+    {
+      "id": "plum",
+      "name": {
+        "en": "Plum",
+        "ar": "بنفسجي"
+      },
+      "light": {
+        "color": "#9348AE",
+        "soft": "#1F9348AE",
+        "on": "#FFFFFF"
+      },
+      "dark": {
+        "color": "#C485DB",
+        "soft": "#2EC485DB",
+        "on": "#0E1412"
+      }
+    }
+  ],
+  "habitAccentNote": "soft = accent at 12% alpha (light) / 18% alpha (dark), used for icon chips and selected icon cells.",
+  "typography": {
+    "displayStreak": {
+      "size": 72,
+      "weight": 700,
+      "height": {
+        "latin": 1.05,
+        "ar": 1.2
+      },
+      "letterSpacing": {
+        "latin": -1.4,
+        "ar": 0
+      },
+      "use": "Current-streak number on Habit Details"
+    },
+    "milestoneNumber": {
+      "size": 56,
+      "weight": 700,
+      "height": {
+        "latin": 1.0,
+        "ar": 1.15
+      },
+      "letterSpacing": {
+        "latin": -1.0,
+        "ar": 0
+      },
+      "use": "Number inside the milestone celebration ring"
+    },
+    "screenTitle": {
+      "size": 28,
+      "weight": 700,
+      "height": {
+        "latin": 1.3,
+        "ar": 1.5
+      },
+      "letterSpacing": {
+        "latin": -0.3,
+        "ar": 0
+      },
+      "use": "Tab-screen titles (Settings), onboarding titles"
+    },
+    "greeting": {
+      "size": 26,
+      "weight": 700,
+      "height": {
+        "latin": 1.3,
+        "ar": 1.5
+      },
+      "letterSpacing": {
+        "latin": -0.2,
+        "ar": 0
+      },
+      "use": "Home greeting; dialog/milestone titles"
+    },
+    "emptyTitle": {
+      "size": 24,
+      "weight": 700,
+      "height": {
+        "latin": 1.3,
+        "ar": 1.5
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Empty-state and permission-prompt titles; habit name on Details"
+    },
+    "ringValue": {
+      "size": 24,
+      "weight": 700,
+      "height": {
+        "latin": 1.1,
+        "ar": 1.25
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Value inside the Today progress ring (3/5)"
+    },
+    "statNumber": {
+      "size": 24,
+      "weight": 700,
+      "height": {
+        "latin": 1.2,
+        "ar": 1.35
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Best streak / completions / consistency numbers"
+    },
+    "appBarTitle": {
+      "size": 20,
+      "weight": 700,
+      "height": {
+        "latin": 1.35,
+        "ar": 1.55
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "App bar titles (New habit, Edit habit)"
+    },
+    "progressTitle": {
+      "size": 18,
+      "weight": 700,
+      "height": {
+        "latin": 1.35,
+        "ar": 1.55
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "'3 of 5 done today' on the progress card"
+    },
+    "sectionTitle": {
+      "size": 17,
+      "weight": 700,
+      "height": {
+        "latin": 1.4,
+        "ar": 1.6
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Section headers (Today's habits)"
+    },
+    "button": {
+      "size": 17,
+      "weight": 700,
+      "height": {
+        "latin": 1.3,
+        "ar": 1.45
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Primary 56px buttons"
+    },
+    "cardTitle": {
+      "size": 16,
+      "weight": 700,
+      "height": {
+        "latin": 1.4,
+        "ar": 1.6
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Habit name on cards, card headings (Last 18 weeks)"
+    },
+    "body": {
+      "size": 16,
+      "weight": 400,
+      "height": {
+        "latin": 1.45,
+        "ar": 1.65
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Body copy, onboarding text, field input"
+    },
+    "buttonSmall": {
+      "size": 15,
+      "weight": 700,
+      "height": {
+        "latin": 1.3,
+        "ar": 1.45
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Segmented control, outline/text buttons, list-row titles"
+    },
+    "toast": {
+      "size": 15,
+      "weight": 600,
+      "height": {
+        "latin": 1.35,
+        "ar": 1.55
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Snackbar text"
+    },
+    "bodySmall": {
+      "size": 14,
+      "weight": 400,
+      "height": {
+        "latin": 1.45,
+        "ar": 1.65
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Supporting text, dialog body on compact layouts"
+    },
+    "dateLabel": {
+      "size": 14,
+      "weight": 500,
+      "height": {
+        "latin": 1.4,
+        "ar": 1.6
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Date line above the greeting, habit meta line"
+    },
+    "fieldLabel": {
+      "size": 14,
+      "weight": 700,
+      "height": {
+        "latin": 1.4,
+        "ar": 1.6
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Form labels, settings section headers"
+    },
+    "calendarDay": {
+      "size": 14,
+      "weight": 700,
+      "height": {
+        "latin": 1.0,
+        "ar": 1.0
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Day numbers in month calendar (future days use w500)"
+    },
+    "caption": {
+      "size": 13,
+      "weight": 600,
+      "height": {
+        "latin": 1.4,
+        "ar": 1.6
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Streak label next to the flame, helper/error text"
+    },
+    "statLabel": {
+      "size": 12.5,
+      "weight": 600,
+      "height": {
+        "latin": 1.35,
+        "ar": 1.55
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Labels under stat numbers"
+    },
+    "label": {
+      "size": 12,
+      "weight": 600,
+      "height": {
+        "latin": 1.35,
+        "ar": 1.55
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Nav labels, legends, chips"
+    },
+    "calendarWeekday": {
+      "size": 12,
+      "weight": 700,
+      "height": {
+        "latin": 1.0,
+        "ar": 1.0
+      },
+      "letterSpacing": {
+        "latin": 0,
+        "ar": 0
+      },
+      "use": "Weekday header row in the calendar"
+    }
+  },
+  "spacing": {
+    "xxs": 4,
+    "xs": 8,
+    "sm": 12,
+    "md": 16,
+    "lg": 20,
+    "xl": 24,
+    "xxl": 32,
+    "xxxl": 48
+  },
+  "radius": {
+    "heatmapCellPhone": {
+      "value": 4,
+      "use": "Heatmap cell (14px) on phone"
+    },
+    "heatmapCellLarge": {
+      "value": 5,
+      "use": "Heatmap cell (18px) on tablet/wide"
+    },
+    "calendarCell": {
+      "value": 12,
+      "use": "Month calendar day cell, phone/tablet"
+    },
+    "calendarCellWide": {
+      "value": 11,
+      "use": "Month calendar day cell, wide"
+    },
+    "segment": {
+      "value": 12,
+      "use": "Selected segment inside a segmented control"
+    },
+    "chip": {
+      "value": 14,
+      "use": "Habit icon tile (44px), icon buttons, settings row icons"
+    },
+    "field": {
+      "value": 16,
+      "use": "Text fields, segmented track, icon-picker cells, secondary buttons"
+    },
+    "button": {
+      "value": 18,
+      "use": "Primary 56px buttons"
+    },
+    "card": {
+      "value": 20,
+      "use": "Habit cards, list rows, toast"
+    },
+    "sectionPhone": {
+      "value": 24,
+      "use": "Progress card, Details sections, Settings groups on phone"
+    },
+    "sectionTablet": {
+      "value": 28,
+      "use": "Progress card and sections on tablet/wide"
+    },
+    "dialog": {
+      "value": 28,
+      "use": "Dialogs and the top corners of bottom sheets"
+    },
+    "milestone": {
+      "value": 32,
+      "use": "Milestone celebration card"
+    },
+    "navPill": {
+      "value": 16,
+      "use": "Active indicator behind the selected nav item"
+    },
+    "full": {
+      "value": 999,
+      "use": "Check button (52px circle), color swatches, progress dots, pills"
+    }
+  },
+  "size": {
+    "minTapTarget": 48,
+    "checkButton": 52,
+    "checkButtonWide": 48,
+    "iconTile": 44,
+    "iconTileTablet": 48,
+    "iconTileDetails": 56,
+    "habitCardMinHeight": 72,
+    "buttonHeight": 56,
+    "fieldHeight": 56,
+    "colorSwatch": 40,
+    "iconPickerCell": 56,
+    "navBarHeight": 84,
+    "railWidth": 88,
+    "wideListWidth": 380,
+    "ringPhone": 96,
+    "ringTablet": 120,
+    "ringWideList": 64,
+    "ringStrokeRatio": 0.104,
+    "heatmapCellPhone": 14,
+    "heatmapCellLarge": 18,
+    "heatmapGapPhone": 3,
+    "heatmapGapLarge": 4,
+    "gutterPhone": 20,
+    "gutterTablet": 32,
+    "gutterWide": 32,
+    "dialogMaxWidth": 400,
+    "sheetMaxWidth": 520
+  },
+  "breakpoints": {
+    "phone": "< 600",
+    "tablet": "600 – 1024",
+    "wide": "> 1024",
+    "values": {
+      "tablet": 600,
+      "wide": 1024
+    }
+  },
+  "shadow": {
+    "card": {
+      "light": [
+        {
+          "x": 0,
+          "y": 1,
+          "blur": 2,
+          "spread": 0,
+          "color": "#0D13201C"
+        },
+        {
+          "x": 0,
+          "y": 6,
+          "blur": 18,
+          "spread": 0,
+          "color": "#0F13201C"
+        }
+      ],
+      "dark": [
+        {
+          "x": 0,
+          "y": 1,
+          "blur": 2,
+          "spread": 0,
+          "color": "#4D000000"
+        },
+        {
+          "x": 0,
+          "y": 6,
+          "blur": 18,
+          "spread": 0,
+          "color": "#33000000"
+        }
+      ]
+    },
+    "raised": {
+      "light": [
+        {
+          "x": 0,
+          "y": 24,
+          "blur": 60,
+          "spread": 0,
+          "color": "#2E000000"
+        }
+      ],
+      "dark": [
+        {
+          "x": 0,
+          "y": 24,
+          "blur": 60,
+          "spread": 0,
+          "color": "#4D000000"
+        }
+      ]
+    },
+    "toast": {
+      "light": [
+        {
+          "x": 0,
+          "y": 12,
+          "blur": 28,
+          "spread": -6,
+          "color": "#40000000"
+        }
+      ],
+      "dark": [
+        {
+          "x": 0,
+          "y": 12,
+          "blur": 28,
+          "spread": -6,
+          "color": "#66000000"
+        }
+      ]
+    }
+  },
+  "motion": {
+    "checkPop": {
+      "durationMs": 500,
+      "curve": "easeOutBack",
+      "use": "Check button scales 0.82 -> 1.0 when a habit is checked; HapticFeedback.lightImpact()"
+    },
+    "ringProgress": {
+      "durationMs": 1400,
+      "curve": "easeOutCubic",
+      "use": "Progress ring sweeps from its old to its new value"
+    },
+    "swipeReveal": {
+      "durationMs": 350,
+      "curve": "fastOutSlowIn",
+      "use": "Habit card slides 144px toward the start edge to reveal Edit/Delete"
+    },
+    "toastIn": {
+      "durationMs": 250,
+      "curve": "easeOutCubic",
+      "use": "Toast slides up 16px + fades in; stays 3000ms"
+    },
+    "toastOut": {
+      "durationMs": 200,
+      "curve": "easeInCubic",
+      "use": "Toast fades out"
+    },
+    "dialogIn": {
+      "durationMs": 350,
+      "curve": "easeOutBack",
+      "use": "Dialogs/milestone card fade in and scale 0.92 -> 1.0"
+    },
+    "sheetIn": {
+      "durationMs": 300,
+      "curve": "easeOutCubic",
+      "use": "Bottom sheets slide up"
+    },
+    "pageTransition": {
+      "durationMs": 300,
+      "curve": "easeInOutCubic",
+      "use": "Push/pop: horizontal slide that follows text direction (Cupertino-style); fade-through between nav tabs"
+    },
+    "milestoneDotStagger": {
+      "durationMs": 90,
+      "curve": "easeOutBack",
+      "use": "Delay between each dot filling in the milestone ring (each dot pops in 500ms)"
+    },
+    "confetti": {
+      "durationMs": 3200,
+      "curve": "linear",
+      "use": "Confetti fall duration per piece (2.6-4.2s randomised), 36 pieces, loops while the modal is open"
+    },
+    "onboardingPage": {
+      "durationMs": 350,
+      "curve": "easeOutCubic",
+      "use": "PageView slide between onboarding slides; indicator pill widens 8 -> 24px"
+    }
+  },
+  "numerals": {
+    "en": "0123456789 (Western)",
+    "ar": "٠١٢٣٤٥٦٧٨٩ (Arabic-Indic, locale ar-EG) for all numbers, percentages and dates"
+  }
+}

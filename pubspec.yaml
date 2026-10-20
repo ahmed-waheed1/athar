@@ -51,8 +51,11 @@ flutter:
 
   assets:
     - assets/translations/
+    - assets/icons/ui/
+    - assets/icons/habit/
+    - assets/illustrations/
+    - assets/brand/
     - assets/images/
-    - assets/icons/
     - assets/animations/
 
   fonts:
