@@ -2,6 +2,29 @@
   "app": {
     "name": "Athar"
   },
+  "splash": {
+    "tagline": "Small steps, lasting traces"
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next",
+    "getStarted": "Get started",
+    "pageIndicator": "Page {current} of {total}",
+    "slides": {
+      "trace": {
+        "title": "Every day leaves a trace",
+        "body": "Check off a habit and you leave a mark. Small, but it stays."
+      },
+      "path": {
+        "title": "Traces become a path",
+        "body": "Day after day, your marks connect into a pattern you can actually see."
+      },
+      "private": {
+        "title": "Yours, and only yours",
+        "body": "No accounts, no cloud. Your habits and history stay on this device."
+      }
+    }
+  },
   "settings": {
     "language": "Language",
     "languageEnglish": "English",
@@ -294,6 +317,7 @@
     "insertMilestoneSamples": "Insert habits one day from a milestone",
     "clearHabits": "Delete all habits",
     "openDesignTest": "Open design test screen",
+    "resetOnboarding": "Reset onboarding",
     "samplePray": "Pray on time",
     "sampleWater": "Drink water",
     "sampleRead": "Read 10 pages",

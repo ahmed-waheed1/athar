@@ -30,6 +30,7 @@ import '../../features/settings/domain/entities/app_version.dart';
 import '../../features/settings/domain/repositories/settings_repository.dart';
 import '../../features/settings/domain/usecases/get_settings.dart';
 import '../../features/settings/domain/usecases/set_language.dart';
+import '../../features/settings/domain/usecases/set_onboarding_done.dart';
 import '../../features/settings/domain/usecases/set_theme_mode.dart';
 import '../../features/settings/presentation/cubit/reset_data_cubit.dart';
 import '../../features/settings/presentation/cubit/settings_cubit.dart';
@@ -58,11 +59,13 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton(() => GetSettings(sl()))
     ..registerLazySingleton(() => SetLanguage(sl()))
     ..registerLazySingleton(() => SetThemeMode(sl()))
+    ..registerLazySingleton(() => SetOnboardingDone(sl()))
     ..registerLazySingleton(
       () => SettingsCubit(
         getSettings: sl(),
         setLanguage: sl(),
         setThemeMode: sl(),
+        setOnboardingDone: sl(),
       ),
     )
     // Habits
@@ -104,5 +107,5 @@ Future<void> configureDependencies() async {
       () => ResetDataCubit(getHabits: sl(), deleteAllHabits: sl()),
     )
     // Navigation
-    ..registerLazySingleton<GoRouter>(createAppRouter);
+    ..registerLazySingleton<GoRouter>(() => createAppRouter(settings: sl()));
 }

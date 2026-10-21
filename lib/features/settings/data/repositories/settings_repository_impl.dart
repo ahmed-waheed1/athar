@@ -23,6 +23,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
       themeMode:
           AppThemeMode.values.asNameMap()[_dataSource.readThemeMode()] ??
           defaults.themeMode,
+      onboardingDone: _dataSource.readOnboardingDone() ?? false,
     );
   }
 
@@ -33,4 +34,8 @@ class SettingsRepositoryImpl implements SettingsRepository {
   @override
   Future<void> saveThemeMode(AppThemeMode themeMode) =>
       _dataSource.writeThemeMode(themeMode.name);
+
+  @override
+  Future<void> saveOnboardingDone(bool done) =>
+      _dataSource.writeOnboardingDone(done);
 }

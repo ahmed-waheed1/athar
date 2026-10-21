@@ -24,6 +24,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../helpers/athar_test_app.dart';
 import '../../../../helpers/in_memory_habit_repository.dart';
+import '../../../../helpers/in_memory_settings_repository.dart';
 
 /// Habit Details through the app's real routes: every state at phone,
 /// tablet and wide, in both languages and themes, with the real Cairo font
@@ -140,7 +141,10 @@ void main() {
     Brightness brightness = Brightness.light,
     Size size = const Size(375, 812),
   }) async {
-    router = createAppRouter();
+    router = createAppRouter(
+      settings: buildSettingsCubit(),
+      initialLocation: AppRoutes.home,
+    );
     addTearDown(router.dispose);
     await pumpAtharRouterApp(
       tester,

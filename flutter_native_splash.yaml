@@ -1,0 +1,31 @@
+# Native splash (design/screens.md · 01). Regenerate with:
+#   dart run flutter_native_splash:create
+#
+# Only the tile with the mark is native. The wordmark, tagline and loader
+# can't be drawn natively (Android 12+ takes a single icon, and the text is
+# per language), so SplashScreen in Flutter takes over with the same tile in
+# the same place and adds them on first launch. Later launches fade straight
+# from the tile to Home.
+#
+# Images in assets/splash/ come from the .svg files next to them (built from
+# assets/brand/athar-mark-{light,dark}.svg). Re-export after editing, e.g.:
+#   inkscape assets/splash/splash-tile-light.svg -w 480 -h 480 -o assets/splash/splash-tile-light.png
+#   inkscape assets/splash/splash-android12-light.svg -w 1152 -h 1152 -o assets/splash/splash-android12-light.png
+flutter_native_splash:
+  # primary (light) / background (dark), as SplashPalette.
+  color: "#1E6B5A"
+  color_dark: "#0E1412"
+
+  # 120 × 120 tile at 4x (480 px), centred.
+  image: assets/splash/splash-tile-light.png
+  image_dark: assets/splash/splash-tile-dark.png
+
+  android_12:
+    color: "#1E6B5A"
+    color_dark: "#0E1412"
+    # No icon background: 1152 px = the 288 dp icon area. The tile is drawn
+    # at 480 px (120 dp) in the middle, inside the visible 768 px circle.
+    image: assets/splash/splash-android12-light.png
+    image_dark: assets/splash/splash-android12-dark.png
+
+  web: false

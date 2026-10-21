@@ -2,6 +2,29 @@
   "app": {
     "name": "أثر"
   },
+  "splash": {
+    "tagline": "خطوات صغيرة، أثر يدوم"
+  },
+  "onboarding": {
+    "skip": "تخطَّ",
+    "next": "التالي",
+    "getStarted": "ابدأ الآن",
+    "pageIndicator": "الصفحة {current} من {total}",
+    "slides": {
+      "trace": {
+        "title": "كل يوم يترك أثرًا",
+        "body": "أنجز عادتك فتترك علامة. صغيرة، لكنها تبقى."
+      },
+      "path": {
+        "title": "الآثار تصنع طريقًا",
+        "body": "يومًا بعد يوم، تتصل علاماتك لتصنع نمطًا تراه بعينك."
+      },
+      "private": {
+        "title": "لك وحدك",
+        "body": "بلا حسابات ولا سحابة. عاداتك وسجلّك يبقيان على هذا الجهاز."
+      }
+    }
+  },
   "settings": {
     "language": "اللغة",
     "languageEnglish": "English",
@@ -348,6 +371,7 @@
     "insertMilestoneSamples": "إضافة عادات على بُعد يوم من محطة",
     "clearHabits": "حذف كل العادات",
     "openDesignTest": "فتح شاشة اختبار التصميم",
+    "resetOnboarding": "إعادة عرض التعريف بالتطبيق",
     "samplePray": "الصلاة في وقتها",
     "sampleWater": "شرب الماء",
     "sampleRead": "قراءة ١٠ صفحات",

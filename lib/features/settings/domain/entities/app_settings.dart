@@ -5,7 +5,11 @@ enum AppLanguage { en, ar }
 enum AppThemeMode { light, dark, system }
 
 class AppSettings extends Equatable {
-  const AppSettings({required this.language, required this.themeMode});
+  const AppSettings({
+    required this.language,
+    required this.themeMode,
+    this.onboardingDone = false,
+  });
 
   /// Used before the user picks anything: Arabic on an Arabic device, otherwise English.
   factory AppSettings.defaultsFor(String deviceLanguageCode) => AppSettings(
@@ -19,12 +23,19 @@ class AppSettings extends Equatable {
   final AppLanguage language;
   final AppThemeMode themeMode;
 
-  AppSettings copyWith({AppLanguage? language, AppThemeMode? themeMode}) =>
-      AppSettings(
-        language: language ?? this.language,
-        themeMode: themeMode ?? this.themeMode,
-      );
+  /// False until onboarding is finished or skipped; the router shows onboarding until then.
+  final bool onboardingDone;
+
+  AppSettings copyWith({
+    AppLanguage? language,
+    AppThemeMode? themeMode,
+    bool? onboardingDone,
+  }) => AppSettings(
+    language: language ?? this.language,
+    themeMode: themeMode ?? this.themeMode,
+    onboardingDone: onboardingDone ?? this.onboardingDone,
+  );
 
   @override
-  List<Object> get props => [language, themeMode];
+  List<Object> get props => [language, themeMode, onboardingDone];
 }

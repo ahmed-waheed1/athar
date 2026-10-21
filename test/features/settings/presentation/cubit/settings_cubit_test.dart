@@ -3,6 +3,7 @@ import 'package:athar/features/settings/data/repositories/settings_repository_im
 import 'package:athar/features/settings/domain/entities/app_settings.dart';
 import 'package:athar/features/settings/domain/usecases/get_settings.dart';
 import 'package:athar/features/settings/domain/usecases/set_language.dart';
+import 'package:athar/features/settings/domain/usecases/set_onboarding_done.dart';
 import 'package:athar/features/settings/domain/usecases/set_theme_mode.dart';
 import 'package:athar/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,6 +19,7 @@ Future<SettingsCubit> buildCubit({String deviceLanguageCode = 'en'}) async {
     getSettings: GetSettings(repository),
     setLanguage: SetLanguage(repository),
     setThemeMode: SetThemeMode(repository),
+    setOnboardingDone: SetOnboardingDone(repository),
   );
 }
 
@@ -80,5 +82,43 @@ void main() {
 
     final restarted = await buildCubit();
     expect(restarted.state, cubit.state);
+  });
+
+  group('onboarding', () {
+    setUp(() => SharedPreferences.setMockInitialValues({}));
+
+    test('is not done on first launch', () async {
+      final cubit = await buildCubit();
+      expect(cubit.state.onboardingDone, isFalse);
+    });
+
+    test('completing it is emitted and survives a restart', () async {
+      final cubit = await buildCubit();
+      await cubit.completeOnboarding();
+      expect(cubit.state.onboardingDone, isTrue);
+
+      final restarted = await buildCubit();
+      expect(restarted.state.onboardingDone, isTrue);
+    });
+
+    test('resetting it shows onboarding again after a restart', () async {
+      final cubit = await buildCubit();
+      await cubit.completeOnboarding();
+      await cubit.resetOnboarding();
+      expect(cubit.state.onboardingDone, isFalse);
+
+      final restarted = await buildCubit();
+      expect(restarted.state.onboardingDone, isFalse);
+    });
+
+    test('keeps the language picked during onboarding', () async {
+      final cubit = await buildCubit(deviceLanguageCode: 'en');
+      await cubit.changeLanguage(AppLanguage.ar);
+      await cubit.completeOnboarding();
+
+      final restarted = await buildCubit(deviceLanguageCode: 'en');
+      expect(restarted.state.language, AppLanguage.ar);
+      expect(restarted.state.onboardingDone, isTrue);
+    });
   });
 }

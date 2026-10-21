@@ -21,6 +21,7 @@ import 'package:athar/features/settings/domain/entities/app_settings.dart';
 import 'package:athar/features/settings/domain/entities/app_version.dart';
 import 'package:athar/features/settings/domain/usecases/get_settings.dart';
 import 'package:athar/features/settings/domain/usecases/set_language.dart';
+import 'package:athar/features/settings/domain/usecases/set_onboarding_done.dart';
 import 'package:athar/features/settings/domain/usecases/set_theme_mode.dart';
 import 'package:athar/features/settings/presentation/cubit/reset_data_cubit.dart';
 import 'package:athar/features/settings/presentation/cubit/settings_cubit.dart';
@@ -99,6 +100,7 @@ void main() {
           getSettings: GetSettings(settingsRepository),
           setLanguage: SetLanguage(settingsRepository),
           setThemeMode: SetThemeMode(settingsRepository),
+          setOnboardingDone: SetOnboardingDone(settingsRepository),
         ),
       )
       ..registerSingleton(

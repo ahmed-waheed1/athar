@@ -24,6 +24,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../helpers/athar_test_app.dart';
 import '../../../../helpers/in_memory_habit_repository.dart';
+import '../../../../helpers/in_memory_settings_repository.dart';
 
 /// Add / Edit Habit through the app's real routes, in every language, theme
 /// and layout, with the real Cairo font so overflow fails the test.
@@ -83,7 +84,10 @@ void main() {
     Brightness brightness = Brightness.light,
     Size size = const Size(375, 812),
   }) async {
-    router = createAppRouter();
+    router = createAppRouter(
+      settings: buildSettingsCubit(),
+      initialLocation: AppRoutes.home,
+    );
     addTearDown(router.dispose);
     await pumpAtharRouterApp(
       tester,
@@ -406,7 +410,10 @@ void main() {
     });
 
     testWidgets('opened by a deep link, Save goes to Home', (tester) async {
-      router = createAppRouter();
+      router = createAppRouter(
+        settings: buildSettingsCubit(),
+        initialLocation: AppRoutes.home,
+      );
       addTearDown(router.dispose);
       router.go(AppRoutes.addHabitWith(name: 'Walk'));
       await pumpAtharRouterApp(tester, router: router, locale: AppLocales.en);

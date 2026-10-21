@@ -6,4 +6,6 @@ abstract interface class SettingsRepository {
   Future<void> saveLanguage(AppLanguage language);
 
   Future<void> saveThemeMode(AppThemeMode themeMode);
+
+  Future<void> saveOnboardingDone(bool done);
 }

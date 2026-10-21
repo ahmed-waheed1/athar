@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/habits/domain/repositories/habit_repository.dart';
+import '../../features/settings/presentation/cubit/settings_cubit.dart';
 import '../di/injection.dart';
 import '../router/app_router.dart';
 import 'sample_habits.dart';
 
-/// DEBUG ONLY: sample data and the design test screen. Opened by
+/// DEBUG ONLY: sample data, onboarding reset and the design test screen. Opened by
 /// long-pressing the Home greeting. Does nothing in release builds.
 /// [onChanged] runs after the stored habits change.
 Future<void> showDebugToolsSheet(
@@ -69,6 +70,14 @@ Future<void> showDebugToolsSheet(
             onTap: () {
               Navigator.of(sheetContext).pop();
               context.push(AppRoutes.designTest);
+            },
+          ),
+          ListTile(
+            title: Text('debug.resetOnboarding'.tr()),
+            onTap: () {
+              Navigator.of(sheetContext).pop();
+              // The router moves to onboarding as soon as the flag clears.
+              sl<SettingsCubit>().resetOnboarding();
             },
           ),
         ],
