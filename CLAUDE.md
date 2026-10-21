@@ -10,7 +10,7 @@ Bilingual (English/Arabic) habit tracker built in Flutter. Users add daily habit
 - Localization: easy_localization, locales en-US and ar, JSON files in assets/translations/. Until the user picks a language, it follows the device: Arabic if the device language is Arabic, otherwise English.
 - Responsive: athar_spacing.dart tokens + LayoutBuilder breakpoints (AtharBreakpoints: phone < 600, tablet 600–1024, wide > 1024). No flutter_screenutil or other scaling packages.
 - Notifications: flutter_local_notifications + timezone + flutter_timezone. Request notification permission with flutter_local_notifications' own APIs (no permission_handler).
-- UI: flutter_svg, flutter_slidable, percent_indicator, flutter_heatmap_calendar, confetti, animations
+- UI: flutter_svg, flutter_slidable, percent_indicator, confetti, animations
 
 ## Architecture
 Feature-first clean architecture: lib/features/{onboarding,habits,settings}/{data,domain,presentation}.

@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/habits/presentation/cubit/habit_details_cubit.dart';
 import '../../features/habits/presentation/cubit/habit_form_cubit.dart';
 import '../../features/habits/presentation/cubit/habits_cubit.dart';
+import '../../features/habits/presentation/screens/habit_details_screen.dart';
 import '../../features/habits/presentation/screens/habit_form_screen.dart';
 import '../../features/habits/presentation/screens/home_screen.dart';
 import '../debug/design_test_screen.dart';
@@ -32,11 +34,50 @@ abstract final class AppRoutes {
   ).toString();
 }
 
+const _branchRoots = {AppRoutes.home, AppRoutes.history, AppRoutes.settings};
+
 GoRouter createAppRouter() => GoRouter(
   initialLocation: AppRoutes.home,
   routes: [
+    GoRoute(
+      path: AppRoutes.addHabit,
+      pageBuilder: (context, state) {
+        final query = state.uri.queryParameters;
+        return habitFormPage(
+          key: state.pageKey,
+          child: BlocProvider(
+            create: (_) => sl<HabitFormCubit>()
+              ..startAdd(
+                name: query['name'],
+                iconKey: query['icon'],
+                colorKey: query['color'],
+              ),
+            child: const HabitFormScreen(),
+          ),
+        );
+      },
+    ),
+    // Top level rather than under '/habits/:id', so pushing it from Home
+    // doesn't stack Details underneath: Save goes straight back. Listed
+    // before the shell so '/habits/new' never matches Details.
+    GoRoute(
+      path: '/habits/:id/edit',
+      pageBuilder: (context, state) => habitFormPage(
+        key: state.pageKey,
+        child: BlocProvider(
+          create: (_) =>
+              sl<HabitFormCubit>()..startEdit(state.pathParameters['id']!),
+          child: const HabitFormScreen(),
+        ),
+      ),
+    ),
     StatefulShellRoute.indexedStack(
-      builder: (context, state, shell) => AppShell(shell: shell),
+      builder: (context, state, shell) => AppShell(
+        shell: shell,
+        // Details is pushed inside the Today branch so tablet keeps the
+        // rail; the phone hides its bar there.
+        showNavigationBar: _branchRoots.contains(state.uri.path),
+      ),
       branches: [
         StatefulShellBranch(
           routes: [
@@ -44,8 +85,21 @@ GoRouter createAppRouter() => GoRouter(
               path: AppRoutes.home,
               builder: (context, state) => BlocProvider(
                 create: (_) => sl<HabitsCubit>()..load(),
-                child: const HomeScreen(),
+                child: HomeScreen(
+                  createDetailsCubit: () => sl<HabitDetailsCubit>(),
+                ),
               ),
+              routes: [
+                GoRoute(
+                  path: 'habits/:id',
+                  builder: (context, state) => BlocProvider(
+                    create: (_) =>
+                        sl<HabitDetailsCubit>()
+                          ..load(state.pathParameters['id']!),
+                    child: const HabitDetailsScreen(),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -68,43 +122,6 @@ GoRouter createAppRouter() => GoRouter(
           ],
         ),
       ],
-    ),
-    GoRoute(
-      path: AppRoutes.addHabit,
-      pageBuilder: (context, state) {
-        final query = state.uri.queryParameters;
-        return habitFormPage(
-          key: state.pageKey,
-          child: BlocProvider(
-            create: (_) => sl<HabitFormCubit>()
-              ..startAdd(
-                name: query['name'],
-                iconKey: query['icon'],
-                colorKey: query['color'],
-              ),
-            child: const HabitFormScreen(),
-          ),
-        );
-      },
-    ),
-    // Top level rather than under '/habits/:id', so pushing it from Home
-    // doesn't stack Details underneath: Save goes straight back.
-    GoRoute(
-      path: '/habits/:id/edit',
-      pageBuilder: (context, state) => habitFormPage(
-        key: state.pageKey,
-        child: BlocProvider(
-          create: (_) =>
-              sl<HabitFormCubit>()..startEdit(state.pathParameters['id']!),
-          child: const HabitFormScreen(),
-        ),
-      ),
-    ),
-    // TODO(step 06): replace with Habit Details.
-    GoRoute(
-      path: '/habits/:id',
-      builder: (context, state) =>
-          const PlaceholderScreen(titleKey: 'placeholder.habitDetails'),
     ),
     if (kDebugMode)
       GoRoute(

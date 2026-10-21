@@ -32,7 +32,6 @@ dependencies:
   lottie: ^3.6.1
   animations: ^3.0.0
   percent_indicator: ^4.2.5
-  flutter_heatmap_calendar: ^1.0.5
   flutter_slidable: ^4.0.3
   confetti: ^0.8.0
 

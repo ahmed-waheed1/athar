@@ -46,4 +46,40 @@ void main() {
     expect(LocalizedDates.dayPeriod(pm: true, locale: ar), 'م');
     expect(LocalizedDates.dayPeriod(pm: true, locale: en), 'PM');
   });
+
+  test('calendar weekday headers follow the week start', () {
+    expect(LocalizedDates.weekdayHeaders(const Locale('en', 'US')), [
+      'Sun',
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat',
+    ]);
+    expect(LocalizedDates.weekdayHeaders(const Locale('ar')), [
+      'س',
+      'ح',
+      'ن',
+      'ث',
+      'ر',
+      'خ',
+      'ج',
+    ]);
+  });
+
+  test('month titles and full dates use the locale digits', () {
+    expect(
+      LocalizedDates.monthYear(DateTime(2026, 10), const Locale('en', 'US')),
+      'October 2026',
+    );
+    expect(
+      LocalizedDates.monthYear(DateTime(2026, 10), const Locale('ar')),
+      'أكتوبر ٢٠٢٦',
+    );
+    expect(
+      LocalizedDates.fullDate(DateTime(2026, 10, 20), const Locale('ar')),
+      '٢٠ أكتوبر ٢٠٢٦',
+    );
+  });
 }

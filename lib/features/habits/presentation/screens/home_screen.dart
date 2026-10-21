@@ -14,7 +14,7 @@ import '../../../../core/utils/localized_numbers.dart';
 import '../../../../core/widgets/athar_confirm_dialog.dart';
 import '../../../../core/widgets/athar_icon.dart';
 import '../../../../core/widgets/dashed_border.dart';
-import '../../../../core/widgets/placeholder_screen.dart';
+import '../cubit/habit_details_cubit.dart';
 import '../cubit/habits_cubit.dart';
 import '../cubit/habits_state.dart';
 import '../widgets/all_habits_heatmap_card.dart';
@@ -25,10 +25,14 @@ import '../widgets/home_header.dart';
 import '../widgets/home_metrics.dart';
 import '../widgets/overview_panel.dart';
 import '../widgets/progress_card.dart';
+import 'habit_details_screen.dart';
 
 /// Home / Today (design/screens.md · 03).
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.createDetailsCubit});
+
+  /// Wide layout: the cubit behind the selected habit's details panel.
+  final HabitDetailsCubit Function() createDetailsCubit;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -314,13 +318,17 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         Expanded(
-          child: Padding(
-            padding: EdgeInsetsDirectional.only(top: top),
-            child: selected == null
-                ? OverviewPanel(state: state)
-                // TODO(step 06): show Habit Details for the selected habit.
-                : const PlaceholderScreen(titleKey: 'placeholder.habitDetails'),
-          ),
+          child: selected == null
+              ? Padding(
+                  padding: EdgeInsetsDirectional.only(top: top),
+                  child: OverviewPanel(state: state),
+                )
+              : HabitDetailsPanel(
+                  key: ValueKey(selected.habit.id),
+                  habit: selected.habit,
+                  createCubit: widget.createDetailsCubit,
+                  onEdit: () => _push(AppRoutes.editHabit(selected.habit.id)),
+                ),
         ),
       ],
     );

@@ -231,8 +231,67 @@
       "confirm": "تجاهل"
     }
   },
+  "details": {
+    "edit": "تعديل",
+    "editHabit": "تعديل العادة",
+    "everyDay": "كل يوم",
+    "reminder": "تذكير {time}",
+    "createdToday": "أُنشئت اليوم",
+    "metaSeparator": " · ",
+    "currentStreak": "السلسلة الحالية",
+    "daysUnit": {
+      "zero": "يوم",
+      "one": "يوم",
+      "two": "يوم",
+      "few": "أيام",
+      "many": "يومًا",
+      "other": "يوم"
+    },
+    "note": {
+      "toGo": "الأفضل {best} — باقي {remaining}",
+      "bestEver": "أفضل سلسلة لك على الإطلاق — واصل",
+      "paused": "توقفت السلسلة. الأفضل {best} — ابدأ من جديد اليوم",
+      "first": "أثرك الأول على بُعد لمسة"
+    },
+    "stats": {
+      "best": "أفضل سلسلة",
+      "completions": "مرات الإنجاز",
+      "consistency": "نسبة الالتزام",
+      "noValue": "—"
+    },
+    "heatmap": {
+      "title": {
+        "zero": "آخر {} أسبوع",
+        "one": "آخر أسبوع",
+        "two": "آخر أسبوعين",
+        "few": "آخر {} أسابيع",
+        "many": "آخر {} أسبوعًا",
+        "other": "آخر {} أسبوع"
+      },
+      "missed": "فائت",
+      "done": "منجز"
+    },
+    "calendar": {
+      "previous": "الشهر السابق",
+      "next": "الشهر التالي",
+      "dayDone": "{date}، منجز",
+      "dayMissed": "{date}، فائت"
+    },
+    "thisMonth": {
+      "title": "هذا الشهر",
+      "ofDays": {
+        "zero": "من {} يوم",
+        "one": "من يوم واحد",
+        "two": "من يومين",
+        "few": "من {} أيام",
+        "many": "من {} يومًا",
+        "other": "من {} يوم"
+      }
+    },
+    "error": "تعذّر تحميل هذه العادة",
+    "retry": "حاول مجددًا"
+  },
   "placeholder": {
-    "habitDetails": "تفاصيل العادة",
     "history": "السجل",
     "settings": "الإعدادات",
     "body": "هذه الشاشة قادمة في خطوة لاحقة."

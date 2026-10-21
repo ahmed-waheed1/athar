@@ -12,12 +12,14 @@ class HabitIconTile extends StatelessWidget {
     required this.accent,
     this.size = AtharSizes.iconTile,
     this.iconSize = 24,
+    this.radius = AtharRadii.chip,
   });
 
   final String iconKey;
   final HabitAccent accent;
   final double size;
   final double iconSize;
+  final double radius;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -25,7 +27,7 @@ class HabitIconTile extends StatelessWidget {
     height: size,
     decoration: BoxDecoration(
       color: accent.soft,
-      borderRadius: AtharRadii.chipRadius,
+      borderRadius: BorderRadius.circular(radius),
     ),
     alignment: AlignmentDirectional.center,
     child: AtharIcon.habit(iconKey, size: iconSize, color: accent.color),

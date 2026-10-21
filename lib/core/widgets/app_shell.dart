@@ -11,9 +11,16 @@ import 'athar_icon.dart';
 /// Top-level navigation: a NavigationBar on phone, a NavigationRail on the
 /// start side on tablet and wide.
 class AppShell extends StatelessWidget {
-  const AppShell({super.key, required this.shell});
+  const AppShell({
+    super.key,
+    required this.shell,
+    this.showNavigationBar = true,
+  });
 
   final StatefulNavigationShell shell;
+
+  /// Phone only: false on screens pushed inside a branch (Habit Details).
+  final bool showNavigationBar;
 
   static const _destinations = [
     (icon: 'today', label: 'nav.today'),
@@ -38,32 +45,38 @@ class AppShell extends StatelessWidget {
       final barHeight = AtharSizes.navBarHeight - bottomInset;
       return Scaffold(
         body: shell,
-        bottomNavigationBar: DecoratedBox(
-          decoration: BoxDecoration(
-            border: BorderDirectional(top: BorderSide(color: colors.divider)),
-          ),
-          child: NavigationBar(
-            height: barHeight < _minNavBarHeight ? _minNavBarHeight : barHeight,
-            selectedIndex: shell.currentIndex,
-            onDestinationSelected: _select,
-            indicatorShape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(AtharRadii.navPill),
-              ),
-            ),
-            destinations: [
-              for (final d in _destinations)
-                NavigationDestination(
-                  icon: AtharIcon.ui(d.icon, color: colors.textTertiary),
-                  selectedIcon: AtharIcon.ui(
-                    d.icon,
-                    color: colors.onPrimaryContainer,
+        bottomNavigationBar: !showNavigationBar
+            ? null
+            : DecoratedBox(
+                decoration: BoxDecoration(
+                  border: BorderDirectional(
+                    top: BorderSide(color: colors.divider),
                   ),
-                  label: d.label.tr(),
                 ),
-            ],
-          ),
-        ),
+                child: NavigationBar(
+                  height: barHeight < _minNavBarHeight
+                      ? _minNavBarHeight
+                      : barHeight,
+                  selectedIndex: shell.currentIndex,
+                  onDestinationSelected: _select,
+                  indicatorShape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(AtharRadii.navPill),
+                    ),
+                  ),
+                  destinations: [
+                    for (final d in _destinations)
+                      NavigationDestination(
+                        icon: AtharIcon.ui(d.icon, color: colors.textTertiary),
+                        selectedIcon: AtharIcon.ui(
+                          d.icon,
+                          color: colors.onPrimaryContainer,
+                        ),
+                        label: d.label.tr(),
+                      ),
+                  ],
+                ),
+              ),
       );
     }
 

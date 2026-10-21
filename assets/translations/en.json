@@ -201,8 +201,55 @@
       "confirm": "Discard"
     }
   },
+  "details": {
+    "edit": "Edit",
+    "editHabit": "Edit habit",
+    "everyDay": "Every day",
+    "reminder": "Reminder {time}",
+    "createdToday": "Created today",
+    "metaSeparator": " · ",
+    "currentStreak": "Current streak",
+    "daysUnit": {
+      "one": "day",
+      "other": "days"
+    },
+    "note": {
+      "toGo": "Best is {best} — {remaining} to go",
+      "bestEver": "Your best ever — keep going",
+      "paused": "Streak paused. Best is {best} — start again today",
+      "first": "Your first trace is one tap away"
+    },
+    "stats": {
+      "best": "Best streak",
+      "completions": "Completions",
+      "consistency": "Consistency",
+      "noValue": "—"
+    },
+    "heatmap": {
+      "title": {
+        "one": "Last week",
+        "other": "Last {} weeks"
+      },
+      "missed": "Missed",
+      "done": "Done"
+    },
+    "calendar": {
+      "previous": "Previous month",
+      "next": "Next month",
+      "dayDone": "{date}, done",
+      "dayMissed": "{date}, missed"
+    },
+    "thisMonth": {
+      "title": "This month",
+      "ofDays": {
+        "one": "of {} day",
+        "other": "of {} days"
+      }
+    },
+    "error": "Couldn't load this habit",
+    "retry": "Try again"
+  },
   "placeholder": {
-    "habitDetails": "Habit details",
     "history": "History",
     "settings": "Settings",
     "body": "This screen is coming in a later step."

@@ -18,6 +18,7 @@ import '../../features/habits/domain/usecases/get_habit.dart';
 import '../../features/habits/domain/usecases/get_habits.dart';
 import '../../features/habits/domain/usecases/toggle_habit_today.dart';
 import '../../features/habits/domain/usecases/update_habit.dart';
+import '../../features/habits/presentation/cubit/habit_details_cubit.dart';
 import '../../features/habits/presentation/cubit/habit_form_cubit.dart';
 import '../../features/habits/presentation/cubit/habits_cubit.dart';
 import '../../features/settings/data/datasources/settings_local_data_source.dart';
@@ -76,6 +77,9 @@ Future<void> configureDependencies() async {
         streakCalculator: sl(),
         overviewCalculator: sl(),
       ),
+    )
+    ..registerFactory(
+      () => HabitDetailsCubit(getHabit: sl(), streakCalculator: sl()),
     )
     ..registerFactory(
       () => HabitFormCubit(

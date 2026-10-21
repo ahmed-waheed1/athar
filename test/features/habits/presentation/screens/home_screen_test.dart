@@ -6,8 +6,10 @@ import 'package:athar/core/theme/athar_theme.dart';
 import 'package:athar/features/habits/domain/services/habits_overview_calculator.dart';
 import 'package:athar/features/habits/domain/services/streak_calculator.dart';
 import 'package:athar/features/habits/domain/usecases/delete_habit.dart';
+import 'package:athar/features/habits/domain/usecases/get_habit.dart';
 import 'package:athar/features/habits/domain/usecases/get_habits.dart';
 import 'package:athar/features/habits/domain/usecases/toggle_habit_today.dart';
+import 'package:athar/features/habits/presentation/cubit/habit_details_cubit.dart';
 import 'package:athar/features/habits/presentation/cubit/habits_cubit.dart';
 import 'package:athar/features/habits/presentation/screens/home_screen.dart';
 import 'package:athar/features/habits/presentation/widgets/check_button.dart';
@@ -37,8 +39,15 @@ void main() {
     await cairo.load();
   });
 
+  late InMemoryHabitRepository repository;
+
+  HabitDetailsCubit buildDetailsCubit() => HabitDetailsCubit(
+    getHabit: GetHabit(repository),
+    streakCalculator: StreakCalculator(),
+  );
+
   Future<HabitsCubit> buildCubit({required bool withHabits}) async {
-    final repository = InMemoryHabitRepository();
+    repository = InMemoryHabitRepository();
     final streaks = StreakCalculator();
     if (withHabits) {
       final names = {
@@ -98,7 +107,7 @@ void main() {
               home: Scaffold(
                 body: BlocProvider.value(
                   value: cubit,
-                  child: const HomeScreen(),
+                  child: HomeScreen(createDetailsCubit: buildDetailsCubit),
                 ),
               ),
             ),
@@ -194,6 +203,41 @@ void main() {
 
       expect(find.text(toast), findsOneWidget);
       await tester.pumpAndSettle(const Duration(seconds: 4));
+      await cubit.close();
+    });
+  }
+
+  for (final (lang, locale, title) in [
+    ('en', AppLocales.en, 'Current streak'),
+    ('ar', AppLocales.ar, 'السلسلة الحالية'),
+  ]) {
+    testWidgets('wide: selecting a habit shows its details in $lang', (
+      tester,
+    ) async {
+      final cubit = await buildCubit(withHabits: true);
+      await pumpHome(
+        tester,
+        size: sizes['wide']!,
+        locale: locale,
+        brightness: Brightness.light,
+        cubit: cubit,
+      );
+      expect(find.text(title), findsNothing);
+
+      await tester.runAsync(() async {
+        await tester.tap(find.text('Read 10 pages'));
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      });
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(find.text(title), findsOneWidget);
+      // Header name plus the selected list row.
+      expect(find.text('Read 10 pages'), findsNWidgets(2));
+
+      // Tapping it again goes back to the overview.
+      await tester.tap(find.text('Read 10 pages').first);
+      await tester.pumpAndSettle();
+      expect(find.text(title), findsNothing);
       await cubit.close();
     });
   }
