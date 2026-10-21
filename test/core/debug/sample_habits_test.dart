@@ -45,4 +45,16 @@ void main() {
   test('are the same every time', () {
     expect(buildSampleHabits(now: now, name: (key) => key), habits);
   });
+
+  test('milestone samples are one check-in from 7, 30 and 100', () {
+    final samples = buildMilestoneSampleHabits(now: now, name: (key) => key);
+    expect(
+      samples.map((h) => (streaks.currentStreak(h), h.isCompletedOn(now))),
+      [(6, false), (29, false), (99, false)],
+    );
+    for (final habit in samples) {
+      expect(habit.celebratedMilestones, isEmpty);
+      expect(HabitCatalog.colorKeys, contains(habit.colorKey));
+    }
+  });
 }

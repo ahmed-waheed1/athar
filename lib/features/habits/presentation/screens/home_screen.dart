@@ -23,6 +23,7 @@ import '../widgets/habit_card.dart';
 import '../widgets/home_empty_state.dart';
 import '../widgets/home_header.dart';
 import '../widgets/home_metrics.dart';
+import '../widgets/milestone/milestone_dialog.dart';
 import '../widgets/overview_panel.dart';
 import '../widgets/progress_card.dart';
 import 'habit_details_screen.dart';
@@ -72,7 +73,15 @@ class _HomeScreenState extends State<HomeScreen> {
       messenger.hideCurrentSnackBar();
       return;
     }
-    // TODO(step 07): on a milestone streak, open the celebration instead.
+    if (result.milestone case final milestone?) {
+      messenger.hideCurrentSnackBar();
+      await showMilestoneCelebration(
+        context,
+        habit: result.habit,
+        milestone: milestone,
+      );
+      return;
+    }
     showCheckInToast(
       context,
       streak: result.currentStreak,

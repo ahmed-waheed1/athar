@@ -31,15 +31,6 @@ void main() {
     expect(calculator.calculate([], days: 7), HabitsOverview.empty);
   });
 
-  group('StreakMilestones', () {
-    test('next milestone after a streak', () {
-      expect(StreakMilestones.nextAfter(0), 7);
-      expect(StreakMilestones.nextAfter(7), 14);
-      expect(StreakMilestones.nextAfter(99), 100);
-      expect(StreakMilestones.nextAfter(365), isNull);
-    });
-  });
-
   test('daily ratios only count habits that existed that day', () {
     final a = habit('a', createdAt: daysAgo(2), done: [daysAgo(2), today]);
     final b = habit('b', createdAt: daysAgo(1), done: [today]);
@@ -85,6 +76,30 @@ void main() {
     expect(next?.target, 7);
     expect(next?.remaining, 1);
     expect(next?.isDoneToday, isTrue);
+  });
+
+  test('next milestone uses the 7 / 30 / 100 list', () {
+    final twelve = habit(
+      'twelve',
+      createdAt: daysAgo(30),
+      done: [for (var i = 1; i <= 12; i++) daysAgo(i)],
+    );
+
+    final next = calculator.calculate([twelve], days: 7).nextMilestone;
+
+    expect(next?.target, 30);
+    expect(next?.remaining, 18);
+    expect(next?.isDoneToday, isFalse);
+  });
+
+  test('no next milestone once every streak is past 100', () {
+    final long = habit(
+      'long',
+      createdAt: daysAgo(200),
+      done: [for (var i = 0; i < 120; i++) daysAgo(i)],
+    );
+
+    expect(calculator.calculate([long], days: 7).nextMilestone, isNull);
   });
 
   test('month consistency counts today only once checked', () {

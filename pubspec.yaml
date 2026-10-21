@@ -13,7 +13,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
   flutter_bloc: ^9.1.1
   get_it: ^9.3.0
   equatable: ^3.0.0
@@ -29,11 +28,8 @@ dependencies:
   uuid: ^4.6.0
   characters: ^1.4.1
   flutter_svg: ^2.3.0
-  lottie: ^3.6.1
-  animations: ^3.0.0
-  percent_indicator: ^4.2.5
   flutter_slidable: ^4.0.3
-  confetti: ^0.8.0
+  package_info_plus: ^10.2.2
 
 dev_dependencies:
   flutter_test:
@@ -53,8 +49,6 @@ flutter:
     - assets/icons/habit/
     - assets/illustrations/
     - assets/brand/
-    - assets/images/
-    - assets/animations/
 
   fonts:
     - family: Cairo

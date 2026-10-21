@@ -5,7 +5,7 @@ nextTypeId: 1
 types:
   HabitModel:
     typeId: 0
-    nextIndex: 8
+    nextIndex: 9
     fields:
       id:
         index: 0
@@ -23,3 +23,5 @@ types:
         index: 6
       completedDates:
         index: 7
+      celebratedMilestones:
+        index: 8

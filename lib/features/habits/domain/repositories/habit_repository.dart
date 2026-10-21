@@ -12,6 +12,12 @@ abstract interface class HabitRepository {
 
   /// Throws [HabitNotFoundException] if no habit has [id].
   Future<void> deleteHabit(String id);
+
+  /// Removes every habit with its history and celebrated milestones.
+  Future<void> deleteAllHabits();
+
+  /// Fires whenever the stored habits change, from any screen.
+  Stream<void> watchChanges();
 }
 
 class HabitNotFoundException implements Exception {

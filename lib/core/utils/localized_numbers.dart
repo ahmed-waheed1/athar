@@ -16,4 +16,15 @@ abstract final class LocalizedNumbers {
   /// [fraction] is 0..1, e.g. 0.82 -> "82%" / "٪٨٢".
   static String percent(double fraction, Locale locale) =>
       NumberFormat.percentPattern(intlLocale(locale)).format(fraction);
+
+  /// Rewrites the Western digits in [text] for [locale], e.g. a version
+  /// "1.0.2" -> "١.٠.٢" in Arabic. Other characters are kept.
+  static String digits(String text, Locale locale) {
+    if (locale.languageCode != 'ar') return text;
+    const arabicIndic = '٠١٢٣٤٥٦٧٨٩';
+    return text.replaceAllMapped(
+      RegExp('[0-9]'),
+      (m) => arabicIndic[int.parse(m[0]!)],
+    );
+  }
 }

@@ -4,6 +4,7 @@ import 'package:athar/features/habits/domain/services/streak_calculator.dart';
 import 'package:athar/features/habits/domain/usecases/delete_habit.dart';
 import 'package:athar/features/habits/domain/usecases/get_habits.dart';
 import 'package:athar/features/habits/domain/usecases/toggle_habit_today.dart';
+import 'package:athar/features/habits/domain/usecases/watch_habit_changes.dart';
 import 'package:athar/features/habits/presentation/cubit/habits_cubit.dart';
 import 'package:athar/features/habits/presentation/cubit/habits_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -29,8 +30,9 @@ void main() {
     final streaks = StreakCalculator(now: clock);
     return HabitsCubit(
       getHabits: GetHabits(repository),
-      toggleHabitToday: ToggleHabitToday(repository, now: clock),
+      toggleHabitToday: ToggleHabitToday(repository, streaks, now: clock),
       deleteHabit: DeleteHabit(repository),
+      watchHabitChanges: WatchHabitChanges(repository),
       streakCalculator: streaks,
       overviewCalculator: HabitsOverviewCalculator(streaks, now: clock),
       now: clock,
@@ -182,6 +184,88 @@ void main() {
     });
   });
 
+  group('milestones', () {
+    List<DateTime> lastDays(int count) => [
+      for (var i = 1; i <= count; i++) DateTime(2026, 10, 20 - i),
+    ];
+
+    test('a check-in reaching 7 reports the milestone', () async {
+      await repository.addHabit(habit('a', done: lastDays(6)));
+      final cubit = buildCubit();
+      await cubit.load();
+
+      final result = await cubit.toggleToday('a');
+
+      expect(result?.currentStreak, 7);
+      expect(result?.milestone, 7);
+      expect(loaded(cubit).habits.single.habit.celebratedMilestones, {7});
+    });
+
+    test('uncheck and recheck the same day reports it only once', () async {
+      await repository.addHabit(habit('a', done: lastDays(6)));
+      final cubit = buildCubit();
+      await cubit.load();
+
+      expect((await cubit.toggleToday('a'))?.milestone, 7);
+      expect((await cubit.toggleToday('a'))?.milestone, isNull);
+      final again = await cubit.toggleToday('a');
+
+      expect(again?.isDone, isTrue);
+      expect(again?.milestone, isNull);
+    });
+
+    test('a check-in off a milestone reports none', () async {
+      await repository.addHabit(habit('a', done: lastDays(7)));
+      final cubit = buildCubit();
+      await cubit.load();
+
+      final result = await cubit.toggleToday('a');
+
+      expect(result?.currentStreak, 8);
+      expect(result?.milestone, isNull);
+    });
+  });
+
+  group('changes made elsewhere', () {
+    test('reloads to empty after every habit is deleted', () async {
+      await repository.addHabit(habit('a'));
+      await repository.addHabit(habit('b'));
+      final cubit = buildCubit();
+      await cubit.load();
+      expect(loaded(cubit).habits, hasLength(2));
+
+      // Reset all data in Settings.
+      await repository.deleteAllHabits();
+      await pumpEventQueue();
+
+      expect(loaded(cubit).habits, isEmpty);
+      expect(loaded(cubit).overview, HabitsOverview.empty);
+      await cubit.close();
+    });
+
+    test('reloads after a habit is added elsewhere', () async {
+      final cubit = buildCubit();
+      await cubit.load();
+
+      await repository.addHabit(habit('a'));
+      await pumpEventQueue();
+
+      expect(loaded(cubit).habits.map((h) => h.habit.id), ['a']);
+      await cubit.close();
+    });
+
+    test('stops listening once closed', () async {
+      final cubit = buildCubit();
+      await cubit.load();
+      await cubit.close();
+
+      await repository.addHabit(habit('a'));
+      await pumpEventQueue();
+
+      expect(loaded(cubit).habits, isEmpty);
+    });
+  });
+
   group('delete', () {
     test('removes the habit from the list and storage', () async {
       await repository.addHabit(habit('a'));
@@ -214,8 +298,8 @@ void main() {
       final cubit = buildCubit();
       await cubit.load();
       final before = cubit.state;
-      // A change it would pick up if it reloaded.
-      await repository.addHabit(habit('b'));
+      // A change it would pick up if it reloaded (stored without notifying).
+      repository.habits['b'] = habit('b');
 
       await cubit.refreshIfDayChanged();
 

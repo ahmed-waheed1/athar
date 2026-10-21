@@ -13,20 +13,25 @@ import '../../features/habits/domain/repositories/habit_repository.dart';
 import '../../features/habits/domain/services/habits_overview_calculator.dart';
 import '../../features/habits/domain/services/streak_calculator.dart';
 import '../../features/habits/domain/usecases/add_habit.dart';
+import '../../features/habits/domain/usecases/delete_all_habits.dart';
 import '../../features/habits/domain/usecases/delete_habit.dart';
 import '../../features/habits/domain/usecases/get_habit.dart';
 import '../../features/habits/domain/usecases/get_habits.dart';
 import '../../features/habits/domain/usecases/toggle_habit_today.dart';
 import '../../features/habits/domain/usecases/update_habit.dart';
+import '../../features/habits/domain/usecases/watch_habit_changes.dart';
 import '../../features/habits/presentation/cubit/habit_details_cubit.dart';
 import '../../features/habits/presentation/cubit/habit_form_cubit.dart';
 import '../../features/habits/presentation/cubit/habits_cubit.dart';
+import '../../features/settings/data/datasources/app_info_data_source.dart';
 import '../../features/settings/data/datasources/settings_local_data_source.dart';
 import '../../features/settings/data/repositories/settings_repository_impl.dart';
+import '../../features/settings/domain/entities/app_version.dart';
 import '../../features/settings/domain/repositories/settings_repository.dart';
 import '../../features/settings/domain/usecases/get_settings.dart';
 import '../../features/settings/domain/usecases/set_language.dart';
 import '../../features/settings/domain/usecases/set_theme_mode.dart';
+import '../../features/settings/presentation/cubit/reset_data_cubit.dart';
 import '../../features/settings/presentation/cubit/settings_cubit.dart';
 import '../router/app_router.dart';
 
@@ -37,8 +42,10 @@ Future<void> configureDependencies() async {
   final prefs = await SharedPreferences.getInstance();
   Hive.registerAdapters();
   final habitBox = await Hive.openBox<HabitModel>(HabitLocalDataSource.boxName);
+  final version = await const AppInfoDataSource().readVersion();
   sl
     ..registerSingleton<SharedPreferences>(prefs)
+    ..registerSingleton<AppVersion>(version)
     ..registerSingleton<Box<HabitModel>>(habitBox)
     // Settings
     ..registerLazySingleton(() => SettingsLocalDataSource(sl()))
@@ -66,7 +73,9 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton(() => AddHabit(sl()))
     ..registerLazySingleton(() => UpdateHabit(sl()))
     ..registerLazySingleton(() => DeleteHabit(sl()))
-    ..registerLazySingleton(() => ToggleHabitToday(sl()))
+    ..registerLazySingleton(() => DeleteAllHabits(sl()))
+    ..registerLazySingleton(() => WatchHabitChanges(sl()))
+    ..registerLazySingleton(() => ToggleHabitToday(sl(), sl()))
     ..registerLazySingleton(StreakCalculator.new)
     ..registerLazySingleton(() => HabitsOverviewCalculator(sl()))
     ..registerFactory(
@@ -74,6 +83,7 @@ Future<void> configureDependencies() async {
         getHabits: sl(),
         toggleHabitToday: sl(),
         deleteHabit: sl(),
+        watchHabitChanges: sl(),
         streakCalculator: sl(),
         overviewCalculator: sl(),
       ),
@@ -89,6 +99,9 @@ Future<void> configureDependencies() async {
         deleteHabit: sl(),
         streakCalculator: sl(),
       ),
+    )
+    ..registerFactory(
+      () => ResetDataCubit(getHabits: sl(), deleteAllHabits: sl()),
     )
     // Navigation
     ..registerLazySingleton<GoRouter>(createAppRouter);

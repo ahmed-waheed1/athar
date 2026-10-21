@@ -8,6 +8,8 @@ import '../../features/habits/presentation/cubit/habits_cubit.dart';
 import '../../features/habits/presentation/screens/habit_details_screen.dart';
 import '../../features/habits/presentation/screens/habit_form_screen.dart';
 import '../../features/habits/presentation/screens/home_screen.dart';
+import '../../features/settings/presentation/cubit/reset_data_cubit.dart';
+import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../debug/design_test_screen.dart';
 import '../di/injection.dart';
 import '../widgets/app_shell.dart';
@@ -116,8 +118,10 @@ GoRouter createAppRouter() => GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.settings,
-              builder: (context, state) =>
-                  const PlaceholderScreen(titleKey: 'placeholder.settings'),
+              builder: (context, state) => BlocProvider(
+                create: (_) => sl<ResetDataCubit>(),
+                child: SettingsScreen(version: sl()),
+              ),
             ),
           ],
         ),

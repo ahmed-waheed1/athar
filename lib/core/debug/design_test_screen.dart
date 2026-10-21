@@ -1,10 +1,8 @@
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../features/settings/domain/entities/app_settings.dart';
-import '../../features/settings/presentation/cubit/settings_cubit.dart';
+import '../../features/settings/presentation/widgets/settings_controls.dart';
 import '../constants/athar_assets.dart';
 import '../theme/athar_colors.dart';
 import '../theme/athar_spacing.dart';
@@ -121,8 +119,6 @@ class _Controls extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = AtharColors.of(context);
     final text = AtharTextStyles.forLocale(context.locale);
-    final settings = context.watch<SettingsCubit>().state;
-    final cubit = context.read<SettingsCubit>();
     final labelStyle = text.fieldLabel.copyWith(color: colors.textSecondary);
 
     return Column(
@@ -130,49 +126,11 @@ class _Controls extends StatelessWidget {
       children: [
         Text('settings.language'.tr(), style: labelStyle),
         const SizedBox(height: AtharSpacing.xs),
-        SegmentedButton<AppLanguage>(
-          showSelectedIcon: false,
-          segments: [
-            // Each language is labelled in its own script, whatever the UI language.
-            ButtonSegment(
-              value: AppLanguage.en,
-              label: Text('settings.languageEnglish'.tr()),
-            ),
-            ButtonSegment(
-              value: AppLanguage.ar,
-              label: Text('settings.languageArabic'.tr()),
-            ),
-          ],
-          selected: {settings.language},
-          onSelectionChanged: (selection) =>
-              cubit.changeLanguage(selection.single),
-        ),
+        const LanguageControl(),
         const SizedBox(height: AtharSpacing.md),
         Text('settings.appearance'.tr(), style: labelStyle),
         const SizedBox(height: AtharSpacing.xs),
-        SegmentedButton<AppThemeMode>(
-          showSelectedIcon: false,
-          segments: [
-            ButtonSegment(
-              value: AppThemeMode.light,
-              icon: AtharIcon.ui('theme_light', size: 18),
-              label: Text('settings.themeLight'.tr()),
-            ),
-            ButtonSegment(
-              value: AppThemeMode.dark,
-              icon: AtharIcon.ui('theme_dark', size: 18),
-              label: Text('settings.themeDark'.tr()),
-            ),
-            ButtonSegment(
-              value: AppThemeMode.system,
-              icon: AtharIcon.ui('system', size: 18),
-              label: Text('settings.themeSystem'.tr()),
-            ),
-          ],
-          selected: {settings.themeMode},
-          onSelectionChanged: (selection) =>
-              cubit.changeThemeMode(selection.single),
-        ),
+        const ThemeModeControl(),
       ],
     );
   }

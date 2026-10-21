@@ -9,7 +9,29 @@
     "appearance": "Appearance",
     "themeLight": "Light",
     "themeDark": "Dark",
-    "themeSystem": "System"
+    "themeSystem": "System",
+    "title": "Settings",
+    "yourData": "Your data",
+    "localOnly": "Saved only on this device. No account, no cloud.",
+    "version": "Athar · Version {version} ({build})",
+    "reset": {
+      "row": "Reset all data",
+      "rowSubtitle": "Deletes every habit and its history",
+      "title": "Reset all data?",
+      "body": "This removes {habits} and {traces} from this device. It can’t be undone.",
+      "bodyEmpty": "There are no habits on this device yet. Nothing will be removed.",
+      "habits": {
+        "one": "{} habit",
+        "other": "{} habits"
+      },
+      "traces": {
+        "one": "{} trace",
+        "other": "{} traces"
+      },
+      "cancel": "Cancel",
+      "confirm": "Reset",
+      "failed": "Couldn’t reset your data. Try again."
+    }
   },
   "designTest": {
     "title": "Design test",
@@ -109,6 +131,19 @@
       "other": "Trace added · {}-day streak"
     },
     "undo": "Undo"
+  },
+  "milestone": {
+    "title": {
+      "one": "{}-day streak!",
+      "other": "{}-day streak!"
+    },
+    "body": {
+      "7": "A full week of traces for “{name}”. Your path is taking shape.",
+      "30": "A month of showing up for “{name}”. That’s a real habit now.",
+      "100": "{count} mornings of “{name}”. This trace is here to stay."
+    },
+    "next": "Next milestone · {days}",
+    "keepGoing": "Keep going"
   },
   "deleteDialog": {
     "title": "Delete “{name}”?",
@@ -251,12 +286,12 @@
   },
   "placeholder": {
     "history": "History",
-    "settings": "Settings",
     "body": "This screen is coming in a later step."
   },
   "debug": {
     "menuTitle": "Debug tools",
     "insertSamples": "Insert sample habits",
+    "insertMilestoneSamples": "Insert habits one day from a milestone",
     "clearHabits": "Delete all habits",
     "openDesignTest": "Open design test screen",
     "samplePray": "Pray on time",

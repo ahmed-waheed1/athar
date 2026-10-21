@@ -97,3 +97,37 @@ List<Habit> buildSampleHabits({
     ),
   ];
 }
+
+/// DEBUG ONLY: three habits one check-in away from each streak milestone
+/// (6, 29 and 99 days, open today), as in the milestone designs, so the
+/// celebration can be tried on a device. Inserting again resets them and
+/// their celebrated milestones.
+List<Habit> buildMilestoneSampleHabits({
+  required DateTime now,
+  required String Function(String key) name,
+}) {
+  final yesterday = HabitDates.addDays(HabitDates.dateOnly(now), -1);
+
+  Habit sample(
+    String id,
+    String nameKey,
+    String iconKey,
+    String colorKey,
+    int streak,
+  ) => Habit(
+    id: id,
+    name: name(nameKey),
+    iconKey: iconKey,
+    colorKey: colorKey,
+    createdAt: HabitDates.addDays(yesterday, -streak),
+    completedDates: [
+      for (var i = 0; i < streak; i++) HabitDates.addDays(yesterday, -i),
+    ],
+  );
+
+  return [
+    sample('milestone-water', 'debug.sampleWater', 'drop', 'sky', 6),
+    sample('milestone-pray', 'debug.samplePray', 'moon', 'teal', 29),
+    sample('milestone-walk', 'debug.sampleWalk', 'walk', 'leaf', 99),
+  ];
+}

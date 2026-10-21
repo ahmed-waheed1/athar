@@ -4,6 +4,9 @@ import '../../domain/utils/habit_dates.dart';
 
 /// Hive representation of a [Habit]. Completed days are `yyyy-MM-dd` keys and
 /// the reminder is split into hour and minute (both null when there is none).
+///
+/// [celebratedMilestones] was added after the first release as field 8.
+/// Habits saved before it read it as empty, so their other data is kept.
 class HabitModel {
   const HabitModel({
     required this.id,
@@ -14,6 +17,7 @@ class HabitModel {
     this.reminderHour,
     this.reminderMinute,
     this.completedDates = const [],
+    this.celebratedMilestones = const [],
   });
 
   factory HabitModel.fromEntity(Habit habit) => HabitModel(
@@ -27,6 +31,7 @@ class HabitModel {
     completedDates: (habit.completedDates.toList()..sort())
         .map(HabitDates.toKey)
         .toList(),
+    celebratedMilestones: habit.celebratedMilestones.toList()..sort(),
   );
 
   final String id;
@@ -37,6 +42,7 @@ class HabitModel {
   final int? reminderHour;
   final int? reminderMinute;
   final List<String> completedDates;
+  final List<int> celebratedMilestones;
 
   Habit toEntity() => Habit(
     id: id,
@@ -48,5 +54,6 @@ class HabitModel {
         ? ReminderTime(hour: reminderHour!, minute: reminderMinute!)
         : null,
     completedDates: completedDates.map(HabitDates.fromKey),
+    celebratedMilestones: celebratedMilestones,
   );
 }

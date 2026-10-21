@@ -121,4 +121,44 @@ void main() {
       ),
     );
   });
+
+  test('deleteAllHabits removes every habit and survives reopening', () async {
+    await repository.addHabit(habit('h1').markMilestoneCelebrated(7));
+    await repository.addHabit(habit('h2'));
+
+    await repository.deleteAllHabits();
+    expect(await repository.getHabits(), isEmpty);
+
+    await Hive.close();
+    repository = await openRepository();
+    expect(await repository.getHabits(), isEmpty);
+  });
+
+  test('celebrated milestones persist across reopening', () async {
+    await repository.addHabit(
+      habit('h1').markMilestoneCelebrated(7).markMilestoneCelebrated(30),
+    );
+
+    await Hive.close();
+    repository = await openRepository();
+
+    expect((await repository.getHabit('h1'))!.celebratedMilestones, {7, 30});
+  });
+
+  test('watchChanges fires on add, update, delete and clear', () async {
+    var changes = 0;
+    final subscription = repository.watchChanges().listen((_) => changes++);
+
+    await repository.addHabit(habit('h1'));
+    await repository.updateHabit(
+      habit('h1').toggleCompletion(DateTime(2026, 10, 2)),
+    );
+    await repository.deleteHabit('h1');
+    await repository.addHabit(habit('h2'));
+    await repository.deleteAllHabits();
+    await pumpEventQueue();
+
+    expect(changes, greaterThanOrEqualTo(5));
+    await subscription.cancel();
+  });
 }

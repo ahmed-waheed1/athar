@@ -33,4 +33,10 @@ class HabitRepositoryImpl implements HabitRepository {
     if (!_dataSource.contains(id)) throw HabitNotFoundException(id);
     await _dataSource.remove(id);
   }
+
+  @override
+  Future<void> deleteAllHabits() => _dataSource.clear();
+
+  @override
+  Stream<void> watchChanges() => _dataSource.watch();
 }

@@ -65,4 +65,30 @@ void main() {
     );
     expect(model.completedDates, ['2025-12-31', '2026-01-05', '2026-10-20']);
   });
+
+  test('round-trips celebrated milestones, sorted', () {
+    final original = Habit(
+      id: 'h1',
+      name: 'Read',
+      iconKey: 'book',
+      colorKey: 'teal',
+      createdAt: DateTime(2026, 10, 1),
+      celebratedMilestones: [30, 7],
+    );
+    final model = HabitModel.fromEntity(original);
+
+    expect(model.celebratedMilestones, [7, 30]);
+    expect(model.toEntity(), original);
+  });
+
+  test('a model without celebrated milestones has none', () {
+    final model = HabitModel(
+      id: 'h1',
+      name: 'Read',
+      iconKey: 'book',
+      colorKey: 'teal',
+      createdAt: DateTime(2026, 10, 1),
+    );
+    expect(model.toEntity().celebratedMilestones, isEmpty);
+  });
 }

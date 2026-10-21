@@ -10,6 +10,7 @@ import 'package:athar/features/habits/domain/usecases/delete_habit.dart';
 import 'package:athar/features/habits/domain/usecases/get_habit.dart';
 import 'package:athar/features/habits/domain/usecases/get_habits.dart';
 import 'package:athar/features/habits/domain/usecases/toggle_habit_today.dart';
+import 'package:athar/features/habits/domain/usecases/watch_habit_changes.dart';
 import 'package:athar/features/habits/domain/usecases/update_habit.dart';
 import 'package:athar/features/habits/domain/utils/habit_dates.dart';
 import 'package:athar/features/habits/presentation/cubit/habit_details_cubit.dart';
@@ -44,8 +45,9 @@ void main() {
       ..registerFactory(
         () => HabitsCubit(
           getHabits: GetHabits(repository),
-          toggleHabitToday: ToggleHabitToday(repository),
+          toggleHabitToday: ToggleHabitToday(repository, streaks),
           deleteHabit: DeleteHabit(repository),
+          watchHabitChanges: WatchHabitChanges(repository),
           streakCalculator: streaks,
           overviewCalculator: HabitsOverviewCalculator(streaks),
         ),

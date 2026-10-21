@@ -13,9 +13,11 @@ class Habit extends Equatable {
     required this.createdAt,
     this.reminderTime,
     Iterable<DateTime> completedDates = const [],
+    Iterable<int> celebratedMilestones = const [],
   }) : completedDates = Set.unmodifiable(
          completedDates.map(HabitDates.dateOnly),
-       );
+       ),
+       celebratedMilestones = Set.unmodifiable(celebratedMilestones);
 
   final String id;
   final String name;
@@ -24,6 +26,11 @@ class Habit extends Equatable {
   final DateTime createdAt;
   final ReminderTime? reminderTime;
   final Set<DateTime> completedDates;
+
+  /// Streak milestones (7, 30, 100) whose celebration was already shown.
+  /// Each one is shown once per habit, even if the streak is lost and
+  /// rebuilt.
+  final Set<int> celebratedMilestones;
 
   bool isCompletedOn(DateTime day) =>
       completedDates.contains(HabitDates.dateOnly(day));
@@ -38,6 +45,9 @@ class Habit extends Equatable {
     );
   }
 
+  Habit markMilestoneCelebrated(int milestone) =>
+      copyWith(celebratedMilestones: {...celebratedMilestones, milestone});
+
   Habit copyWith({
     String? name,
     String? iconKey,
@@ -45,6 +55,7 @@ class Habit extends Equatable {
     ReminderTime? reminderTime,
     bool clearReminderTime = false,
     Iterable<DateTime>? completedDates,
+    Iterable<int>? celebratedMilestones,
   }) => Habit(
     id: id,
     name: name ?? this.name,
@@ -53,6 +64,7 @@ class Habit extends Equatable {
     createdAt: createdAt,
     reminderTime: clearReminderTime ? null : reminderTime ?? this.reminderTime,
     completedDates: completedDates ?? this.completedDates,
+    celebratedMilestones: celebratedMilestones ?? this.celebratedMilestones,
   );
 
   @override
@@ -64,5 +76,6 @@ class Habit extends Equatable {
     createdAt,
     reminderTime,
     completedDates,
+    celebratedMilestones,
   ];
 }

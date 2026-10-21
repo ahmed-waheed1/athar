@@ -27,13 +27,16 @@ class HabitModelAdapter extends TypeAdapter<HabitModel> {
       completedDates: fields[7] == null
           ? const []
           : (fields[7] as List).cast<String>(),
+      celebratedMilestones: fields[8] == null
+          ? const []
+          : (fields[8] as List).cast<int>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, HabitModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -49,7 +52,9 @@ class HabitModelAdapter extends TypeAdapter<HabitModel> {
       ..writeByte(6)
       ..write(obj.reminderMinute)
       ..writeByte(7)
-      ..write(obj.completedDates);
+      ..write(obj.completedDates)
+      ..writeByte(8)
+      ..write(obj.celebratedMilestones);
   }
 
   @override

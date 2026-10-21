@@ -19,4 +19,9 @@ class HabitLocalDataSource {
   Future<void> write(HabitModel habit) => _box.put(habit.id, habit);
 
   Future<void> remove(String id) => _box.delete(id);
+
+  Future<void> clear() => _box.clear();
+
+  /// Fires after every write, delete or clear.
+  Stream<void> watch() => _box.watch();
 }

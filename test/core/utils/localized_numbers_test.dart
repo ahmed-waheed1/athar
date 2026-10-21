@@ -13,4 +13,15 @@ void main() {
     expect(LocalizedNumbers.decimal(1234567, AppLocales.en), '1,234,567');
     expect(LocalizedNumbers.percent(0.82, AppLocales.en), '82%');
   });
+
+  test('digits rewrites only the digits of a version string', () {
+    expect(
+      LocalizedNumbers.digits('1.10.2 (34)', AppLocales.ar),
+      '١.١٠.٢ (٣٤)',
+    );
+    expect(
+      LocalizedNumbers.digits('1.10.2 (34)', AppLocales.en),
+      '1.10.2 (34)',
+    );
+  });
 }

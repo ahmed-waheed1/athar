@@ -8,6 +8,7 @@ import 'core/localization/app_locales.dart';
 import 'core/theme/athar_theme.dart';
 import 'features/settings/domain/entities/app_settings.dart';
 import 'features/settings/presentation/cubit/settings_cubit.dart';
+import 'features/settings/presentation/widgets/settings_metrics.dart';
 
 class AtharApp extends StatelessWidget {
   const AtharApp({super.key});
@@ -29,6 +30,14 @@ class AtharApp extends StatelessWidget {
             theme: AtharTheme.light(context.locale),
             darkTheme: AtharTheme.dark(context.locale),
             themeMode: settings.themeMode.themeMode,
+            themeAnimationDuration:
+                WidgetsBinding
+                    .instance
+                    .platformDispatcher
+                    .accessibilityFeatures
+                    .disableAnimations
+                ? Duration.zero
+                : SettingsMetrics.themeChange,
             locale: context.locale,
             supportedLocales: context.supportedLocales,
             localizationsDelegates: context.localizationDelegates,

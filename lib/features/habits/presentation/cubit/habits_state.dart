@@ -76,21 +76,3 @@ class TodayProgress extends Equatable {
   @override
   List<Object?> get props => [done, total];
 }
-
-/// What a check-in toggle did, for the toast.
-class CheckInResult extends Equatable {
-  const CheckInResult({
-    required this.habit,
-    required this.isDone,
-    required this.currentStreak,
-  });
-
-  final Habit habit;
-
-  /// True when today was marked done, false when it was undone.
-  final bool isDone;
-  final int currentStreak;
-
-  @override
-  List<Object?> get props => [habit, isDone, currentStreak];
-}

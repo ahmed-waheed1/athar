@@ -40,6 +40,20 @@ Future<void> showDebugToolsSheet(
             },
           ),
           ListTile(
+            title: Text('debug.insertMilestoneSamples'.tr()),
+            onTap: () async {
+              final repository = sl<HabitRepository>();
+              for (final habit in buildMilestoneSampleHabits(
+                now: DateTime.now(),
+                name: (key) => key.tr(),
+              )) {
+                await repository.addHabit(habit);
+              }
+              if (sheetContext.mounted) Navigator.of(sheetContext).pop();
+              onChanged();
+            },
+          ),
+          ListTile(
             title: Text('debug.clearHabits'.tr()),
             onTap: () async {
               final repository = sl<HabitRepository>();

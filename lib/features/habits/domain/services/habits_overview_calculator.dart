@@ -3,21 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../entities/habit.dart';
 import '../utils/habit_dates.dart';
 import 'streak_calculator.dart';
-
-/// Streak lengths that get a celebration.
-abstract final class StreakMilestones {
-  static const values = [7, 14, 30, 60, 100, 365];
-
-  static bool isMilestone(int streak) => values.contains(streak);
-
-  /// The first milestone above [streak], or null past the last one.
-  static int? nextAfter(int streak) {
-    for (final value in values) {
-      if (value > streak) return value;
-    }
-    return null;
-  }
-}
+import 'streak_milestones.dart';
 
 class NextMilestone extends Equatable {
   const NextMilestone({
