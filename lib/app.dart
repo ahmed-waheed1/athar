@@ -22,10 +22,12 @@ class AtharApp extends StatelessWidget {
         listenWhen: (prev, next) => prev.language != next.language,
         listener: (context, settings) =>
             context.setLocale(settings.language.locale),
+        // buildWhen covers the theme mode only; language changes still rebuild
+        // this, because context.locale below subscribes to easy_localization.
         child: BlocBuilder<SettingsCubit, AppSettings>(
           buildWhen: (prev, next) => prev.themeMode != next.themeMode,
           builder: (context, settings) => MaterialApp.router(
-            onGenerateTitle: (context) => 'app.name'.tr(),
+            onGenerateTitle: (context) => context.tr('app.name'),
             debugShowCheckedModeBanner: false,
             theme: AtharTheme.light(context.locale),
             darkTheme: AtharTheme.dark(context.locale),

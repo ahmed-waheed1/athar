@@ -108,7 +108,7 @@ class _IconPickerRowState extends State<IconPickerRow> {
             children: [
               Expanded(
                 child: Text(
-                  'habitForm.icon.label'.tr(),
+                  context.tr('habitForm.icon.label'),
                   style: text.fieldLabel.copyWith(color: colors.textSecondary),
                 ),
               ),
@@ -122,7 +122,7 @@ class _IconPickerRowState extends State<IconPickerRow> {
                     horizontal: HabitFormMetrics.moreButtonPaddingH,
                   ),
                 ),
-                child: Text('habitForm.icon.more'.tr()),
+                child: Text(context.tr('habitForm.icon.more')),
               ),
             ],
           ),
@@ -183,7 +183,7 @@ class HabitIconCell extends StatelessWidget {
     return Semantics(
       button: true,
       selected: isSelected,
-      label: 'habitForm.icon.names.$iconKey'.tr(),
+      label: context.tr('habitForm.icon.names.$iconKey'),
       excludeSemantics: true,
       child: Material(
         color: isSelected
@@ -223,7 +223,7 @@ Future<void> showIconPickerSheet(
   required ValueChanged<String> onSelected,
 }) => showAtharBottomSheet<void>(
   context,
-  title: 'habitForm.icon.sheetTitle'.tr(),
+  title: context.tr('habitForm.icon.sheetTitle'),
   builder: (context) =>
       _IconSheet(initial: selected, accent: accent, onSelected: onSelected),
 );
@@ -281,7 +281,7 @@ class _IconSheetState extends State<_IconSheet> {
         const SizedBox(height: HabitFormMetrics.sheetActionsTop),
         FilledButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('habitForm.icon.done'.tr()),
+          child: Text(context.tr('habitForm.icon.done')),
         ),
       ],
     );

@@ -319,7 +319,7 @@ class _ErrorView extends StatelessWidget {
             AtharIcon.ui('warn', size: AtharSpacing.xxl, color: colors.error),
             const SizedBox(height: AtharSpacing.md),
             Text(
-              'details.error'.tr(),
+              context.tr('details.error'),
               textAlign: TextAlign.center,
               style: text.progressTitle.copyWith(color: colors.textPrimary),
             ),
@@ -332,7 +332,7 @@ class _ErrorView extends StatelessWidget {
                   horizontal: AtharSpacing.xxl,
                 ),
               ),
-              child: Text('details.retry'.tr()),
+              child: Text(context.tr('details.retry')),
             ),
           ],
         ),

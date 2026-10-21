@@ -31,7 +31,7 @@ class PlaceholderScreen extends StatelessWidget {
               )
             : null,
         title: Text(
-          titleKey.tr(),
+          context.tr(titleKey),
           style: text.appBarTitle.copyWith(color: colors.textPrimary),
         ),
       ),
@@ -39,7 +39,7 @@ class PlaceholderScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsetsDirectional.all(AtharSpacing.xl),
           child: Text(
-            'placeholder.body'.tr(),
+            context.tr('placeholder.body'),
             textAlign: TextAlign.center,
             style: text.body.copyWith(color: colors.textSecondary),
           ),

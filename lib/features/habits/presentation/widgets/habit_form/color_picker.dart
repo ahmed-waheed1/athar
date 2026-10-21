@@ -33,12 +33,12 @@ class ColorPickerGrid extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'habitForm.color.label'.tr(),
+                context.tr('habitForm.color.label'),
                 style: text.fieldLabel.copyWith(color: colors.textSecondary),
               ),
             ),
             Text(
-              'habitForm.color.names.$selected'.tr(),
+              context.tr('habitForm.color.names.$selected'),
               style: text.dateLabel.copyWith(color: colors.textTertiary),
             ),
           ],
@@ -53,7 +53,7 @@ class ColorPickerGrid extends StatelessWidget {
                   child: Center(
                     child: _Swatch(
                       accent: colors.accent(key),
-                      label: 'habitForm.color.names.$key'.tr(),
+                      label: context.tr('habitForm.color.names.$key'),
                       isSelected: key == selected,
                       onTap: () => onSelected(key),
                     ),

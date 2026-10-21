@@ -330,17 +330,26 @@ If `MediaQuery.disableAnimationsOf(context)` is true, use `Duration.zero` and sk
 ## 09 · Notifications
 `09_notifications_{prompt,denied}_*`
 - **prompt:**
-  - **When:** the user turns on a reminder for the first time. Show this pre-permission sheet before the OS dialog.
+  - **When:** the user turns on a reminder (the switch, or setting a time) while notifications were never requested. Show this pre-permission sheet before the OS dialog. The same applies to the Settings Reminders switch.
   - **Sheet:** a bottom sheet over Add Habit, radius 28, padding 12 / 24 / 32, with a drag handle.
   - **Content:**
     - `notification-bell-*.svg` at 120.
     - Title `emptyTitle` 24: "Want a gentle nudge?" / "هل تريد تذكيرًا لطيفًا؟".
     - Body `bodySmall` / 15 in `textSecondary`, centred.
-    - Primary button "Allow reminders" (opens the OS prompt via e.g. `permission_handler` / `flutter_local_notifications`), and a text button "Not now" (48 high, `primary`) that leaves the reminder off.
+    - Primary button "Allow reminders", which opens the OS prompt with flutter_local_notifications' own APIs: `AndroidFlutterLocalNotificationsPlugin.requestNotificationsPermission()` on Android 13+ and `IOSFlutterLocalNotificationsPlugin.requestPermissions(alert: true, sound: true)` on iOS. No `permission_handler`. Then the reminder turns on even if the OS prompt is refused; the denied banner explains why it can't arrive.
+    - A text button "Not now" (48 high, `primary`) that leaves the reminder off. The sheet shows again next time, since the OS was never asked.
+  - **Permission state:** granted when the OS reports notifications enabled (`areNotificationsEnabled()` / `checkPermissions().isEnabled`). Otherwise it is denied if the app has requested before (a flag kept in shared_preferences), or not yet asked. It is re-read whenever the app returns to the foreground.
 - **denied:**
   - **Settings:** the Reminders row shows ui_bell_off, the subtitle "Blocked by the system" and a disabled switch at 45% opacity.
-  - **Banner:** below the row, radius 16, `errorContainer` fill, padding 12. Warn icon 20 in `error`, text `bodySmall` "Notifications are blocked, so reminders can’t reach you. Turn them on in your phone’s settings." and a button "Open settings" (40 high, radius 12, `surface`), which deep-links with `openAppSettings()`.
-  - **Add Habit:** the same banner appears under the reminder row when it's toggled while denied.
+  - **Banner:** below the row (inside the Preferences card, inset 6), radius 16, `errorContainer` fill, padding 12. Warn icon 20 in `error`, text `bodySmall` "Notifications are blocked, so reminders can’t reach you. Turn them on in your phone’s settings." and a button "Open settings" (40 high, radius 12, `surface`). The button opens the app's notification settings with the `app_settings` package: `AppSettings.openAppSettings(type: AppSettingsType.notification)`. Import it with a prefix (`import 'package:app_settings/app_settings.dart' as system_settings;`), because its `AppSettings` clashes with the app's `AppSettings` entity.
+  - **Add Habit:** the same banner appears 8 below the reminder row while the reminder is on and notifications are denied.
+- **Settings Reminders row (granted / not asked):**
+  - Granted: ui_bell, subtitle "On · per-habit times", switch on. Only the OS can revoke the permission, so turning the switch off opens the same system notification settings.
+  - Not asked yet: ui_bell, subtitle "Off", switch off. Turning it on runs the prompt above.
+- **Notifications:**
+  - Title "Time for “{name}”" / "حان وقت «{name}»", body "Leave today’s trace and keep your path going." / "اترك أثر اليوم وواصل طريقك.", in the app language.
+  - Android channel `habit_reminders`, named "Habit reminders" / "تذكيرات العادات" and renamed when the language changes.
+  - Small icon `ic_stat_athar`: the Athar mark, white on transparent. Tapping a notification opens Home.
 - **RTL:** the banner icon sits on the right, and the button aligns to the start edge.
 
 ---

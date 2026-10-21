@@ -1,7 +1,9 @@
 import 'package:athar/app.dart';
 import 'package:athar/core/di/injection.dart';
 import 'package:athar/core/localization/app_locales.dart';
+import 'package:athar/core/notifications/notification_permission_cubit.dart';
 import 'package:athar/core/router/app_router.dart';
+import 'package:athar/core/services/notification_service.dart';
 import 'package:athar/core/widgets/athar_segmented_control.dart';
 import 'package:athar/features/habits/domain/entities/habit.dart';
 import 'package:athar/features/habits/domain/services/habits_overview_calculator.dart';
@@ -34,6 +36,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../helpers/athar_test_app.dart';
+import '../../../../helpers/fake_notification_service.dart';
 import '../../../../helpers/in_memory_habit_repository.dart';
 
 /// Settings inside the real AtharApp (language and theme wiring), next to a
@@ -63,6 +66,7 @@ void main() {
     AppThemeMode themeMode = AppThemeMode.light,
     Size size = const Size(375, 812),
     List<Habit> habits = const [],
+    FakeNotificationService? notifications,
   }) async {
     tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1;
@@ -94,6 +98,7 @@ void main() {
     await habitsCubit.load();
     addTearDown(habitsCubit.close);
 
+    registerFakeNotifications(notifications);
     sl
       ..registerSingleton(
         SettingsCubit(
@@ -124,11 +129,18 @@ void main() {
             GoRoute(
               path: AppRoutes.settings,
               builder: (context, state) => Scaffold(
-                body: BlocProvider(
-                  create: (_) => ResetDataCubit(
-                    getHabits: GetHabits(repository),
-                    deleteAllHabits: DeleteAllHabits(repository),
-                  ),
+                body: MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (_) => ResetDataCubit(
+                        getHabits: GetHabits(repository),
+                        deleteAllHabits: DeleteAllHabits(repository),
+                      ),
+                    ),
+                    BlocProvider.value(
+                      value: sl<NotificationPermissionCubit>()..refresh(),
+                    ),
+                  ],
                   child: const SettingsScreen(version: version),
                 ),
               ),
@@ -194,21 +206,143 @@ void main() {
               find.text(isAr ? 'مسح كل البيانات' : 'Reset all data'),
               findsOneWidget,
             );
+            final versionText = find.text(
+              isAr ? 'أثر · الإصدار ١.٢.٣ (٤٥)' : 'Athar · Version 1.2.3 (45)',
+            );
+            // Below the fold on small phones.
+            await tester.scrollUntilVisible(
+              versionText,
+              200,
+              scrollable: find.byType(Scrollable).first,
+            );
+            expect(versionText, findsOneWidget);
+            // Preferences holds Reminders only (no "Week starts on").
             expect(
-              find.text(
-                isAr
-                    ? 'أثر · الإصدار ١.٢.٣ (٤٥)'
-                    : 'Athar · Version 1.2.3 (45)',
-              ),
+              find.text(isAr ? 'التفضيلات' : 'Preferences'),
               findsOneWidget,
             );
-            // Reminders arrive with the reminders step.
-            expect(find.byType(Switch), findsNothing);
+            expect(find.text(isAr ? 'التذكيرات' : 'Reminders'), findsOneWidget);
+            expect(find.byType(Switch), findsOneWidget);
+            expect(
+              find.text(isAr ? 'بداية الأسبوع' : 'Week starts on'),
+              findsNothing,
+            );
           },
         );
       }
     }
   }
+
+  group('reminders row', () {
+    const strings = {
+      AppLanguage.en: (
+        on: 'On · per-habit times',
+        off: 'Off',
+        blocked: 'Blocked by the system',
+        banner:
+            'Notifications are blocked, so reminders can’t reach you. '
+            'Turn them on in your phone’s settings.',
+        openSettings: 'Open settings',
+        promptTitle: 'Want a gentle nudge?',
+        allow: 'Allow reminders',
+      ),
+      AppLanguage.ar: (
+        on: 'مفعّلة · وقت لكل عادة',
+        off: 'متوقفة',
+        blocked: 'محظورة من النظام',
+        banner: 'الإشعارات متوقفة، لذلك لن تصلك التذكيرات. فعّلها من إعدادات هاتفك.',
+        openSettings: 'فتح الإعدادات',
+        promptTitle: 'هل تريد تذكيرًا لطيفًا؟',
+        allow: 'السماح بالتذكيرات',
+      ),
+    };
+
+    Switch remindersSwitch(WidgetTester tester) =>
+        tester.widget<Switch>(find.byType(Switch));
+
+    for (final MapEntry(key: language, value: text) in strings.entries) {
+      testWidgets('blocked: disabled switch, banner, Open settings '
+          '(${language.name})', (tester) async {
+        final notifications = FakeNotificationService(
+          permissionState: NotificationPermission.denied,
+        );
+        await pumpSettings(
+          tester,
+          language: language,
+          notifications: notifications,
+        );
+
+        expect(find.text(text.blocked), findsOneWidget);
+        expect(find.text(text.banner), findsOneWidget);
+        expect(remindersSwitch(tester).value, isFalse);
+        expect(remindersSwitch(tester).onChanged, isNull);
+
+        await tester.tap(find.text(text.openSettings));
+        await tester.pumpAndSettle();
+        expect(notifications.openSettingsCalls, 1);
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets('not asked yet: the switch explains, then asks '
+          '(${language.name})', (tester) async {
+        final notifications = FakeNotificationService(
+          permissionState: NotificationPermission.notDetermined,
+        );
+        await pumpSettings(
+          tester,
+          language: language,
+          notifications: notifications,
+        );
+        expect(find.text(text.off), findsOneWidget);
+        expect(find.text(text.banner), findsNothing);
+
+        await tester.tap(find.byType(Switch));
+        await tester.pumpAndSettle();
+        expect(find.text(text.promptTitle), findsOneWidget);
+        await tester.tap(find.text(text.allow));
+        await tester.pumpAndSettle();
+
+        expect(notifications.requestCalls, 1);
+        expect(find.text(text.on), findsOneWidget);
+        expect(remindersSwitch(tester).value, isTrue);
+      });
+
+      testWidgets('allowed: on, and turning it off opens the system '
+          'settings (${language.name})', (tester) async {
+        final notifications = FakeNotificationService();
+        await pumpSettings(
+          tester,
+          language: language,
+          notifications: notifications,
+        );
+        expect(find.text(text.on), findsOneWidget);
+        expect(remindersSwitch(tester).value, isTrue);
+
+        await tester.tap(find.byType(Switch));
+        await tester.pumpAndSettle();
+        expect(notifications.openSettingsCalls, 1);
+        expect(find.text(text.promptTitle), findsNothing);
+      });
+    }
+
+    testWidgets('re-reads the permission when the app comes back', (
+      tester,
+    ) async {
+      final notifications = FakeNotificationService(
+        permissionState: NotificationPermission.denied,
+      );
+      await pumpSettings(tester, notifications: notifications);
+      expect(find.text('Blocked by the system'), findsOneWidget);
+
+      // Turned on in the system settings, then back to the app.
+      notifications.permissionState = NotificationPermission.granted;
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+      expect(find.text('On · per-habit times'), findsOneWidget);
+      expect(find.textContaining('Notifications are blocked'), findsNothing);
+    });
+  });
 
   testWidgets('uses the designed segmented controls, not Material ones', (
     tester,

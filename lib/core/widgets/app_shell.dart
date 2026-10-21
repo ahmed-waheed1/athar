@@ -72,7 +72,7 @@ class AppShell extends StatelessWidget {
                           d.icon,
                           color: colors.onPrimaryContainer,
                         ),
-                        label: d.label.tr(),
+                        label: context.tr(d.label),
                       ),
                   ],
                 ),
@@ -112,7 +112,7 @@ class AppShell extends StatelessWidget {
                       d.icon,
                       color: colors.onPrimaryContainer,
                     ),
-                    label: Text(d.label.tr()),
+                    label: Text(context.tr(d.label)),
                   ),
               ],
             ),
@@ -144,7 +144,7 @@ class _RailMark extends StatelessWidget {
       ),
       child: SvgPicture.asset(
         isDark ? AtharAssets.brandMarkDark : AtharAssets.brandMarkWhite,
-        semanticsLabel: 'app.name'.tr(),
+        semanticsLabel: context.tr('app.name'),
       ),
     );
   }

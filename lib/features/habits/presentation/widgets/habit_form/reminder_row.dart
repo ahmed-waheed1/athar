@@ -71,7 +71,7 @@ class ReminderRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'habitForm.reminder.title'.tr(),
+                      context.tr('habitForm.reminder.title'),
                       style: text.cardTitle.copyWith(color: colors.textPrimary),
                     ),
                     if (enabled)
@@ -79,7 +79,9 @@ class ReminderRow extends StatelessWidget {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: 'habitForm.reminder.optionalPrefix'.tr(),
+                              text: context.tr(
+                                'habitForm.reminder.optionalPrefix',
+                              ),
                             ),
                             TextSpan(
                               text: formatted,
@@ -94,7 +96,7 @@ class ReminderRow extends StatelessWidget {
                       )
                     else
                       Text(
-                        'habitForm.reminder.subtitleOff'.tr(),
+                        context.tr('habitForm.reminder.subtitleOff'),
                         style: subtitleStyle,
                       ),
                   ],
@@ -102,7 +104,7 @@ class ReminderRow extends StatelessWidget {
               ),
               const SizedBox(width: HabitFormMetrics.reminderGap),
               Semantics(
-                label: 'habitForm.reminder.title'.tr(),
+                label: context.tr('habitForm.reminder.title'),
                 child: Switch(value: enabled, onChanged: onToggled),
               ),
             ],

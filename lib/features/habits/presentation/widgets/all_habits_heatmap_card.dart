@@ -31,7 +31,8 @@ class AllHabitsHeatmapCard extends StatelessWidget {
     final maxCell = layout == AtharLayout.wide
         ? HomeMetrics.heatmapCellWide
         : AtharSizes.heatmapCellLarge;
-    final title = 'home.heatmap.title'.tr(
+    final title = context.tr(
+      'home.heatmap.title',
       namedArgs: {
         'weeks': LocalizedNumbers.decimal(HomeMetrics.heatmapWeeks, locale),
       },
@@ -92,7 +93,7 @@ class _Legend extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('home.heatmap.less'.tr(), style: style),
+        Text(context.tr('home.heatmap.less'), style: style),
         for (final color in swatches) ...[
           const SizedBox(width: AtharSpacing.xxs),
           HeatmapLegendSwatch(
@@ -101,7 +102,7 @@ class _Legend extends StatelessWidget {
           ),
         ],
         const SizedBox(width: AtharSpacing.xxs),
-        Text('home.heatmap.more'.tr(), style: style),
+        Text(context.tr('home.heatmap.more'), style: style),
       ],
     );
   }

@@ -59,7 +59,10 @@ class HomeHeader extends StatelessWidget {
                 ),
                 Semantics(
                   header: true,
-                  child: Text(greetingKey(now).tr(), style: greetingStyle),
+                  child: Text(
+                    context.tr(greetingKey(now)),
+                    style: greetingStyle,
+                  ),
                 ),
               ],
             ),
@@ -86,7 +89,7 @@ class _AddIconButton extends StatelessWidget {
     final colors = AtharColors.of(context);
     return Semantics(
       button: true,
-      label: 'home.addHabit'.tr(),
+      label: context.tr('home.addHabit'),
       excludeSemantics: true,
       child: Material(
         color: colors.primary,
@@ -134,7 +137,7 @@ class _LabelledAddButton extends StatelessWidget {
         size: HomeMetrics.buttonIcon,
         color: colors.onPrimary,
       ),
-      label: Text('home.addHabit'.tr()),
+      label: Text(context.tr('home.addHabit')),
     );
   }
 }

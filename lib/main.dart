@@ -1,12 +1,19 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'app.dart';
 import 'core/di/injection.dart';
 import 'core/localization/app_locales.dart';
+import 'core/notifications/notification_permission_cubit.dart';
+import 'core/router/app_router.dart';
+import 'core/services/notification_service.dart';
+import 'features/habits/data/services/habit_reminder_scheduler.dart';
 import 'features/settings/presentation/cubit/settings_cubit.dart';
 
 Future<void> main() async {
@@ -19,6 +26,7 @@ Future<void> main() async {
   await initializeDateFormatting();
   await Hive.initFlutter();
   await configureDependencies();
+  await _startReminders();
 
   runApp(
     EasyLocalization(
@@ -35,4 +43,28 @@ Future<void> main() async {
       child: const AtharApp(),
     ),
   );
+}
+
+/// Notifications and the daily reminders. A failure here is reported but
+/// never stops the app from starting.
+Future<void> _startReminders() async {
+  try {
+    await sl<NotificationService>().initialize(
+      // Tapping a reminder opens Home (a cold start gets there via splash).
+      onOpened: () => sl<GoRouter>().go(AppRoutes.home),
+    );
+  } catch (error, stackTrace) {
+    FlutterError.reportError(
+      FlutterErrorDetails(
+        exception: error,
+        stack: stackTrace,
+        library: 'notifications',
+        context: ErrorDescription('initializing notifications'),
+      ),
+    );
+    return;
+  }
+  // Not awaited: the first sync and permission read don't hold up launch.
+  unawaited(sl<NotificationPermissionCubit>().refresh());
+  unawaited(sl<HabitReminderScheduler>().start());
 }

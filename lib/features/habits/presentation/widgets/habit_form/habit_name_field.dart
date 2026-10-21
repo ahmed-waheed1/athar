@@ -72,8 +72,9 @@ class _HabitNameFieldState extends State<HabitNameField>
 
     final errorText = switch (error) {
       null => null,
-      HabitNameError.empty => 'habitForm.name.errorEmpty'.tr(),
-      HabitNameError.tooLong => 'habitForm.name.errorTooLong'.plural(
+      HabitNameError.empty => context.tr('habitForm.name.errorEmpty'),
+      HabitNameError.tooLong => context.plural(
+        'habitForm.name.errorTooLong',
         HabitName.maxLength,
         format: numbers,
       ),
@@ -96,14 +97,15 @@ class _HabitNameFieldState extends State<HabitNameField>
             children: [
               Expanded(
                 child: Text(
-                  'habitForm.name.label'.tr(),
+                  context.tr('habitForm.name.label'),
                   style: text.fieldLabel.copyWith(
                     color: hasError ? colors.error : colors.textSecondary,
                   ),
                 ),
               ),
               Text(
-                'habitForm.name.counter'.tr(
+                context.tr(
+                  'habitForm.name.counter',
                   namedArgs: {
                     'count': numbers.format(widget.length),
                     'max': numbers.format(HabitName.maxLength),
@@ -137,7 +139,7 @@ class _HabitNameFieldState extends State<HabitNameField>
               color: colors.textPrimary,
             ),
             decoration: InputDecoration(
-              hintText: 'habitForm.name.hint'.tr(),
+              hintText: context.tr('habitForm.name.hint'),
               enabledBorder: hasError ? inputTheme.errorBorder : null,
               focusedBorder: hasError ? inputTheme.focusedErrorBorder : null,
             ),

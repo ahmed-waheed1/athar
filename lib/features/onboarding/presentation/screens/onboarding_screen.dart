@@ -143,8 +143,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         color: colors.onPrimary,
                       ),
                       label: Text(
-                        (_isLast ? 'onboarding.getStarted' : 'onboarding.next')
-                            .tr(),
+                        context.tr(
+                          _isLast ? 'onboarding.getStarted' : 'onboarding.next',
+                        ),
                       ),
                     ),
                   ),
@@ -185,7 +186,7 @@ class _SkipButton extends StatelessWidget {
               textStyle: text.buttonSmall,
               minimumSize: const Size.square(AtharSizes.minTapTarget),
             ),
-            child: Text('onboarding.skip'.tr()),
+            child: Text(context.tr('onboarding.skip')),
           ),
         ),
       ),
@@ -212,7 +213,8 @@ class _PageIndicator extends StatelessWidget {
     String number(int value) => LocalizedNumbers.decimal(value, context.locale);
 
     return Semantics(
-      label: 'onboarding.pageIndicator'.tr(
+      label: context.tr(
+        'onboarding.pageIndicator',
         namedArgs: {'current': number(page + 1), 'total': number(count)},
       ),
       child: ExcludeSemantics(

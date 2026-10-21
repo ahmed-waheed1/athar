@@ -21,6 +21,10 @@ abstract final class AtharAssets {
       'assets/illustrations/onboarding-$slug-${brightness.name}'
       '${rtl ? '-rtl' : ''}.svg';
 
+  /// Notification permission sheet illustration (design/screens.md · 09).
+  static String notificationBell(Brightness brightness) =>
+      'assets/illustrations/notification-bell-${brightness.name}.svg';
+
   static String uiIcon(String name) => 'assets/icons/ui/ui_$name.svg';
 
   /// [name] is the id stored on a habit (book, drop, walk, ...).

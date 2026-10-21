@@ -175,7 +175,8 @@ class _CardBody extends StatelessWidget {
     final habit = item.habit;
     final accent = habit.accentIn(context);
     final isWide = layout == AtharLayout.wide;
-    final streak = 'plural.days'.plural(
+    final streak = context.plural(
+      'plural.days',
       item.currentStreak,
       format: LocalizedNumbers.formatter(context.locale),
     );
@@ -264,9 +265,10 @@ class _CardBody extends StatelessWidget {
                     size: isWide
                         ? AtharSizes.checkButtonWide
                         : AtharSizes.checkButton,
-                    semanticLabel:
-                        (item.isDoneToday ? 'home.undoDone' : 'home.markDone')
-                            .tr(namedArgs: {'name': habit.name}),
+                    semanticLabel: context.tr(
+                      item.isDoneToday ? 'home.undoDone' : 'home.markDone',
+                      namedArgs: {'name': habit.name},
+                    ),
                     onPressed: onToggle,
                   ),
                 ],
@@ -302,7 +304,7 @@ class _SwipeActions extends StatelessWidget {
         children: [
           _SwipeAction(
             icon: 'edit',
-            label: 'home.edit'.tr(),
+            label: context.tr('home.edit'),
             background: colors.primaryContainer,
             foreground: colors.onPrimaryContainer,
             onPressed: onEdit,
@@ -310,7 +312,7 @@ class _SwipeActions extends StatelessWidget {
           const SizedBox(width: AtharSpacing.xs),
           _SwipeAction(
             icon: 'trash',
-            label: 'home.delete'.tr(),
+            label: context.tr('home.delete'),
             background: colors.error,
             foreground: colors.onError,
             onPressed: onDelete,

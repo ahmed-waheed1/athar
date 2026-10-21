@@ -19,24 +19,24 @@ class StatTiles extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.locale;
     final numbers = LocalizedNumbers.formatter(locale);
-    final noValue = 'details.stats.noValue'.tr();
+    final noValue = context.tr('details.stats.noValue');
     final consistency = stats.consistencyPercent;
     final tiles = [
       (
         value: stats.completions == 0
             ? noValue
             : numbers.format(stats.bestStreak),
-        label: 'details.stats.best'.tr(),
+        label: context.tr('details.stats.best'),
       ),
       (
         value: numbers.format(stats.completions),
-        label: 'details.stats.completions'.tr(),
+        label: context.tr('details.stats.completions'),
       ),
       (
         value: consistency == null
             ? noValue
             : LocalizedNumbers.percent(consistency / 100, locale),
-        label: 'details.stats.consistency'.tr(),
+        label: context.tr('details.stats.consistency'),
       ),
     ];
 

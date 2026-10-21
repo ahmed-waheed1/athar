@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
     suggestion == null
         ? AppRoutes.addHabit
         : AppRoutes.addHabitWith(
-            name: suggestion.labelKey.tr(),
+            name: context.tr(suggestion.labelKey),
             iconKey: suggestion.iconKey,
             colorKey: suggestion.colorKey,
           ),
@@ -107,18 +107,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<bool> _confirmDelete(HabitItem item) {
     final body = item.currentStreak == 0
-        ? 'deleteDialog.bodyNoStreak'.tr()
-        : 'deleteDialog.body'.plural(
+        ? context.tr('deleteDialog.bodyNoStreak')
+        : context.plural(
+            'deleteDialog.body',
             item.currentStreak,
             format: LocalizedNumbers.formatter(context.locale),
           );
     return showAtharConfirmDialog(
       context,
       iconName: 'trash',
-      title: 'deleteDialog.title'.tr(namedArgs: {'name': item.habit.name}),
+      title: context.tr(
+        'deleteDialog.title',
+        namedArgs: {'name': item.habit.name},
+      ),
       body: body,
-      cancelLabel: 'deleteDialog.cancel'.tr(),
-      confirmLabel: 'deleteDialog.confirm'.tr(),
+      cancelLabel: context.tr('deleteDialog.cancel'),
+      confirmLabel: context.tr('deleteDialog.confirm'),
     );
   }
 
@@ -363,7 +367,7 @@ class _SectionHeader extends StatelessWidget {
             child: Semantics(
               header: true,
               child: Text(
-                'home.todaysHabits'.tr(),
+                context.tr('home.todaysHabits'),
                 style: text.sectionTitle.copyWith(color: colors.textPrimary),
               ),
             ),
@@ -372,7 +376,7 @@ class _SectionHeader extends StatelessWidget {
             opacity: showHint ? 1 : 0,
             duration: AtharMotion.toastIn,
             child: Text(
-              'home.swipeHint'.tr(),
+              context.tr('home.swipeHint'),
               style: text.caption.copyWith(color: colors.textTertiary),
             ),
           ),
@@ -416,7 +420,7 @@ class _AddHabitTile extends StatelessWidget {
                 ),
                 const SizedBox(width: AtharSpacing.xs),
                 Text(
-                  'home.addHabit'.tr(),
+                  context.tr('home.addHabit'),
                   style: text.button.copyWith(color: colors.textSecondary),
                 ),
               ],
@@ -446,7 +450,7 @@ class _ErrorView extends StatelessWidget {
             AtharIcon.ui('warn', size: AtharSpacing.xxl, color: colors.error),
             const SizedBox(height: AtharSpacing.md),
             Text(
-              'home.error.title'.tr(),
+              context.tr('home.error.title'),
               textAlign: TextAlign.center,
               style: text.progressTitle.copyWith(color: colors.textPrimary),
             ),
@@ -459,7 +463,7 @@ class _ErrorView extends StatelessWidget {
                   horizontal: AtharSpacing.xxl,
                 ),
               ),
-              child: Text('home.error.retry'.tr()),
+              child: Text(context.tr('home.error.retry')),
             ),
           ],
         ),

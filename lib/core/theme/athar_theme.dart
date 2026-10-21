@@ -29,6 +29,11 @@ abstract final class AtharTheme {
         bodyColor: c.textPrimary,
         displayColor: c.textPrimary,
       ),
+      // Text on primary-coloured surfaces; also keeps Material's defaults out.
+      primaryTextTheme: t.toTextTheme().apply(
+        bodyColor: c.onPrimary,
+        displayColor: c.onPrimary,
+      ),
       extensions: <ThemeExtension<dynamic>>[c],
       dividerTheme: DividerThemeData(color: c.divider, thickness: 1, space: 1),
       filledButtonTheme: FilledButtonThemeData(

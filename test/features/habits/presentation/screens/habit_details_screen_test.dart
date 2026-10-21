@@ -23,6 +23,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../helpers/athar_test_app.dart';
+import '../../../../helpers/fake_notification_service.dart';
 import '../../../../helpers/in_memory_habit_repository.dart';
 import '../../../../helpers/in_memory_settings_repository.dart';
 
@@ -40,6 +41,7 @@ void main() {
   setUpAll(setUpAtharTestApp);
 
   setUp(() {
+    registerFakeNotifications();
     repository = InMemoryHabitRepository();
     final streaks = StreakCalculator();
     sl

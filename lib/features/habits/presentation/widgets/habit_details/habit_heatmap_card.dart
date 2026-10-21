@@ -59,7 +59,8 @@ class HabitHeatmapCard extends StatelessWidget {
     final colors = AtharColors.of(context);
     final text = AtharTextStyles.forLocale(context.locale);
     final isPhone = layout == AtharLayout.phone;
-    final title = 'details.heatmap.title'.plural(
+    final title = context.plural(
+      'details.heatmap.title',
       _weeks,
       format: LocalizedNumbers.formatter(context.locale),
     );
@@ -87,12 +88,12 @@ class HabitHeatmapCard extends StatelessWidget {
                 children: [
                   _LegendItem(
                     color: colors.heatmap.missed,
-                    label: 'details.heatmap.missed'.tr(),
+                    label: context.tr('details.heatmap.missed'),
                   ),
                   const SizedBox(width: AtharSpacing.md),
                   _LegendItem(
                     color: accent.color,
-                    label: 'details.heatmap.done'.tr(),
+                    label: context.tr('details.heatmap.done'),
                   ),
                 ],
               ),

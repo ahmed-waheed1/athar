@@ -21,12 +21,12 @@ class LanguageControl extends StatelessWidget {
       segments: [
         AtharSegment(
           value: AppLanguage.en,
-          label: 'settings.languageEnglish'.tr(),
+          label: context.tr('settings.languageEnglish'),
           style: AtharTextStyles.latin,
         ),
         AtharSegment(
           value: AppLanguage.ar,
-          label: 'settings.languageArabic'.tr(),
+          label: context.tr('settings.languageArabic'),
           style: AtharTextStyles.arabic,
         ),
       ],
@@ -35,6 +35,12 @@ class LanguageControl extends StatelessWidget {
 }
 
 /// Light / Dark / System.
+///
+/// The labels use `context.tr`, not `context.tr('key')`: the String extension reads
+/// a global and subscribes to nothing, and this widget depends on nothing
+/// else that changes with the language (it is const and only selects the
+/// theme mode), so it kept the old language's labels until the theme mode
+/// changed. `context.tr` rebuilds it once the new translations are loaded.
 class ThemeModeControl extends StatelessWidget {
   const ThemeModeControl({super.key});
 
@@ -47,17 +53,17 @@ class ThemeModeControl extends StatelessWidget {
       segments: [
         AtharSegment(
           value: AppThemeMode.light,
-          label: 'settings.themeLight'.tr(),
+          label: context.tr('settings.themeLight'),
           iconName: 'theme_light',
         ),
         AtharSegment(
           value: AppThemeMode.dark,
-          label: 'settings.themeDark'.tr(),
+          label: context.tr('settings.themeDark'),
           iconName: 'theme_dark',
         ),
         AtharSegment(
           value: AppThemeMode.system,
-          label: 'settings.themeSystem'.tr(),
+          label: context.tr('settings.themeSystem'),
           iconName: 'system',
         ),
       ],

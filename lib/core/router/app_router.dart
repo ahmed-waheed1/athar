@@ -19,6 +19,7 @@ import '../../features/settings/presentation/cubit/settings_cubit.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../debug/design_test_screen.dart';
 import '../di/injection.dart';
+import '../notifications/notification_permission_cubit.dart';
 import '../theme/athar_spacing.dart';
 import '../widgets/app_shell.dart';
 import '../widgets/placeholder_screen.dart';
@@ -131,13 +132,18 @@ GoRouter createAppRouter({
         final query = state.uri.queryParameters;
         return habitFormPage(
           key: state.pageKey,
-          child: BlocProvider(
-            create: (_) => sl<HabitFormCubit>()
-              ..startAdd(
-                name: query['name'],
-                iconKey: query['icon'],
-                colorKey: query['color'],
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => sl<HabitFormCubit>()
+                  ..startAdd(
+                    name: query['name'],
+                    iconKey: query['icon'],
+                    colorKey: query['color'],
+                  ),
               ),
+              BlocProvider.value(value: sl<NotificationPermissionCubit>()),
+            ],
             child: const HabitFormScreen(),
           ),
         );
@@ -150,9 +156,14 @@ GoRouter createAppRouter({
       path: '/habits/:id/edit',
       pageBuilder: (context, state) => habitFormPage(
         key: state.pageKey,
-        child: BlocProvider(
-          create: (_) =>
-              sl<HabitFormCubit>()..startEdit(state.pathParameters['id']!),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) =>
+                  sl<HabitFormCubit>()..startEdit(state.pathParameters['id']!),
+            ),
+            BlocProvider.value(value: sl<NotificationPermissionCubit>()),
+          ],
           child: const HabitFormScreen(),
         ),
       ),
@@ -205,8 +216,11 @@ GoRouter createAppRouter({
           routes: [
             GoRoute(
               path: AppRoutes.settings,
-              builder: (context, state) => BlocProvider(
-                create: (_) => sl<ResetDataCubit>(),
+              builder: (context, state) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (_) => sl<ResetDataCubit>()),
+                  BlocProvider.value(value: sl<NotificationPermissionCubit>()),
+                ],
                 child: SettingsScreen(version: sl()),
               ),
             ),

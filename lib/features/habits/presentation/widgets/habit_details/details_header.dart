@@ -35,7 +35,7 @@ class DetailsTopBar extends StatelessWidget {
         ),
         const Spacer(),
         IconButton(
-          tooltip: 'details.editHabit'.tr(),
+          tooltip: context.tr('details.editHabit'),
           onPressed: onEdit,
           icon: AtharIcon.ui(
             'edit',
@@ -55,19 +55,24 @@ class DetailsHeader extends StatelessWidget {
   final Habit habit;
   final DateTime today;
 
-  String _meta(Locale locale) {
+  String _meta(BuildContext context) {
     final reminder = habit.reminderTime;
     return [
-      'details.everyDay'.tr(),
+      context.tr('details.everyDay'),
       if (reminder != null)
-        'details.reminder'.tr(
+        context.tr(
+          'details.reminder',
           namedArgs: {
-            'time': LocalizedDates.time(reminder.hour, reminder.minute, locale),
+            'time': LocalizedDates.time(
+              reminder.hour,
+              reminder.minute,
+              context.locale,
+            ),
           },
         ),
       if (HabitDates.dateOnly(habit.createdAt) == today)
-        'details.createdToday'.tr(),
-    ].join('details.metaSeparator'.tr());
+        context.tr('details.createdToday'),
+    ].join(context.tr('details.metaSeparator'));
   }
 
   @override
@@ -96,7 +101,7 @@ class DetailsHeader extends StatelessWidget {
                 ),
               ),
               Text(
-                _meta(context.locale),
+                _meta(context),
                 style: text.dateLabel.copyWith(color: colors.textTertiary),
               ),
             ],
@@ -142,8 +147,8 @@ class DetailsEditButton extends StatelessWidget {
         color: colors.textPrimary,
       ),
       label: Text(
-        'details.edit'.tr(),
-        semanticsLabel: 'details.editHabit'.tr(),
+        context.tr('details.edit'),
+        semanticsLabel: context.tr('details.editHabit'),
       ),
     );
   }

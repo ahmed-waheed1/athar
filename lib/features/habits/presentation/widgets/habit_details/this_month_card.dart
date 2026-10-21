@@ -26,7 +26,8 @@ class ThisMonthCard extends StatelessWidget {
     final text = AtharTextStyles.forLocale(context.locale);
     final numbers = LocalizedNumbers.formatter(context.locale);
     final done = numbers.format(progress.done);
-    final ofDays = 'details.thisMonth.ofDays'.plural(
+    final ofDays = context.plural(
+      'details.thisMonth.ofDays',
       progress.total,
       format: numbers,
     );
@@ -39,7 +40,7 @@ class ThisMonthCard extends StatelessWidget {
           Semantics(
             header: true,
             child: Text(
-              'details.thisMonth.title'.tr(),
+              context.tr('details.thisMonth.title'),
               style: text.cardTitle.copyWith(color: colors.textPrimary),
             ),
           ),

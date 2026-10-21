@@ -9,6 +9,8 @@ import '../../features/habits/data/datasources/habit_local_data_source.dart';
 import '../../features/habits/data/models/habit_model.dart';
 import '../../features/habits/data/models/hive_registrar.g.dart';
 import '../../features/habits/data/repositories/habit_repository_impl.dart';
+import '../../features/habits/data/services/habit_reminder_scheduler.dart';
+import '../../features/habits/data/services/reminder_copy.dart';
 import '../../features/habits/domain/repositories/habit_repository.dart';
 import '../../features/habits/domain/services/habits_overview_calculator.dart';
 import '../../features/habits/domain/services/streak_calculator.dart';
@@ -34,7 +36,10 @@ import '../../features/settings/domain/usecases/set_onboarding_done.dart';
 import '../../features/settings/domain/usecases/set_theme_mode.dart';
 import '../../features/settings/presentation/cubit/reset_data_cubit.dart';
 import '../../features/settings/presentation/cubit/settings_cubit.dart';
+import '../notifications/notification_permission_cubit.dart';
 import '../router/app_router.dart';
+import '../services/local_notification_service.dart';
+import '../services/notification_service.dart';
 
 final sl = GetIt.instance;
 
@@ -105,6 +110,21 @@ Future<void> configureDependencies() async {
     )
     ..registerFactory(
       () => ResetDataCubit(getHabits: sl(), deleteAllHabits: sl()),
+    )
+    // Notifications and reminders
+    ..registerLazySingleton<NotificationService>(
+      () => LocalNotificationService(sl()),
+    )
+    ..registerLazySingleton(() => NotificationPermissionCubit(sl()))
+    ..registerLazySingleton(
+      () => HabitReminderScheduler(
+        getHabits: sl(),
+        watchHabitChanges: sl(),
+        notifications: sl(),
+        copy: ReminderCopySource(),
+        language: () => sl<SettingsCubit>().state.language,
+        languageChanges: sl<SettingsCubit>().stream.map((s) => s.language),
+      ),
     )
     // Navigation
     ..registerLazySingleton<GoRouter>(() => createAppRouter(settings: sl()));

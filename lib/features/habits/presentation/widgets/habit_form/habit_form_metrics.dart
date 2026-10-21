@@ -25,6 +25,14 @@ abstract final class HabitFormMetrics {
   static const double nameTop = AtharSpacing.lg;
   static const double sectionTop = 18;
   static const double reminderTop = 14;
+
+  /// Under the reminder row while notifications are blocked (screens.md · 09).
+  static const double blockedBannerTop = AtharSpacing.xs;
+
+  /// Swipe back: the start-edge strip it starts in (as in Cupertino routes),
+  /// and how far a swipe goes before it asks to discard unsaved changes.
+  static const double backSwipeEdge = 20;
+  static const double backSwipeTrigger = 32;
   static const double labelGap = AtharSpacing.xs;
   static const double errorGap = AtharSpacing.xs;
   static const double errorIcon = AtharSpacing.md;

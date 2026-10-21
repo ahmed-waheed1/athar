@@ -22,6 +22,9 @@ abstract final class SettingsMetrics {
   static const double rowGap = AtharSpacing.sm;
   static const double dividerInset = AtharSpacing.sm;
 
+  /// The blocked-notifications banner inside the Preferences card.
+  static const double bannerInset = 6;
+
   static const double versionTop = AtharSpacing.xl;
 
   /// Theme switches cross-fade (AnimatedTheme) over this long.

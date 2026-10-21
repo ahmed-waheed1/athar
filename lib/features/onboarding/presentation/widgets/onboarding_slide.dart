@@ -113,13 +113,13 @@ class OnboardingSlideView extends StatelessWidget {
                 Semantics(
                   header: true,
                   child: Text(
-                    slide.titleKey.tr(),
+                    context.tr(slide.titleKey),
                     style: text.screenTitle.copyWith(color: colors.textPrimary),
                   ),
                 ),
                 const SizedBox(height: OnboardingMetrics.titleGap),
                 Text(
-                  slide.bodyKey.tr(),
+                  context.tr(slide.bodyKey),
                   style: text.body.copyWith(color: colors.textSecondary),
                 ),
                 if (slide.hasLanguagePicker) ...[
@@ -133,7 +133,7 @@ class OnboardingSlideView extends StatelessWidget {
                       ),
                       const SizedBox(width: OnboardingMetrics.languageIconGap),
                       Text(
-                        'settings.language'.tr(),
+                        context.tr('settings.language'),
                         style: text.fieldLabel.copyWith(
                           color: colors.textSecondary,
                         ),

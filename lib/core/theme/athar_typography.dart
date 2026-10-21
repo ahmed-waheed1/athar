@@ -107,7 +107,9 @@ class AtharTextStyles {
 
   static const String fontFamily = 'Cairo';
 
-  /// Pick by locale: Arabic needs taller line heights and no negative tracking.
+  /// Pick by locale: Arabic needs taller line heights and no tracking (every
+  /// Arabic style has letterSpacing 0). Every style sets letterSpacing, so
+  /// Material's defaults never apply.
   static AtharTextStyles forLocale(Locale locale) =>
       locale.languageCode == 'ar' ? arabic : latin;
 
@@ -150,6 +152,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.3,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     ringValue: TextStyle(
       fontFamily: fontFamily,
@@ -157,6 +160,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.1,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     statNumber: TextStyle(
       fontFamily: fontFamily,
@@ -164,6 +168,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.2,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     appBarTitle: TextStyle(
       fontFamily: fontFamily,
@@ -171,6 +176,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.35,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     progressTitle: TextStyle(
       fontFamily: fontFamily,
@@ -178,6 +184,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.35,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     sectionTitle: TextStyle(
       fontFamily: fontFamily,
@@ -185,6 +192,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.4,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     button: TextStyle(
       fontFamily: fontFamily,
@@ -192,6 +200,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.3,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     cardTitle: TextStyle(
       fontFamily: fontFamily,
@@ -199,6 +208,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.4,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     body: TextStyle(
       fontFamily: fontFamily,
@@ -206,6 +216,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w400,
       height: 1.45,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     buttonSmall: TextStyle(
       fontFamily: fontFamily,
@@ -213,6 +224,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.3,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     toast: TextStyle(
       fontFamily: fontFamily,
@@ -220,6 +232,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w600,
       height: 1.35,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     bodySmall: TextStyle(
       fontFamily: fontFamily,
@@ -227,6 +240,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w400,
       height: 1.45,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     dateLabel: TextStyle(
       fontFamily: fontFamily,
@@ -234,6 +248,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w500,
       height: 1.4,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     fieldLabel: TextStyle(
       fontFamily: fontFamily,
@@ -241,6 +256,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.4,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     calendarDay: TextStyle(
       fontFamily: fontFamily,
@@ -248,6 +264,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     caption: TextStyle(
       fontFamily: fontFamily,
@@ -255,6 +272,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w600,
       height: 1.4,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     statLabel: TextStyle(
       fontFamily: fontFamily,
@@ -262,6 +280,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w600,
       height: 1.35,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     label: TextStyle(
       fontFamily: fontFamily,
@@ -269,6 +288,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w600,
       height: 1.35,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     calendarWeekday: TextStyle(
       fontFamily: fontFamily,
@@ -276,6 +296,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
   );
 
@@ -286,6 +307,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.2,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     milestoneNumber: TextStyle(
       fontFamily: fontFamily,
@@ -293,6 +315,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.15,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     screenTitle: TextStyle(
       fontFamily: fontFamily,
@@ -300,6 +323,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.5,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     greeting: TextStyle(
       fontFamily: fontFamily,
@@ -307,6 +331,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.5,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     emptyTitle: TextStyle(
       fontFamily: fontFamily,
@@ -314,6 +339,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.5,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     ringValue: TextStyle(
       fontFamily: fontFamily,
@@ -321,6 +347,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.25,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     statNumber: TextStyle(
       fontFamily: fontFamily,
@@ -328,6 +355,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.35,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     appBarTitle: TextStyle(
       fontFamily: fontFamily,
@@ -335,6 +363,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.55,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     progressTitle: TextStyle(
       fontFamily: fontFamily,
@@ -342,6 +371,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.55,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     sectionTitle: TextStyle(
       fontFamily: fontFamily,
@@ -349,6 +379,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.6,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     button: TextStyle(
       fontFamily: fontFamily,
@@ -356,6 +387,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.45,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     cardTitle: TextStyle(
       fontFamily: fontFamily,
@@ -363,6 +395,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.6,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     body: TextStyle(
       fontFamily: fontFamily,
@@ -370,6 +403,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w400,
       height: 1.65,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     buttonSmall: TextStyle(
       fontFamily: fontFamily,
@@ -377,6 +411,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.45,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     toast: TextStyle(
       fontFamily: fontFamily,
@@ -384,6 +419,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w600,
       height: 1.55,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     bodySmall: TextStyle(
       fontFamily: fontFamily,
@@ -391,6 +427,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w400,
       height: 1.65,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     dateLabel: TextStyle(
       fontFamily: fontFamily,
@@ -398,6 +435,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w500,
       height: 1.6,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     fieldLabel: TextStyle(
       fontFamily: fontFamily,
@@ -405,6 +443,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.6,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     calendarDay: TextStyle(
       fontFamily: fontFamily,
@@ -412,6 +451,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     caption: TextStyle(
       fontFamily: fontFamily,
@@ -419,6 +459,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w600,
       height: 1.6,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     statLabel: TextStyle(
       fontFamily: fontFamily,
@@ -426,6 +467,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w600,
       height: 1.55,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     label: TextStyle(
       fontFamily: fontFamily,
@@ -433,6 +475,7 @@ class AtharTextStyles {
       fontWeight: FontWeight.w600,
       height: 1.55,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
     calendarWeekday: TextStyle(
       fontFamily: fontFamily,
@@ -440,13 +483,17 @@ class AtharTextStyles {
       fontWeight: FontWeight.w700,
       height: 1,
       leadingDistribution: TextLeadingDistribution.even,
+      letterSpacing: 0,
     ),
   );
 
   /// Maps the Athar styles onto Material roles so stock widgets pick them up.
+  /// Fills all 15 slots, so none of Material's default styles (and their
+  /// letter-spacing) shows through.
   TextTheme toTextTheme() => TextTheme(
     displayLarge: displayStreak,
     displayMedium: milestoneNumber,
+    displaySmall: statNumber,
     headlineLarge: screenTitle,
     headlineMedium: greeting,
     headlineSmall: emptyTitle,

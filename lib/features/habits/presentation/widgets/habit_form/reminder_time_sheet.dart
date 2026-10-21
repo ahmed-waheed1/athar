@@ -18,7 +18,7 @@ Future<ReminderTime?> showReminderTimeSheet(
   required ReminderTime initial,
 }) => showAtharBottomSheet<ReminderTime>(
   context,
-  title: 'habitForm.reminder.sheetTitle'.tr(),
+  title: context.tr('habitForm.reminder.sheetTitle'),
   builder: (context) => _ReminderTimeSheet(initial: initial),
 );
 
@@ -82,7 +82,7 @@ class _ReminderTimeSheetState extends State<_ReminderTimeSheet> {
                 children: [
                   Expanded(
                     child: _Wheel(
-                      semanticLabel: 'habitForm.reminder.hour'.tr(),
+                      semanticLabel: context.tr('habitForm.reminder.hour'),
                       count: 12,
                       initial: _hour,
                       looping: true,
@@ -100,7 +100,7 @@ class _ReminderTimeSheetState extends State<_ReminderTimeSheet> {
                   ),
                   Expanded(
                     child: _Wheel(
-                      semanticLabel: 'habitForm.reminder.minute'.tr(),
+                      semanticLabel: context.tr('habitForm.reminder.minute'),
                       count: _minutes,
                       initial: _minute,
                       looping: true,
@@ -112,7 +112,7 @@ class _ReminderTimeSheetState extends State<_ReminderTimeSheet> {
                   ),
                   Expanded(
                     child: _Wheel(
-                      semanticLabel: 'habitForm.reminder.period'.tr(),
+                      semanticLabel: context.tr('habitForm.reminder.period'),
                       count: 2,
                       initial: _pm ? 1 : 0,
                       looping: false,
@@ -128,7 +128,7 @@ class _ReminderTimeSheetState extends State<_ReminderTimeSheet> {
         ),
         const SizedBox(height: AtharSpacing.md),
         Text(
-          'habitForm.reminder.helper'.tr(),
+          context.tr('habitForm.reminder.helper'),
           textAlign: TextAlign.center,
           style: text.bodySmall.copyWith(color: colors.textSecondary),
         ),
@@ -145,7 +145,7 @@ class _ReminderTimeSheetState extends State<_ReminderTimeSheet> {
                   backgroundColor: colors.surfaceVariant,
                   foregroundColor: colors.textPrimary,
                 ),
-                child: Text('habitForm.reminder.cancel'.tr()),
+                child: Text(context.tr('habitForm.reminder.cancel')),
               ),
             ),
             const SizedBox(width: HabitFormMetrics.sheetButtonGap),
@@ -157,7 +157,7 @@ class _ReminderTimeSheetState extends State<_ReminderTimeSheet> {
                     HabitFormMetrics.sheetButtonHeight,
                   ),
                 ),
-                child: Text('habitForm.reminder.set'.tr()),
+                child: Text(context.tr('habitForm.reminder.set')),
               ),
             ),
           ],

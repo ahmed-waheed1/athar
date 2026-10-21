@@ -48,18 +48,31 @@ class ProgressCard extends StatelessWidget {
     };
 
     final title = progress.isAllDone
-        ? 'home.progress.allDone'.plural(progress.total, format: numbers)
-        : 'home.progress.title'.tr(
+        ? context.plural(
+            'home.progress.allDone',
+            progress.total,
+            format: numbers,
+          )
+        : context.tr(
+            'home.progress.title',
             namedArgs: {
               'done': numbers.format(progress.done),
               'total': numbers.format(progress.total),
             },
           );
     final subtitle = progress.isAllDone
-        ? 'home.progress.allDoneBody'.tr()
+        ? context.tr('home.progress.allDoneBody')
         : progress.done == 0
-        ? 'home.progress.waiting'.plural(progress.total, format: numbers)
-        : 'home.progress.remaining'.plural(progress.remaining, format: numbers);
+        ? context.plural(
+            'home.progress.waiting',
+            progress.total,
+            format: numbers,
+          )
+        : context.plural(
+            'home.progress.remaining',
+            progress.remaining,
+            format: numbers,
+          );
 
     var titleStyle = text.progressTitle.copyWith(color: colors.textPrimary);
     if (layout == AtharLayout.tablet) {

@@ -114,7 +114,7 @@ class _SplashScreenState extends State<SplashScreen>
                           children: [
                             const SizedBox(height: SplashMetrics.wordmarkGap),
                             Text(
-                              'app.name'.tr(),
+                              context.tr('app.name'),
                               textAlign: TextAlign.center,
                               style: text.screenTitle.copyWith(
                                 fontSize: SplashMetrics.wordmarkSize,
@@ -124,7 +124,7 @@ class _SplashScreenState extends State<SplashScreen>
                             ),
                             const SizedBox(height: SplashMetrics.taglineGap),
                             Text(
-                              'splash.tagline'.tr(),
+                              context.tr('splash.tagline'),
                               textAlign: TextAlign.center,
                               style: text.body.copyWith(
                                 fontSize: SplashMetrics.taglineSize,

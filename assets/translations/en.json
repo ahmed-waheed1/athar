@@ -54,6 +54,13 @@
       "cancel": "Cancel",
       "confirm": "Reset",
       "failed": "Couldn’t reset your data. Try again."
+    },
+    "preferences": "Preferences",
+    "reminders": {
+      "title": "Reminders",
+      "on": "On · per-habit times",
+      "off": "Off",
+      "blocked": "Blocked by the system"
     }
   },
   "designTest": {
@@ -322,6 +329,27 @@
     "sampleWater": "Drink water",
     "sampleRead": "Read 10 pages",
     "sampleWalk": "Morning walk",
-    "sampleEnglish": "Learn English"
+    "sampleEnglish": "Learn English",
+    "showTestReminder": "Show a test reminder now",
+    "scheduleTestReminder": "Schedule a test reminder in 1 minute",
+    "testReminderName": "Test habit"
+  },
+  "reminders": {
+    "notification": {
+      "title": "Time for “{name}”",
+      "body": "Leave today’s trace and keep your path going.",
+      "channelName": "Habit reminders",
+      "channelDescription": "One daily reminder for each habit, at the time you chose."
+    },
+    "prompt": {
+      "title": "Want a gentle nudge?",
+      "body": "Athar can remind you at the time you choose. One quiet notification per habit, nothing else.",
+      "allow": "Allow reminders",
+      "notNow": "Not now"
+    },
+    "blocked": {
+      "body": "Notifications are blocked, so reminders can’t reach you. Turn them on in your phone’s settings.",
+      "openSettings": "Open settings"
+    }
   }
 }

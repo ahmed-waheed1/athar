@@ -21,7 +21,8 @@ void showCheckInToast(
   messenger.showSnackBar(
     SnackBar(
       content: _CheckInToast(
-        message: 'toast.checkIn'.plural(
+        message: context.plural(
+          'toast.checkIn',
           streak,
           format: LocalizedNumbers.formatter(context.locale),
         ),
@@ -106,7 +107,7 @@ class _CheckInToast extends StatelessWidget {
               foregroundColor: inverse.primary,
               textStyle: text.buttonSmall,
             ),
-            child: Text('toast.undo'.tr()),
+            child: Text(context.tr('toast.undo')),
           ),
         ],
       ),

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Status-bar icon for reminders: the Athar mark (assets/brand/athar-mark-white.svg),
+     white on transparent as Android requires. The cell opacities are kept, so the
+     trace stands out from the faint grid. 640 units of mark in a 768 viewport
+     leave the 2dp padding of Android's 24dp notification icon grid.
+     Kept in release builds by res/raw/keep.xml. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="768"
+    android:viewportHeight="768">
+    <group
+        android:translateX="64"
+        android:translateY="64">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.16"
+            android:pathData="M30,0H103A30,30 0,0 1 133,30V103A30,30 0,0 1 103,133H30A30,30 0,0 1 0,103V30A30,30 0,0 1 30,0Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.16"
+            android:pathData="M199,0H272A30,30 0,0 1 302,30V103A30,30 0,0 1 272,133H199A30,30 0,0 1 169,103V30A30,30 0,0 1 199,0Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.16"
+            android:pathData="M368,0H441A30,30 0,0 1 471,30V103A30,30 0,0 1 441,133H368A30,30 0,0 1 338,103V30A30,30 0,0 1 368,0Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="1"
+            android:pathData="M537,0H610A30,30 0,0 1 640,30V103A30,30 0,0 1 610,133H537A30,30 0,0 1 507,103V30A30,30 0,0 1 537,0Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.16"
+            android:pathData="M30,169H103A30,30 0,0 1 133,199V272A30,30 0,0 1 103,302H30A30,30 0,0 1 0,272V199A30,30 0,0 1 30,169Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.16"
+            android:pathData="M199,169H272A30,30 0,0 1 302,199V272A30,30 0,0 1 272,302H199A30,30 0,0 1 169,272V199A30,30 0,0 1 199,169Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.88"
+            android:pathData="M368,169H441A30,30 0,0 1 471,199V272A30,30 0,0 1 441,302H368A30,30 0,0 1 338,272V199A30,30 0,0 1 368,169Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="1"
+            android:pathData="M537,169H610A30,30 0,0 1 640,199V272A30,30 0,0 1 610,302H537A30,30 0,0 1 507,272V199A30,30 0,0 1 537,169Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.16"
+            android:pathData="M30,338H103A30,30 0,0 1 133,368V441A30,30 0,0 1 103,471H30A30,30 0,0 1 0,441V368A30,30 0,0 1 30,338Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.62"
+            android:pathData="M199,338H272A30,30 0,0 1 302,368V441A30,30 0,0 1 272,471H199A30,30 0,0 1 169,441V368A30,30 0,0 1 199,338Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.76"
+            android:pathData="M368,338H441A30,30 0,0 1 471,368V441A30,30 0,0 1 441,471H368A30,30 0,0 1 338,441V368A30,30 0,0 1 368,338Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.16"
+            android:pathData="M537,338H610A30,30 0,0 1 640,368V441A30,30 0,0 1 610,471H537A30,30 0,0 1 507,441V368A30,30 0,0 1 537,338Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.38"
+            android:pathData="M30,507H103A30,30 0,0 1 133,537V610A30,30 0,0 1 103,640H30A30,30 0,0 1 0,610V537A30,30 0,0 1 30,507Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.5"
+            android:pathData="M199,507H272A30,30 0,0 1 302,537V610A30,30 0,0 1 272,640H199A30,30 0,0 1 169,610V537A30,30 0,0 1 199,507Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.16"
+            android:pathData="M368,507H441A30,30 0,0 1 471,537V610A30,30 0,0 1 441,640H368A30,30 0,0 1 338,610V537A30,30 0,0 1 368,507Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillAlpha="0.16"
+            android:pathData="M537,507H610A30,30 0,0 1 640,537V610A30,30 0,0 1 610,640H537A30,30 0,0 1 507,610V537A30,30 0,0 1 537,507Z" />
+    </group>
+</vector>

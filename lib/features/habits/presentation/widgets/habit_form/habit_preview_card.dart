@@ -33,8 +33,9 @@ class HabitPreviewCard extends StatelessWidget {
     final text = AtharTextStyles.forLocale(context.locale);
     final streak = currentStreak;
     final meta = streak == null
-        ? 'habitForm.preview.startsToday'.tr()
-        : 'plural.days'.plural(
+        ? context.tr('habitForm.preview.startsToday')
+        : context.plural(
+            'plural.days',
             streak,
             format: LocalizedNumbers.formatter(context.locale),
           );
@@ -59,7 +60,9 @@ class HabitPreviewCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    name.isEmpty ? 'habitForm.preview.placeholder'.tr() : name,
+                    name.isEmpty
+                        ? context.tr('habitForm.preview.placeholder')
+                        : name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: text.cardTitle.copyWith(

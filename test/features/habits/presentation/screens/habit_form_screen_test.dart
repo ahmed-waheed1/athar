@@ -1,6 +1,7 @@
 import 'package:athar/core/di/injection.dart';
 import 'package:athar/core/localization/app_locales.dart';
 import 'package:athar/core/router/app_router.dart';
+import 'package:athar/core/services/notification_service.dart';
 import 'package:athar/features/habits/domain/entities/habit.dart';
 import 'package:athar/features/habits/domain/entities/habit_name.dart';
 import 'package:athar/features/habits/domain/entities/reminder_time.dart';
@@ -23,6 +24,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../helpers/athar_test_app.dart';
+import '../../../../helpers/fake_notification_service.dart';
 import '../../../../helpers/in_memory_habit_repository.dart';
 import '../../../../helpers/in_memory_settings_repository.dart';
 
@@ -31,10 +33,12 @@ import '../../../../helpers/in_memory_settings_repository.dart';
 void main() {
   late InMemoryHabitRepository repository;
   late GoRouter router;
+  late FakeNotificationService notifications;
 
   setUpAll(setUpAtharTestApp);
 
   setUp(() {
+    notifications = registerFakeNotifications();
     repository = InMemoryHabitRepository();
     final streaks = StreakCalculator();
     sl
@@ -422,6 +426,180 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(HomeScreen), findsOneWidget);
       expect(find.text('Walk'), findsOneWidget);
+    });
+  });
+
+  group('reminder permission', () {
+    const strings = {
+      'en': (
+        title: 'Want a gentle nudge?',
+        allow: 'Allow reminders',
+        notNow: 'Not now',
+        time: '7:00',
+        blocked:
+            'Notifications are blocked, so reminders can’t reach you. '
+            'Turn them on in your phone’s settings.',
+        openSettings: 'Open settings',
+      ),
+      'ar': (
+        title: 'هل تريد تذكيرًا لطيفًا؟',
+        allow: 'السماح بالتذكيرات',
+        notNow: 'ليس الآن',
+        time: '٧:٠٠',
+        blocked: 'الإشعارات متوقفة، لذلك لن تصلك التذكيرات. فعّلها من إعدادات هاتفك.',
+        openSettings: 'فتح الإعدادات',
+      ),
+    };
+
+    for (final MapEntry(key: langName, value: locale) in locales.entries) {
+      final text = strings[langName]!;
+
+      testWidgets('the first reminder explains, then asks the system '
+          '($langName)', (tester) async {
+        notifications.permissionState = NotificationPermission.notDetermined;
+        await pumpApp(tester, location: AppRoutes.addHabit, locale: locale);
+
+        await tapVisible(tester, find.byType(Switch));
+        expect(find.text(text.title), findsOneWidget);
+        expect(notifications.requestCalls, 0);
+
+        await tester.tap(find.text(text.allow));
+        await tester.pumpAndSettle();
+        expect(find.text(text.title), findsNothing);
+        expect(notifications.requestCalls, 1);
+        expect(find.textContaining(text.time), findsOneWidget);
+        expect(find.text(text.blocked), findsNothing);
+      });
+
+      testWidgets('Not now keeps the reminder off and skips the system '
+          'prompt ($langName)', (tester) async {
+        notifications.permissionState = NotificationPermission.notDetermined;
+        await pumpApp(tester, location: AppRoutes.addHabit, locale: locale);
+
+        await tapVisible(tester, find.byType(Switch));
+        await tester.tap(find.text(text.notNow));
+        await tester.pumpAndSettle();
+        expect(notifications.requestCalls, 0);
+        expect(tester.widget<Switch>(find.byType(Switch)).value, isFalse);
+        expect(
+          find.text('habitForm.reminder.subtitleOff'.tr()),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('refused by the system: the reminder stays on with the '
+          'blocked banner ($langName)', (tester) async {
+        notifications
+          ..permissionState = NotificationPermission.notDetermined
+          ..permissionAfterRequest = NotificationPermission.denied;
+        await pumpApp(tester, location: AppRoutes.addHabit, locale: locale);
+
+        await tapVisible(tester, find.byType(Switch));
+        await tester.tap(find.text(text.allow));
+        await tester.pumpAndSettle();
+        expect(tester.widget<Switch>(find.byType(Switch)).value, isTrue);
+        expect(find.text(text.blocked), findsOneWidget);
+
+        await tapVisible(tester, find.text(text.openSettings));
+        expect(notifications.openSettingsCalls, 1);
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets('already blocked: no sheet, just the banner ($langName)', (
+        tester,
+      ) async {
+        notifications.permissionState = NotificationPermission.denied;
+        await pumpApp(tester, location: AppRoutes.addHabit, locale: locale);
+        expect(find.text(text.blocked), findsNothing);
+
+        await tapVisible(tester, find.byType(Switch));
+        expect(find.text(text.title), findsNothing);
+        expect(notifications.requestCalls, 0);
+        expect(find.text(text.blocked), findsOneWidget);
+
+        // Turning the reminder off hides it again.
+        await tapVisible(tester, find.byType(Switch));
+        expect(find.text(text.blocked), findsNothing);
+      });
+    }
+
+    testWidgets('already allowed: the reminder turns on with no sheet', (
+      tester,
+    ) async {
+      await pumpApp(tester, location: AppRoutes.addHabit);
+      await tapVisible(tester, find.byType(Switch));
+      expect(find.text('reminders.prompt.title'.tr()), findsNothing);
+      expect(notifications.requestCalls, 0);
+      expect(tester.widget<Switch>(find.byType(Switch)).value, isTrue);
+    });
+
+    testWidgets('setting a time asks first too', (tester) async {
+      notifications.permissionState = NotificationPermission.notDetermined;
+      await pumpApp(tester, location: AppRoutes.addHabit);
+
+      await tapVisible(tester, find.text('habitForm.reminder.title'.tr()));
+      await tester.tap(find.text('habitForm.reminder.set'.tr()));
+      await tester.pumpAndSettle();
+      expect(find.text('reminders.prompt.title'.tr()), findsOneWidget);
+      await tester.tap(find.text('reminders.prompt.notNow'.tr()));
+      await tester.pumpAndSettle();
+      expect(tester.widget<Switch>(find.byType(Switch)).value, isFalse);
+    });
+  });
+
+  group('swipe back (phone)', () {
+    for (final MapEntry(key: langName, value: locale) in locales.entries) {
+      // From the start edge toward the end: rightward in English, leftward
+      // in Arabic.
+      final rtl = langName == 'ar';
+      const width = 375.0;
+      final start = Offset(rtl ? width - 4 : 4, 400);
+      final swipe = Offset(rtl ? -300 : 300, 0);
+
+      testWidgets('leaves when nothing changed ($langName)', (tester) async {
+        await pumpApp(tester, location: AppRoutes.addHabit, locale: locale);
+        await tester.dragFrom(start, swipe);
+        await tester.pumpAndSettle();
+        expect(find.byType(HabitFormScreen), findsNothing);
+        expect(find.text('habitForm.discard.title'.tr()), findsNothing);
+        expect(router.state.uri.path, AppRoutes.home);
+      });
+
+      testWidgets('asks before discarding unsaved changes ($langName)', (
+        tester,
+      ) async {
+        await pumpApp(tester, location: AppRoutes.addHabit, locale: locale);
+        await tester.enterText(find.byType(TextField), 'Walk');
+        await tester.pumpAndSettle();
+
+        await tester.dragFrom(start, swipe);
+        await tester.pumpAndSettle();
+        expect(find.text('habitForm.discard.title'.tr()), findsOneWidget);
+        expect(find.byType(HabitFormScreen), findsOneWidget);
+
+        await tester.tap(find.text('habitForm.discard.cancel'.tr()));
+        await tester.pumpAndSettle();
+        expect(find.widgetWithText(TextField, 'Walk'), findsOneWidget);
+
+        await tester.dragFrom(start, swipe);
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('habitForm.discard.confirm'.tr()));
+        await tester.pumpAndSettle();
+        expect(find.byType(HabitFormScreen), findsNothing);
+        expect(repository.habits, isEmpty);
+      });
+    }
+
+    testWidgets('a swipe that starts away from the edge does nothing', (
+      tester,
+    ) async {
+      await pumpApp(tester, location: AppRoutes.addHabit);
+      await tester.enterText(find.byType(TextField), 'Walk');
+      await tester.pumpAndSettle();
+      await tester.dragFrom(const Offset(120, 400), const Offset(200, 0));
+      await tester.pumpAndSettle();
+      expect(find.text('habitForm.discard.title'.tr()), findsNothing);
+      expect(find.byType(HabitFormScreen), findsOneWidget);
     });
   });
 

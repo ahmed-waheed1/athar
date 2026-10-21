@@ -1,10 +1,15 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/notifications/notification_permission_cubit.dart';
+import '../../../../core/notifications/notification_prompt_sheet.dart';
+import '../../../../core/notifications/notifications_blocked_banner.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/services/notification_service.dart';
 import '../../../../core/theme/athar_colors.dart';
 import '../../../../core/theme/athar_spacing.dart';
 import '../../../../core/theme/athar_typography.dart';
@@ -21,8 +26,9 @@ import '../widgets/habit_form/icon_picker.dart';
 import '../widgets/habit_form/reminder_row.dart';
 import '../widgets/habit_form/reminder_time_sheet.dart';
 
-/// Add / Edit Habit as a route page. On phone it slides in full screen; on
-/// tablet and wide it fades in as a centred dialog over the page below.
+/// Add / Edit Habit as a route page. On phone it slides in full screen with
+/// the iOS-style swipe back from the start edge; on tablet and wide it fades
+/// in as a centred dialog over the page below.
 Page<void> habitFormPage({required LocalKey key, required Widget child}) =>
     CustomTransitionPage<void>(
       key: key,
@@ -33,11 +39,15 @@ Page<void> habitFormPage({required LocalKey key, required Widget child}) =>
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         final layout = AtharBreakpoints.of(MediaQuery.sizeOf(context).width);
         if (layout == AtharLayout.phone) {
-          return CupertinoPageTransition(
-            primaryRouteAnimation: animation,
-            secondaryRouteAnimation: secondaryAnimation,
-            linearTransition: false,
-            child: child,
+          // The Cupertino transition plus its back-swipe detector. The swipe
+          // is off while PopScope blocks the pop (unsaved changes); then
+          // _DiscardSwipeArea takes over.
+          return CupertinoRouteTransitionMixin.buildPageTransitions(
+            ModalRoute.of(context)! as PageRoute<Object?>,
+            context,
+            animation,
+            secondaryAnimation,
+            child,
           );
         }
         return FadeTransition(
@@ -51,7 +61,7 @@ Page<void> habitFormPage({required LocalKey key, required Widget child}) =>
     );
 
 /// Add Habit / Edit Habit (design/screens.md · 05). Needs a started
-/// [HabitFormCubit] above it.
+/// [HabitFormCubit] and a [NotificationPermissionCubit] above it.
 class HabitFormScreen extends StatefulWidget {
   const HabitFormScreen({super.key});
 
@@ -126,29 +136,31 @@ class _HabitFormScreenState extends State<HabitFormScreen> {
   Future<bool> _confirmDiscard() => showAtharConfirmDialog(
     context,
     iconName: 'warn',
-    title: 'habitForm.discard.title'.tr(),
-    body: 'habitForm.discard.body'.tr(),
-    cancelLabel: 'habitForm.discard.cancel'.tr(),
-    confirmLabel: 'habitForm.discard.confirm'.tr(),
+    title: context.tr('habitForm.discard.title'),
+    body: context.tr('habitForm.discard.body'),
+    cancelLabel: context.tr('habitForm.discard.cancel'),
+    confirmLabel: context.tr('habitForm.discard.confirm'),
   );
 
   Future<void> _delete() async {
     final state = _cubit.state;
     final body = state.currentStreak == 0
-        ? 'deleteDialog.bodyNoStreak'.tr()
-        : 'deleteDialog.body'.plural(
+        ? context.tr('deleteDialog.bodyNoStreak')
+        : context.plural(
+            'deleteDialog.body',
             state.currentStreak,
             format: LocalizedNumbers.formatter(context.locale),
           );
     final confirmed = await showAtharConfirmDialog(
       context,
       iconName: 'trash',
-      title: 'deleteDialog.title'.tr(
+      title: context.tr(
+        'deleteDialog.title',
         namedArgs: {'name': state.initial?.name ?? state.values.name},
       ),
       body: body,
-      cancelLabel: 'deleteDialog.cancel'.tr(),
-      confirmLabel: 'deleteDialog.confirm'.tr(),
+      cancelLabel: context.tr('deleteDialog.cancel'),
+      confirmLabel: context.tr('deleteDialog.confirm'),
     );
     if (confirmed && mounted) await _cubit.delete();
   }
@@ -169,19 +181,33 @@ class _HabitFormScreenState extends State<HabitFormScreen> {
     );
   }
 
+  /// Turning a reminder on asks for notifications first, the first time.
+  Future<void> _toggleReminder(bool enabled) async {
+    _nameFocus.unfocus();
+    if (enabled && !await allowReminders(context)) return;
+    if (mounted) _cubit.reminderToggled(enabled);
+  }
+
   Future<void> _showTimeSheet() async {
     _nameFocus.unfocus();
     final time = await showReminderTimeSheet(
       context,
       initial: _cubit.state.reminderTime,
     );
-    if (time != null && mounted) _cubit.reminderTimeSet(time);
+    if (time == null || !mounted) return;
+    // Setting a time turns the reminder on.
+    if (!_cubit.state.reminderEnabled && !await allowReminders(context)) {
+      return;
+    }
+    if (mounted) _cubit.reminderTimeSet(time);
   }
 
   void _showSaveFailed() {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('habitForm.saveFailed'.tr())));
+      ..showSnackBar(
+        SnackBar(content: Text(context.tr('habitForm.saveFailed'))),
+      );
   }
 
   @override
@@ -230,7 +256,7 @@ class _HabitFormScreenState extends State<HabitFormScreen> {
   Widget _buildPhone(HabitFormState state) {
     final colors = AtharColors.of(context);
     final padding = MediaQuery.paddingOf(context);
-    return Scaffold(
+    final page = Scaffold(
       backgroundColor: colors.background,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -255,6 +281,23 @@ class _HabitFormScreenState extends State<HabitFormScreen> {
           ),
         ],
       ),
+    );
+    if (!state.hasUnsavedChanges) return page;
+    return Stack(
+      children: [
+        page,
+        PositionedDirectional(
+          start: 0,
+          top: 0,
+          bottom: 0,
+          width:
+              HabitFormMetrics.backSwipeEdge +
+              (Directionality.of(context) == TextDirection.rtl
+                  ? padding.right
+                  : padding.left),
+          child: _DiscardSwipeArea(onSwipe: _close),
+        ),
+      ],
     );
   }
 
@@ -394,14 +437,76 @@ class _HabitFormScreenState extends State<HabitFormScreen> {
             child: ReminderRow(
               enabled: state.reminderEnabled,
               time: state.reminderTime,
-              onToggled: _cubit.reminderToggled,
+              onToggled: _toggleReminder,
               onTap: _showTimeSheet,
             ),
           ),
+          if (state.reminderEnabled)
+            BlocBuilder<NotificationPermissionCubit, NotificationPermission>(
+              builder: (context, permission) =>
+                  permission == NotificationPermission.denied
+                  ? Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                        gutter,
+                        HabitFormMetrics.blockedBannerTop,
+                        gutter,
+                        0,
+                      ),
+                      child: NotificationsBlockedBanner(
+                        onOpenSettings: context
+                            .read<NotificationPermissionCubit>()
+                            .openSystemSettings,
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
         ],
       ),
     );
   }
+}
+
+/// A swipe from the start edge while there are unsaved changes. The route's
+/// own back swipe is off then (it would pop without asking), so this one asks
+/// to discard first, like the back button.
+class _DiscardSwipeArea extends StatefulWidget {
+  const _DiscardSwipeArea({required this.onSwipe});
+
+  final VoidCallback onSwipe;
+
+  @override
+  State<_DiscardSwipeArea> createState() => _DiscardSwipeAreaState();
+}
+
+class _DiscardSwipeAreaState extends State<_DiscardSwipeArea> {
+  double _distance = 0;
+  bool _fired = false;
+
+  void _onUpdate(DragUpdateDetails details) {
+    if (_fired) return;
+    // Toward the end edge: right in English, left in Arabic.
+    final sign = Directionality.of(context) == TextDirection.rtl ? -1 : 1;
+    _distance += details.delta.dx * sign;
+    if (_distance >= HabitFormMetrics.backSwipeTrigger) {
+      _fired = true;
+      widget.onSwipe();
+    }
+  }
+
+  void _reset() {
+    _distance = 0;
+    _fired = false;
+  }
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    behavior: HitTestBehavior.translucent,
+    dragStartBehavior: DragStartBehavior.down,
+    onHorizontalDragStart: (_) => _reset(),
+    onHorizontalDragUpdate: _onUpdate,
+    onHorizontalDragEnd: (_) => _reset(),
+    onHorizontalDragCancel: _reset,
+  );
 }
 
 class _AppBar extends StatelessWidget {
@@ -450,8 +555,9 @@ class _AppBar extends StatelessWidget {
               child: Semantics(
                 header: true,
                 child: Text(
-                  (state.isEdit ? 'habitForm.editTitle' : 'habitForm.addTitle')
-                      .tr(),
+                  context.tr(
+                    state.isEdit ? 'habitForm.editTitle' : 'habitForm.addTitle',
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: text.appBarTitle.copyWith(color: colors.textPrimary),
@@ -460,7 +566,7 @@ class _AppBar extends StatelessWidget {
             ),
             if (state.isEdit)
               IconButton(
-                tooltip: 'habitForm.delete'.tr(),
+                tooltip: context.tr('habitForm.delete'),
                 onPressed: canDelete ? onDelete : null,
                 icon: AtharIcon.ui(
                   'trash',
@@ -485,7 +591,7 @@ class _SaveButton extends StatelessWidget {
   Widget build(BuildContext context) => FilledButton(
     onPressed: state.canSubmit ? onPressed : null,
     child: Text(
-      (state.isEdit ? 'habitForm.saveChanges' : 'habitForm.save').tr(),
+      context.tr(state.isEdit ? 'habitForm.saveChanges' : 'habitForm.save'),
     ),
   );
 }

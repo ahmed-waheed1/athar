@@ -71,7 +71,7 @@ class _MonthCalendarCardState extends State<MonthCalendarCard> {
             children: [
               _NavButton(
                 icon: 'chev_start',
-                tooltip: 'details.calendar.previous'.tr(),
+                tooltip: context.tr('details.calendar.previous'),
                 onPressed: widget.onPrevious,
               ),
               Expanded(
@@ -87,7 +87,7 @@ class _MonthCalendarCardState extends State<MonthCalendarCard> {
               ),
               _NavButton(
                 icon: 'chev_end',
-                tooltip: 'details.calendar.next'.tr(),
+                tooltip: context.tr('details.calendar.next'),
                 onPressed: widget.onNext,
               ),
             ],
@@ -299,10 +299,12 @@ class _DayCell extends StatelessWidget {
     };
     final date = LocalizedDates.fullDate(day, locale);
     final label = switch (status) {
-      HabitDayStatus.done => 'details.calendar.dayDone'.tr(
+      HabitDayStatus.done => context.tr(
+        'details.calendar.dayDone',
         namedArgs: {'date': date},
       ),
-      HabitDayStatus.missed => 'details.calendar.dayMissed'.tr(
+      HabitDayStatus.missed => context.tr(
+        'details.calendar.dayMissed',
         namedArgs: {'date': date},
       ),
       _ => date,

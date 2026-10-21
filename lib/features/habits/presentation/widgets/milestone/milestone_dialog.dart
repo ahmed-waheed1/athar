@@ -83,7 +83,7 @@ class MilestoneCard extends StatelessWidget {
     final numbers = LocalizedNumbers.formatter(context.locale);
     final brightness = Theme.of(context).brightness;
     final next = StreakMilestones.nextAfter(milestone);
-    final title = 'milestone.title'.plural(milestone, format: numbers);
+    final title = context.plural('milestone.title', milestone, format: numbers);
 
     return SafeArea(
       child: Center(
@@ -139,7 +139,8 @@ class MilestoneCard extends StatelessWidget {
                               height: MilestoneMetrics.titleToBody,
                             ),
                             Text(
-                              'milestone.body.$milestone'.tr(
+                              context.tr(
+                                'milestone.body.$milestone',
                                 namedArgs: {
                                   'name': habit.name,
                                   'count': numbers.format(milestone),
@@ -172,7 +173,7 @@ class MilestoneCard extends StatelessWidget {
                                   ),
                                   textStyle: text.button,
                                 ),
-                                child: Text('milestone.keepGoing'.tr()),
+                                child: Text(context.tr('milestone.keepGoing')),
                               ),
                             ),
                           ],
@@ -231,7 +232,7 @@ class _RingCentre extends StatelessWidget {
           style: text.milestoneNumber.copyWith(color: colors.textPrimary),
         ),
         Text(
-          'details.daysUnit'.plural(milestone),
+          context.plural('details.daysUnit', milestone),
           style: text.label.copyWith(
             fontSize: MilestoneMetrics.unitSize,
             fontWeight: FontWeight.w700,
@@ -262,9 +263,11 @@ class _NextMilestonePill extends StatelessWidget {
         borderRadius: BorderRadius.circular(AtharRadii.full),
       ),
       child: Text(
-        'milestone.next'.tr(
+        context.tr(
+          'milestone.next',
           namedArgs: {
-            'days': 'plural.days'.plural(
+            'days': context.plural(
+              'plural.days',
               next,
               format: LocalizedNumbers.formatter(context.locale),
             ),

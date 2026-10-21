@@ -71,7 +71,7 @@ class HomeEmptyState extends StatelessWidget {
         ),
         const SizedBox(height: AtharSpacing.xl),
         Text(
-          'home.empty.title'.tr(),
+          context.tr('home.empty.title'),
           textAlign: TextAlign.center,
           style: text.emptyTitle.copyWith(color: colors.textPrimary),
         ),
@@ -81,7 +81,7 @@ class HomeEmptyState extends StatelessWidget {
             maxWidth: HomeMetrics.emptyBodyMaxWidth,
           ),
           child: Text(
-            'home.empty.body'.tr(),
+            context.tr('home.empty.body'),
             textAlign: TextAlign.center,
             style: text.body.copyWith(color: colors.textSecondary),
           ),
@@ -100,11 +100,11 @@ class HomeEmptyState extends StatelessWidget {
             size: HomeMetrics.buttonIcon,
             color: colors.onPrimary,
           ),
-          label: Text('home.empty.create'.tr()),
+          label: Text(context.tr('home.empty.create')),
         ),
         const SizedBox(height: AtharSpacing.xl),
         Text(
-          'home.empty.suggestionsTitle'.tr(),
+          context.tr('home.empty.suggestionsTitle'),
           textAlign: TextAlign.center,
           style: text.caption.copyWith(color: colors.textTertiary),
         ),
@@ -162,7 +162,7 @@ class _SuggestionChip extends StatelessWidget {
               ),
               const SizedBox(width: AtharSpacing.xs),
               Text(
-                suggestion.labelKey.tr(),
+                context.tr(suggestion.labelKey),
                 style: text.bodySmall.copyWith(
                   color: colors.textPrimary,
                   fontWeight: FontWeight.w600,

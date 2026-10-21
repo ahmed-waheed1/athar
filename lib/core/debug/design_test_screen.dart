@@ -37,7 +37,7 @@ class DesignTestScreen extends StatelessWidget {
                   ),
                   children: [
                     Text(
-                      'designTest.title'.tr(),
+                      context.tr('designTest.title'),
                       style: text.screenTitle.copyWith(
                         color: colors.textPrimary,
                       ),
@@ -101,7 +101,7 @@ class _Section extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            titleKey.tr(),
+            context.tr(titleKey),
             style: text.sectionTitle.copyWith(color: colors.textPrimary),
           ),
           const SizedBox(height: AtharSpacing.sm),
@@ -124,11 +124,11 @@ class _Controls extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('settings.language'.tr(), style: labelStyle),
+        Text(context.tr('settings.language'), style: labelStyle),
         const SizedBox(height: AtharSpacing.xs),
         const LanguageControl(),
         const SizedBox(height: AtharSpacing.md),
-        Text('settings.appearance'.tr(), style: labelStyle),
+        Text(context.tr('settings.appearance'), style: labelStyle),
         const SizedBox(height: AtharSpacing.xs),
         const ThemeModeControl(),
       ],
@@ -166,7 +166,7 @@ class _BrandMarks extends StatelessWidget {
         ),
         const SizedBox(width: AtharSpacing.md),
         Text(
-          'app.name'.tr(),
+          context.tr('app.name'),
           style: AtharTextStyles.forLocale(context.locale).greeting
               .copyWith(color: colors.primary),
         ),
@@ -190,7 +190,7 @@ class _Numbers extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              labelKey.tr(),
+              context.tr(labelKey),
               style: text.bodySmall.copyWith(color: colors.textSecondary),
             ),
           ),
@@ -252,7 +252,7 @@ class _Icons extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'designTest.iconsMirrorHint'.tr(),
+          context.tr('designTest.iconsMirrorHint'),
           style: text.caption.copyWith(color: colors.textTertiary),
         ),
         const SizedBox(height: AtharSpacing.xs),
@@ -395,12 +395,12 @@ class _TextStyles extends StatelessWidget {
           ),
           // Each script in its own style set and direction, regardless of the UI language.
           Text(
-            'designTest.sampleEnglish'.tr(),
+            context.tr('designTest.sampleEnglish'),
             textDirection: TextDirection.ltr,
             style: latin[name]!.copyWith(color: colors.textPrimary),
           ),
           Text(
-            'designTest.sampleArabic'.tr(),
+            context.tr('designTest.sampleArabic'),
             textDirection: TextDirection.rtl,
             style: arabic[name]!.copyWith(color: colors.textPrimary),
           ),

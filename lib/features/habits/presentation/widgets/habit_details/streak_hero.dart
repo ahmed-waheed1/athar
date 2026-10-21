@@ -23,16 +23,18 @@ class StreakHero extends StatelessWidget {
   final HabitAccent accent;
   final AtharLayout layout;
 
-  String _note(NumberFormat numbers) {
+  String _note(BuildContext context, NumberFormat numbers) {
     final best = numbers.format(stats.bestStreak);
     return switch (stats.status) {
-      StreakStatus.fresh => 'details.note.first'.tr(),
-      StreakStatus.broken => 'details.note.paused'.tr(
+      StreakStatus.fresh => context.tr('details.note.first'),
+      StreakStatus.broken => context.tr(
+        'details.note.paused',
         namedArgs: {'best': best},
       ),
       StreakStatus.active when stats.currentStreak >= stats.bestStreak =>
-        'details.note.bestEver'.tr(),
-      StreakStatus.active => 'details.note.toGo'.tr(
+        context.tr('details.note.bestEver'),
+      StreakStatus.active => context.tr(
+        'details.note.toGo',
         namedArgs: {
           'best': best,
           'remaining': numbers.format(stats.bestStreak - stats.currentStreak),
@@ -68,8 +70,8 @@ class StreakHero extends StatelessWidget {
       ),
     };
     final current = stats.currentStreak;
-    final unit = 'details.daysUnit'.plural(current);
-    final note = _note(numbers);
+    final unit = context.plural('details.daysUnit', current);
+    final note = _note(context, numbers);
     final numberStyle = text.displayStreak.copyWith(
       color: foreground,
       fontSize: layout == AtharLayout.phone
@@ -81,7 +83,7 @@ class StreakHero extends StatelessWidget {
     return Semantics(
       container: true,
       label:
-          '${'details.currentStreak'.tr()}, '
+          '${context.tr('details.currentStreak')}, '
           '${numbers.format(current)} $unit, $note',
       excludeSemantics: true,
       child: Container(
@@ -100,7 +102,7 @@ class StreakHero extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'details.currentStreak'.tr(),
+                    context.tr('details.currentStreak'),
                     style: text.cardTitle.copyWith(
                       color: foreground,
                       fontSize: HabitDetailsMetrics.heroLabelSize,

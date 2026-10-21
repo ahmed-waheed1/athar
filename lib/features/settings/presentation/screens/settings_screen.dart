@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/notifications/notification_metrics.dart';
+import '../../../../core/notifications/notification_permission_cubit.dart';
+import '../../../../core/notifications/notification_prompt_sheet.dart';
+import '../../../../core/notifications/notifications_blocked_banner.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/services/notification_service.dart';
 import '../../../../core/theme/athar_colors.dart';
 import '../../../../core/theme/athar_spacing.dart';
 import '../../../../core/theme/athar_typography.dart';
@@ -15,8 +20,8 @@ import '../cubit/reset_data_cubit.dart';
 import '../widgets/settings_controls.dart';
 import '../widgets/settings_metrics.dart';
 
-/// Settings (design/screens.md · 08): language, appearance, your data and the
-/// app version. Reminder settings come with the reminders step.
+/// Settings (design/screens.md · 08): language, appearance, reminders, your
+/// data and the app version. Needs a [NotificationPermissionCubit] above it.
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key, required this.version});
 
@@ -30,14 +35,17 @@ class SettingsScreen extends StatelessWidget {
 
     final numbers = LocalizedNumbers.formatter(context.locale);
     final body = summary.habits == 0
-        ? 'settings.reset.bodyEmpty'.tr()
-        : 'settings.reset.body'.tr(
+        ? context.tr('settings.reset.bodyEmpty')
+        : context.tr(
+            'settings.reset.body',
             namedArgs: {
-              'habits': 'settings.reset.habits'.plural(
+              'habits': context.plural(
+                'settings.reset.habits',
                 summary.habits,
                 format: numbers,
               ),
-              'traces': 'settings.reset.traces'.plural(
+              'traces': context.plural(
+                'settings.reset.traces',
                 summary.traces,
                 format: numbers,
               ),
@@ -46,10 +54,10 @@ class SettingsScreen extends StatelessWidget {
     final confirmed = await showAtharConfirmDialog(
       context,
       iconName: 'trash',
-      title: 'settings.reset.title'.tr(),
+      title: context.tr('settings.reset.title'),
       body: body,
-      cancelLabel: 'settings.reset.cancel'.tr(),
-      confirmLabel: 'settings.reset.confirm'.tr(),
+      cancelLabel: context.tr('settings.reset.cancel'),
+      confirmLabel: context.tr('settings.reset.confirm'),
     );
     if (confirmed) await cubit.reset();
   }
@@ -60,7 +68,7 @@ class SettingsScreen extends StatelessWidget {
       ..showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: Text('settings.reset.failed'.tr()),
+          content: Text(context.tr('settings.reset.failed')),
         ),
       );
   }
@@ -101,18 +109,21 @@ class SettingsScreen extends StatelessWidget {
               Semantics(
                 header: true,
                 child: Text(
-                  'settings.title'.tr(),
+                  context.tr('settings.title'),
                   style: text.screenTitle.copyWith(color: colors.textPrimary),
                 ),
               ),
               const SizedBox(height: SettingsMetrics.sectionGap),
-              _SectionLabel('settings.language'.tr()),
+              _SectionLabel(context.tr('settings.language')),
               const LanguageControl(),
               const SizedBox(height: SettingsMetrics.sectionGap),
-              _SectionLabel('settings.appearance'.tr()),
+              _SectionLabel(context.tr('settings.appearance')),
               const ThemeModeControl(),
               const SizedBox(height: SettingsMetrics.sectionGap),
-              _SectionLabel('settings.yourData'.tr()),
+              _SectionLabel(context.tr('settings.preferences')),
+              const _Group(children: [_RemindersRow()]),
+              const SizedBox(height: SettingsMetrics.sectionGap),
+              _SectionLabel(context.tr('settings.yourData')),
               _Group(
                 children: [
                   _SettingsRow(
@@ -120,7 +131,7 @@ class SettingsScreen extends StatelessWidget {
                     iconColor: colors.textSecondary,
                     iconBackground: colors.surfaceVariant,
                     title: Text(
-                      'settings.localOnly'.tr(),
+                      context.tr('settings.localOnly'),
                       style: text.body.copyWith(color: colors.textSecondary),
                     ),
                   ),
@@ -129,17 +140,18 @@ class SettingsScreen extends StatelessWidget {
                     iconColor: colors.error,
                     iconBackground: colors.errorContainer,
                     title: Text(
-                      'settings.reset.row'.tr(),
+                      context.tr('settings.reset.row'),
                       style: text.buttonSmall.copyWith(color: colors.error),
                     ),
-                    subtitle: 'settings.reset.rowSubtitle'.tr(),
+                    subtitle: context.tr('settings.reset.rowSubtitle'),
                     onTap: () => _confirmReset(context),
                   ),
                 ],
               ),
               const SizedBox(height: SettingsMetrics.versionTop),
               Text(
-                'settings.version'.tr(
+                context.tr(
+                  'settings.version',
                   namedArgs: {
                     'version': LocalizedNumbers.digits(
                       version.version,
@@ -226,6 +238,72 @@ class _Group extends StatelessWidget {
   }
 }
 
+/// Reminders: whether the system lets Athar notify (design/screens.md · 08,
+/// 09). Only the system can take the permission back, so turning the switch
+/// off opens the system settings. When notifications are blocked, the
+/// switch is disabled and a banner links to the system settings.
+class _RemindersRow extends StatelessWidget {
+  const _RemindersRow();
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = AtharColors.of(context);
+    final text = AtharTextStyles.forLocale(context.locale);
+    final permissions = context.read<NotificationPermissionCubit>();
+    final permission = context.watch<NotificationPermissionCubit>().state;
+    final ValueChanged<bool>? onChanged = switch (permission) {
+      NotificationPermission.granted => (_) => permissions.openSystemSettings(),
+      NotificationPermission.notDetermined => (_) => allowReminders(context),
+      NotificationPermission.denied => null,
+    };
+    final isOn = permission == NotificationPermission.granted;
+    final title = context.tr('settings.reminders.title');
+
+    return Column(
+      children: [
+        _SettingsRow(
+          iconName: permission == NotificationPermission.denied
+              ? 'bell_off'
+              : 'bell',
+          iconColor: colors.onPrimaryContainer,
+          iconBackground: colors.primaryContainer,
+          title: Text(
+            title,
+            style: text.cardTitle.copyWith(color: colors.textPrimary),
+          ),
+          subtitle: context.tr(switch (permission) {
+            NotificationPermission.granted => 'settings.reminders.on',
+            NotificationPermission.notDetermined => 'settings.reminders.off',
+            NotificationPermission.denied => 'settings.reminders.blocked',
+          }),
+          onTap: onChanged == null ? null : () => onChanged(!isOn),
+          trailing: Opacity(
+            opacity: onChanged == null
+                ? NotificationMetrics.disabledSwitchOpacity
+                : 1,
+            child: Semantics(
+              label: title,
+              child: Switch(value: isOn, onChanged: onChanged),
+            ),
+          ),
+        ),
+        if (permission == NotificationPermission.denied)
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              SettingsMetrics.bannerInset,
+              0,
+              SettingsMetrics.bannerInset,
+              SettingsMetrics.bannerInset,
+            ),
+            child: NotificationsBlockedBanner(
+              onOpenSettings: permissions.openSystemSettings,
+            ),
+          ),
+      ],
+    );
+  }
+}
+
 class _SettingsRow extends StatelessWidget {
   const _SettingsRow({
     required this.iconName,
@@ -234,6 +312,7 @@ class _SettingsRow extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.onTap,
+    this.trailing,
   });
 
   final String iconName;
@@ -242,6 +321,7 @@ class _SettingsRow extends StatelessWidget {
   final Widget title;
   final String? subtitle;
   final VoidCallback? onTap;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -290,6 +370,10 @@ class _SettingsRow extends StatelessWidget {
                 ],
               ),
             ),
+            if (trailing case final trailing?) ...[
+              const SizedBox(width: SettingsMetrics.rowGap),
+              trailing,
+            ],
           ],
         ),
       ),

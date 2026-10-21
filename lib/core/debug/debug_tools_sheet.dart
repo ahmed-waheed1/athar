@@ -3,14 +3,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/habits/data/services/habit_reminder_scheduler.dart';
 import '../../features/habits/domain/repositories/habit_repository.dart';
 import '../../features/settings/presentation/cubit/settings_cubit.dart';
 import '../di/injection.dart';
 import '../router/app_router.dart';
 import 'sample_habits.dart';
 
-/// DEBUG ONLY: sample data, onboarding reset and the design test screen. Opened by
-/// long-pressing the Home greeting. Does nothing in release builds.
+/// DEBUG ONLY: sample data, test reminders, onboarding reset and the design
+/// test screen. Opened by long-pressing the Home greeting. Does nothing in
+/// release builds.
 /// [onChanged] runs after the stored habits change.
 Future<void> showDebugToolsSheet(
   BuildContext context, {
@@ -24,15 +26,15 @@ Future<void> showDebugToolsSheet(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(title: Text('debug.menuTitle'.tr())),
+          ListTile(title: Text(context.tr('debug.menuTitle'))),
           ListTile(
-            title: Text('debug.insertSamples'.tr()),
+            title: Text(context.tr('debug.insertSamples')),
             onTap: () async {
               final repository = sl<HabitRepository>();
               // Fixed ids: inserting again resets the samples.
               for (final habit in buildSampleHabits(
                 now: DateTime.now(),
-                name: (key) => key.tr(),
+                name: (key) => context.tr(key),
               )) {
                 await repository.addHabit(habit);
               }
@@ -41,12 +43,12 @@ Future<void> showDebugToolsSheet(
             },
           ),
           ListTile(
-            title: Text('debug.insertMilestoneSamples'.tr()),
+            title: Text(context.tr('debug.insertMilestoneSamples')),
             onTap: () async {
               final repository = sl<HabitRepository>();
               for (final habit in buildMilestoneSampleHabits(
                 now: DateTime.now(),
-                name: (key) => key.tr(),
+                name: (key) => context.tr(key),
               )) {
                 await repository.addHabit(habit);
               }
@@ -55,7 +57,7 @@ Future<void> showDebugToolsSheet(
             },
           ),
           ListTile(
-            title: Text('debug.clearHabits'.tr()),
+            title: Text(context.tr('debug.clearHabits')),
             onTap: () async {
               final repository = sl<HabitRepository>();
               for (final habit in await repository.getHabits()) {
@@ -66,14 +68,34 @@ Future<void> showDebugToolsSheet(
             },
           ),
           ListTile(
-            title: Text('debug.openDesignTest'.tr()),
+            title: Text(context.tr('debug.showTestReminder')),
+            onTap: () {
+              Navigator.of(sheetContext).pop();
+              sl<HabitReminderScheduler>().showTestReminder(
+                name: context.tr('debug.testReminderName'),
+              );
+            },
+          ),
+          ListTile(
+            title: Text(context.tr('debug.scheduleTestReminder')),
+            onTap: () {
+              Navigator.of(sheetContext).pop();
+              // Inexact, like real reminders: Android may add a few minutes.
+              sl<HabitReminderScheduler>().scheduleTestReminder(
+                const Duration(minutes: 1),
+                name: context.tr('debug.testReminderName'),
+              );
+            },
+          ),
+          ListTile(
+            title: Text(context.tr('debug.openDesignTest')),
             onTap: () {
               Navigator.of(sheetContext).pop();
               context.push(AppRoutes.designTest);
             },
           ),
           ListTile(
-            title: Text('debug.resetOnboarding'.tr()),
+            title: Text(context.tr('debug.resetOnboarding')),
             onTap: () {
               Navigator.of(sheetContext).pop();
               // The router moves to onboarding as soon as the flag clears.

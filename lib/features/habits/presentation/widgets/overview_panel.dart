@@ -35,12 +35,12 @@ class OverviewPanel extends StatelessWidget {
         Semantics(
           header: true,
           child: Text(
-            'home.overview.title'.tr(),
+            context.tr('home.overview.title'),
             style: text.screenTitle.copyWith(color: colors.textPrimary),
           ),
         ),
         Text(
-          'home.overview.subtitle'.tr(),
+          context.tr('home.overview.subtitle'),
           style: text.body.copyWith(color: colors.textSecondary),
         ),
         const SizedBox(height: AtharSpacing.xl),
@@ -52,7 +52,7 @@ class OverviewPanel extends StatelessWidget {
                 child: _StatTile(
                   value:
                       '${numbers.format(progress.done)}/${numbers.format(progress.total)}',
-                  label: 'home.overview.doneToday'.tr(),
+                  label: context.tr('home.overview.doneToday'),
                 ),
               ),
               const SizedBox(width: AtharSpacing.md),
@@ -60,8 +60,9 @@ class OverviewPanel extends StatelessWidget {
                 child: _StatTile(
                   value: numbers.format(overview.longestActiveStreak),
                   label: longest == null
-                      ? 'home.overview.longestStreak'.tr()
-                      : 'home.overview.longestStreakOf'.tr(
+                      ? context.tr('home.overview.longestStreak')
+                      : context.tr(
+                          'home.overview.longestStreakOf',
                           namedArgs: {'name': longest.name},
                         ),
                 ),
@@ -70,9 +71,9 @@ class OverviewPanel extends StatelessWidget {
               Expanded(
                 child: _StatTile(
                   value: consistency == null
-                      ? 'home.overview.noValue'.tr()
+                      ? context.tr('home.overview.noValue')
                       : LocalizedNumbers.percent(consistency / 100, locale),
-                  label: 'home.overview.consistency'.tr(),
+                  label: context.tr('home.overview.consistency'),
                 ),
               ),
             ],
@@ -146,17 +147,24 @@ class _NextMilestoneRow extends StatelessWidget {
     final colors = AtharColors.of(context);
     final text = AtharTextStyles.forLocale(context.locale);
     final numbers = LocalizedNumbers.formatter(context.locale);
-    final title = 'home.overview.nextMilestone'.tr(
+    final title = context.tr(
+      'home.overview.nextMilestone',
       namedArgs: {
-        'days': 'plural.days'.plural(milestone.target, format: numbers),
+        'days': context.plural(
+          'plural.days',
+          milestone.target,
+          format: numbers,
+        ),
         'name': milestone.habit.name,
       },
     );
-    final subtitle =
-        (milestone.isDoneToday
-                ? 'home.overview.remainingTomorrow'
-                : 'home.overview.remainingToday')
-            .plural(milestone.remaining, format: numbers);
+    final subtitle = context.plural(
+      milestone.isDoneToday
+          ? 'home.overview.remainingTomorrow'
+          : 'home.overview.remainingToday',
+      milestone.remaining,
+      format: numbers,
+    );
 
     return Container(
       padding: const EdgeInsetsDirectional.all(AtharSpacing.lg),

@@ -33,6 +33,7 @@ Shared code goes in lib/core/.
 
 ## Rules
 - No hardcoded user-facing strings; every string goes in both en.json and ar.json.
+- In widgets, always use context.tr()/context.plural(), never 'key'.tr().
 - RTL-safe layout only: EdgeInsetsDirectional, AlignmentDirectional, start/end. Never left/right.
 - Run flutter analyze after each change and keep it at zero issues.
 - Build one screen or feature at a time and stop for review.
