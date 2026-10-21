@@ -1,3 +1,5 @@
+<img src="store/athar-feature-graphic-en.png" alt="Athar feature graphic" width="100%">
+
 # Athar (أثر)
 
 A calm, bilingual (English/Arabic) habit tracker for Android and iOS, built with Flutter.
@@ -7,6 +9,32 @@ Add daily habits, check them off, keep streaks going, and see your history as a 
 - Full Arabic: right-to-left layout, Arabic-Indic digits, Arabic plural forms, weeks starting on Saturday
 - Light and dark themes; phone, tablet, and wide layouts
 - Streaks (current and best) computed from completion dates, with milestone celebrations
+
+## Screenshots
+
+<table>
+  <tr>
+    <th></th>
+    <th>Home</th>
+    <th>Habit Details</th>
+    <th>Add Habit</th>
+    <th>Language/theme</th>
+  </tr>
+  <tr>
+    <th>English</th>
+    <td><img src="store/screenshots/en/google-play-phone-1080x1920/athar-en-01.png" alt="Home (English)" width="180"></td>
+    <td><img src="store/screenshots/en/google-play-phone-1080x1920/athar-en-03.png" alt="Habit Details (English)" width="180"></td>
+    <td><img src="store/screenshots/en/google-play-phone-1080x1920/athar-en-05.png" alt="Add Habit (English)" width="180"></td>
+    <td><img src="store/screenshots/en/google-play-phone-1080x1920/athar-en-06.png" alt="Language/theme (English)" width="180"></td>
+  </tr>
+  <tr>
+    <th>العربية</th>
+    <td><img src="store/screenshots/ar/google-play-phone-1080x1920/athar-ar-01.png" alt="Home (Arabic)" width="180"></td>
+    <td><img src="store/screenshots/ar/google-play-phone-1080x1920/athar-ar-03.png" alt="Habit Details (Arabic)" width="180"></td>
+    <td><img src="store/screenshots/ar/google-play-phone-1080x1920/athar-ar-05.png" alt="Add Habit (Arabic)" width="180"></td>
+    <td><img src="store/screenshots/ar/google-play-phone-1080x1920/athar-ar-06.png" alt="Language/theme (Arabic)" width="180"></td>
+  </tr>
+</table>
 
 ## Stack
 
@@ -107,3 +135,11 @@ flutter build appbundle --release --obfuscate --split-debug-info=build/symbols
 R8 shrinking is on for release. `android/app/src/main/res/raw/keep.xml` keeps the notification icon (`ic_stat_athar`), which is only referenced from Dart.
 
 Store listing text, the privacy policy, and Data safety answers are in `store/`.
+
+## License
+
+Copyright (c) 2026 Ahmed Waheed. All rights reserved. This project is proprietary and not open source: no permission is granted to use, copy, modify, or distribute its code, assets, or designs without prior written permission. See [LICENSE](LICENSE).
+
+### Third-party licenses
+
+The notice above covers only this project's own work. The bundled Cairo font is licensed under the SIL Open Font License (see [`assets/fonts/Cairo/OFL.txt`](assets/fonts/Cairo/OFL.txt)), and the Dart and Flutter packages the app depends on are distributed under their own licenses.
