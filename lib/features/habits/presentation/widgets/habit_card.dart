@@ -288,8 +288,15 @@ class _SwipeActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AtharColors.of(context);
+    // 64 + 8 + 64 plus 8 at the end edge fill the 144 slide exactly; the
+    // start side meets the card.
     return Padding(
-      padding: const EdgeInsetsDirectional.all(AtharSpacing.xs),
+      padding: const EdgeInsetsDirectional.fromSTEB(
+        0,
+        AtharSpacing.xs,
+        AtharSpacing.xs,
+        AtharSpacing.xs,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

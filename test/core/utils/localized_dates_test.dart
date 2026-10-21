@@ -32,4 +32,18 @@ void main() {
       DateTime.sunday,
     );
   });
+
+  test('times use the locale digits and day period', () {
+    const en = Locale('en', 'US');
+    const ar = Locale('ar');
+    // intl may separate the period with a narrow no-break space.
+    String plain(String s) => s.replaceAll('\u202F', ' ');
+    expect(plain(LocalizedDates.time(19, 0, en)), '7:00 PM');
+    expect(plain(LocalizedDates.time(8, 30, en)), '8:30 AM');
+    expect(plain(LocalizedDates.time(19, 0, ar)), '٧:٠٠ م');
+    expect(plain(LocalizedDates.time(0, 5, ar)), '١٢:٠٥ ص');
+    expect(LocalizedDates.dayPeriod(pm: false, locale: ar), 'ص');
+    expect(LocalizedDates.dayPeriod(pm: true, locale: ar), 'م');
+    expect(LocalizedDates.dayPeriod(pm: true, locale: en), 'PM');
+  });
 }

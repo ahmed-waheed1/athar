@@ -14,9 +14,11 @@ import '../../features/habits/domain/services/habits_overview_calculator.dart';
 import '../../features/habits/domain/services/streak_calculator.dart';
 import '../../features/habits/domain/usecases/add_habit.dart';
 import '../../features/habits/domain/usecases/delete_habit.dart';
+import '../../features/habits/domain/usecases/get_habit.dart';
 import '../../features/habits/domain/usecases/get_habits.dart';
 import '../../features/habits/domain/usecases/toggle_habit_today.dart';
 import '../../features/habits/domain/usecases/update_habit.dart';
+import '../../features/habits/presentation/cubit/habit_form_cubit.dart';
 import '../../features/habits/presentation/cubit/habits_cubit.dart';
 import '../../features/settings/data/datasources/settings_local_data_source.dart';
 import '../../features/settings/data/repositories/settings_repository_impl.dart';
@@ -59,6 +61,7 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton(() => HabitLocalDataSource(sl()))
     ..registerLazySingleton<HabitRepository>(() => HabitRepositoryImpl(sl()))
     ..registerLazySingleton(() => GetHabits(sl()))
+    ..registerLazySingleton(() => GetHabit(sl()))
     ..registerLazySingleton(() => AddHabit(sl()))
     ..registerLazySingleton(() => UpdateHabit(sl()))
     ..registerLazySingleton(() => DeleteHabit(sl()))
@@ -72,6 +75,15 @@ Future<void> configureDependencies() async {
         deleteHabit: sl(),
         streakCalculator: sl(),
         overviewCalculator: sl(),
+      ),
+    )
+    ..registerFactory(
+      () => HabitFormCubit(
+        addHabit: sl(),
+        updateHabit: sl(),
+        getHabit: sl(),
+        deleteHabit: sl(),
+        streakCalculator: sl(),
       ),
     )
     // Navigation

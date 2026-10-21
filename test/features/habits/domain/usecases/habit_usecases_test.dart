@@ -3,6 +3,7 @@ import 'package:athar/features/habits/domain/entities/reminder_time.dart';
 import 'package:athar/features/habits/domain/repositories/habit_repository.dart';
 import 'package:athar/features/habits/domain/usecases/add_habit.dart';
 import 'package:athar/features/habits/domain/usecases/delete_habit.dart';
+import 'package:athar/features/habits/domain/usecases/get_habit.dart';
 import 'package:athar/features/habits/domain/usecases/get_habits.dart';
 import 'package:athar/features/habits/domain/usecases/toggle_habit_today.dart';
 import 'package:athar/features/habits/domain/usecases/update_habit.dart';
@@ -28,6 +29,12 @@ void main() {
   test('GetHabits returns the stored habits', () async {
     await repository.addHabit(existing());
     expect(await GetHabits(repository)(), [existing()]);
+  });
+
+  test('GetHabit returns one habit, or null when it is gone', () async {
+    await repository.addHabit(existing());
+    expect(await GetHabit(repository)('h1'), existing());
+    expect(await GetHabit(repository)('missing'), isNull);
   });
 
   test(

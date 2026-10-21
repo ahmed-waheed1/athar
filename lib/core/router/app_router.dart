@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/habits/presentation/cubit/habit_form_cubit.dart';
 import '../../features/habits/presentation/cubit/habits_cubit.dart';
+import '../../features/habits/presentation/screens/habit_form_screen.dart';
 import '../../features/habits/presentation/screens/home_screen.dart';
 import '../debug/design_test_screen.dart';
 import '../di/injection.dart';
@@ -67,24 +69,42 @@ GoRouter createAppRouter() => GoRouter(
         ),
       ],
     ),
-    // TODO(step 05): replace with the Add / Edit Habit screen.
     GoRoute(
       path: AppRoutes.addHabit,
-      builder: (context, state) =>
-          const PlaceholderScreen(titleKey: 'placeholder.addHabit'),
+      pageBuilder: (context, state) {
+        final query = state.uri.queryParameters;
+        return habitFormPage(
+          key: state.pageKey,
+          child: BlocProvider(
+            create: (_) => sl<HabitFormCubit>()
+              ..startAdd(
+                name: query['name'],
+                iconKey: query['icon'],
+                colorKey: query['color'],
+              ),
+            child: const HabitFormScreen(),
+          ),
+        );
+      },
+    ),
+    // Top level rather than under '/habits/:id', so pushing it from Home
+    // doesn't stack Details underneath: Save goes straight back.
+    GoRoute(
+      path: '/habits/:id/edit',
+      pageBuilder: (context, state) => habitFormPage(
+        key: state.pageKey,
+        child: BlocProvider(
+          create: (_) =>
+              sl<HabitFormCubit>()..startEdit(state.pathParameters['id']!),
+          child: const HabitFormScreen(),
+        ),
+      ),
     ),
     // TODO(step 06): replace with Habit Details.
     GoRoute(
       path: '/habits/:id',
       builder: (context, state) =>
           const PlaceholderScreen(titleKey: 'placeholder.habitDetails'),
-      routes: [
-        GoRoute(
-          path: 'edit',
-          builder: (context, state) =>
-              const PlaceholderScreen(titleKey: 'placeholder.editHabit'),
-        ),
-      ],
     ),
     if (kDebugMode)
       GoRoute(

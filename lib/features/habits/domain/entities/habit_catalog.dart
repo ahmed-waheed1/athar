@@ -43,6 +43,11 @@ abstract final class HabitCatalog {
   static const defaultIconKey = 'sparkle';
   static const defaultColorKey = 'indigo';
 
+  /// Preselected on a new habit: the first icon and color in picker order
+  /// (design/screens.md · 05, empty state).
+  static const newHabitIconKey = 'book';
+  static const newHabitColorKey = 'indigo';
+
   /// [key] if it is known, otherwise [defaultIconKey]. Stored keys may be
   /// stale or corrupt; never trust them to name an asset.
   static String iconOrDefault(String key) =>

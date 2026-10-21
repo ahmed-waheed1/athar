@@ -17,6 +17,18 @@ abstract final class LocalizedDates {
     ).format(date);
   }
 
+  /// A time of day: "7:00 PM" / "٧:٠٠ م".
+  static String time(int hour, int minute, Locale locale) =>
+      DateFormat.jm(LocalizedNumbers.intlLocale(locale))
+          .format(DateTime(2000, 1, 1, hour, minute));
+
+  /// The AM or PM marker: "AM" / "ص", "PM" / "م".
+  static String dayPeriod({required bool pm, required Locale locale}) =>
+      DateFormat(
+        'a',
+        LocalizedNumbers.intlLocale(locale),
+      ).format(DateTime(2000, 1, 1, pm ? 12 : 0));
+
   /// [DateTime.saturday] in Arabic, [DateTime.sunday] in English.
   static int firstDayOfWeek(Locale locale) =>
       locale.languageCode == 'ar' ? DateTime.saturday : DateTime.sunday;

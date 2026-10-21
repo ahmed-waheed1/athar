@@ -34,6 +34,11 @@ void main() {
     expect(HabitCatalog.colorKeys, contains(HabitCatalog.defaultColorKey));
   });
 
+  test('a new habit starts with the first icon and color (screens.md 05)', () {
+    expect(HabitCatalog.newHabitIconKey, HabitCatalog.iconKeys.first);
+    expect(HabitCatalog.newHabitColorKey, HabitCatalog.colorKeys.first);
+  });
+
   test('known keys pass through, unknown keys fall back', () {
     expect(HabitCatalog.iconOrDefault('drop'), 'drop');
     expect(HabitCatalog.iconOrDefault('unicorn'), HabitCatalog.defaultIconKey);

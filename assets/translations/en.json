@@ -120,9 +120,88 @@
     "cancel": "Cancel",
     "confirm": "Delete"
   },
+  "habitForm": {
+    "addTitle": "New habit",
+    "editTitle": "Edit habit",
+    "delete": "Delete habit",
+    "preview": {
+      "placeholder": "Habit name",
+      "startsToday": "Starts today"
+    },
+    "name": {
+      "label": "Habit name",
+      "hint": "e.g. Read 10 pages",
+      "counter": "{count}/{max}",
+      "errorEmpty": "Give your habit a name",
+      "errorTooLong": {
+        "one": "Keep the name under {} character",
+        "other": "Keep the name under {} characters"
+      }
+    },
+    "icon": {
+      "label": "Icon",
+      "more": "More",
+      "sheetTitle": "Choose an icon",
+      "done": "Done",
+      "names": {
+        "book": "Book",
+        "drop": "Water drop",
+        "walk": "Footsteps",
+        "journal": "Journal",
+        "moon": "Moon",
+        "chat": "Chat",
+        "leaf": "Leaf",
+        "heart": "Heart",
+        "dumbbell": "Dumbbell",
+        "sun": "Sun",
+        "sparkle": "Sparkle",
+        "cup": "Cup",
+        "apple": "Apple",
+        "bed": "Bed",
+        "music": "Music",
+        "brush": "Brush",
+        "bike": "Bike",
+        "coin": "Coin",
+        "phoneoff": "Phone off",
+        "clock": "Clock"
+      }
+    },
+    "color": {
+      "label": "Color",
+      "names": {
+        "indigo": "Indigo",
+        "sky": "Sky",
+        "teal": "Teal",
+        "leaf": "Leaf",
+        "amber": "Amber",
+        "coral": "Coral",
+        "rose": "Rose",
+        "plum": "Plum"
+      }
+    },
+    "reminder": {
+      "title": "Daily reminder",
+      "optionalPrefix": "Optional · ",
+      "subtitleOff": "Optional · Off",
+      "sheetTitle": "Reminder time",
+      "helper": "You’ll get one gentle notification at this time every day.",
+      "cancel": "Cancel",
+      "set": "Set reminder",
+      "hour": "Hour",
+      "minute": "Minute",
+      "period": "AM or PM"
+    },
+    "save": "Save habit",
+    "saveChanges": "Save changes",
+    "saveFailed": "Couldn’t save your habit. Try again.",
+    "discard": {
+      "title": "Discard changes?",
+      "body": "What you’ve changed on this habit won’t be saved.",
+      "cancel": "Keep editing",
+      "confirm": "Discard"
+    }
+  },
   "placeholder": {
-    "addHabit": "Add habit",
-    "editHabit": "Edit habit",
     "habitDetails": "Habit details",
     "history": "History",
     "settings": "Settings",
